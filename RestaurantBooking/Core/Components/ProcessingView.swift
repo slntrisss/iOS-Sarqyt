@@ -26,11 +26,13 @@ struct ProcessingView: View {
                     .font(.caption)
             }
         }
-        .onAppear{
-            withAnimation {
-                rotationAngle = 360.0
+        .onChange(of: showProcessingView, perform: { newValue in
+            if showProcessingView{
+                withAnimation {
+                    rotationAngle = 360.0
+                }
             }
-        }
+        })
     }
 }
 

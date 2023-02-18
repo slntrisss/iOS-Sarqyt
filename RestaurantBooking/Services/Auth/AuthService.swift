@@ -9,12 +9,12 @@ import Foundation
 
 class AuthService{
     
-    @Published var isAuthenticated = false
+    @Published var isAuthenticated: Bool?
     
     static let shared = AuthService()
     
     func authenticate(with credentials: Credentials){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             //do something
             self.isAuthenticated = false
         }

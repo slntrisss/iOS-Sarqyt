@@ -34,6 +34,7 @@
 		FF470E6F29A12A1600314934 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E6E29A12A1600314934 /* LoginViewModel.swift */; };
 		FF470E7229A12FCA00314934 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E7129A12FCA00314934 /* AuthService.swift */; };
 		FF470E7829A13D7600314934 /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E7729A13D7600314934 /* ProcessingView.swift */; };
+		FF470E7A29A1457B00314934 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E7929A1457B00314934 /* Authentication.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -71,6 +72,7 @@
 		FF470E6E29A12A1600314934 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		FF470E7129A12FCA00314934 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		FF470E7729A13D7600314934 /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
+		FF470E7929A1457B00314934 /* Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				FF470E6B29A129D400314934 /* Credentials.swift */,
+				FF470E7929A1457B00314934 /* Authentication.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */,
 				FF41F1FC299C98E0003B1745 /* SignInView.swift in Sources */,
 				FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */,
+				FF470E7A29A1457B00314934 /* Authentication.swift in Sources */,
 				FF41F227299CC3E1003B1745 /* ProfileSetupView.swift in Sources */,
 				FF41F1FF299C9D41003B1745 /* DividerWithText.swift in Sources */,
 				FF41F216299CB046003B1745 /* View.swift in Sources */,

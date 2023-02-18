@@ -55,7 +55,7 @@ struct LoginView: View {
             .padding()
             .navigationTitle("Login")
             .navigationBarTitleDisplayMode(.inline)
-            
+            ProcessingView(showProcessingView: $vm.showProcessingView)
             credentialsNotProvidedError
         }
     }
@@ -106,7 +106,7 @@ extension LoginView{
                     .fontWeight(.semibold)
                     .foregroundColor(Color.theme.accent)
                 
-                Text(vm.credentialsErrorMessage)
+                Text(vm.error?.localizedDescription ?? "")
                     .foregroundColor(Color.theme.secondaryText)
                     .multilineTextAlignment(.center)
                 
@@ -121,5 +121,6 @@ extension LoginView{
             }
             .frame(width: UIScreen.main.bounds.width * 0.6)
         }
+        .animation(.default, value: vm.showCredentialsError)
     }
 }
