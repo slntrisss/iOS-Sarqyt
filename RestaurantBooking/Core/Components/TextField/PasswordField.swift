@@ -45,8 +45,14 @@ extension PasswordField{
         ZStack{
             TextField("Password", text: $password)
                 .opacity(showPassword ? 1.0 : 0.0)
+                .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
+                .textContentType(.password)
             SecureField("Password", text: $password)
                 .opacity(showPassword ? 0.0 : 1.0)
+                .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
+                .textContentType(.password)
         }
     }
     

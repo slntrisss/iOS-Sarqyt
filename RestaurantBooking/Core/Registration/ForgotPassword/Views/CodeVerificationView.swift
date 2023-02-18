@@ -35,7 +35,7 @@ struct CodeVerificationView: View {
                                destination: {NewPasswordView()},
                                label: {EmptyView()})
             )
-            loadingAlert
+            ProcessingView(showProcessingView: $showLoadingAlert)
             invalidCodeAlert
         }
     }
@@ -105,10 +105,6 @@ extension CodeVerificationView{
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             showLoadingAlert = true
             
-            withAnimation(.linear(duration: 0.1)
-                .speed(0.1).repeatForever(autoreverses: false)){
-                    rotate = 360.0
-                }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 if code != "4575"{
@@ -119,23 +115,6 @@ extension CodeVerificationView{
                 showLoadingAlert = false
                 rotate = 0.0
             }
-        }
-    }
-    
-    private var loadingAlert: some View{
-        AlertBuilder(showAlert: $showLoadingAlert) {
-            VStack{
-                Image("loadingState")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 50, height: 50)
-                    .rotationEffect(.degrees(rotate))
-                
-                Text("Processing...")
-                    .font(.caption)
-            }
-            .foregroundColor(Color.theme.secondaryText)
-            .frame(width: 200, height: 200)
         }
     }
     

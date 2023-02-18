@@ -8,13 +8,34 @@
 import SwiftUI
 
 struct ProcessingView: View {
+    @Binding var showProcessingView: Bool
+    @State private var rotationAngle = 0.0
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        AlertBuilder(showAlert: $showProcessingView) {
+            VStack(spacing: 20){
+                Image("loadingState")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .rotationEffect(.degrees(rotationAngle))
+                    .animation(.linear(duration: 0.1)
+                        .speed(0.1).repeatForever(autoreverses: false), value: rotationAngle)
+                
+                Text("Processing...")
+                    .foregroundColor(Color.theme.secondaryText)
+                    .font(.caption)
+            }
+        }
+        .onAppear{
+            withAnimation {
+                rotationAngle = 360.0
+            }
+        }
     }
 }
 
 struct ProcessingView_Previews: PreviewProvider {
     static var previews: some View {
-        ProcessingView()
+        ProcessingView(showProcessingView: .constant(true))
     }
 }

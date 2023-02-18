@@ -17,6 +17,8 @@ struct EmailField: View {
                 TextField("Email", text: $email)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.never)
+                    .textContentType(.emailAddress)
+                    .keyboardType(.emailAddress)
             }
             .emailPasswordMode()
         }
