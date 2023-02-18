@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PasswordConfirmField: View {
     @Binding var password: String
-    @State private var showPassword = false
+    @Binding var showPassword: Bool
     var body: some View {
         VStack{
             HStack{
@@ -25,12 +25,12 @@ struct PasswordConfirmField: View {
 struct PasswordConfirm_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PasswordConfirmField(password: .constant(""))
+            PasswordConfirmField(password: .constant(""), showPassword: .constant(false))
                 .padding()
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.light)
             
-            PasswordConfirmField(password: .constant(""))
+            PasswordConfirmField(password: .constant(""), showPassword: .constant(false))
                 .padding()
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.dark)

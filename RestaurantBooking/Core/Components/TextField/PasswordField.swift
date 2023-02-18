@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PasswordField: View {
     @Binding var password: String
-    @State private var showPassword = false
+    @Binding var showPassword: Bool
     var body: some View {
         VStack{
             HStack{
@@ -26,12 +26,12 @@ struct PasswordField: View {
 struct PasswordField_Previews: PreviewProvider {
     static var previews: some View {
         Group{
-            PasswordField(password: .constant(""))
+            PasswordField(password: .constant(""), showPassword: .constant(false))
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.light)
                 .padding()
             
-            PasswordField(password: .constant(""))
+            PasswordField(password: .constant(""), showPassword: .constant(false))
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.dark)
                 .padding()

@@ -20,6 +20,8 @@ struct LoginView: View {
     @State private var signInWithMetaTapped = false
     @State private var signInWithAppleTapped = false
     
+    @State private var showPassword = false
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
             Text("Login To Your Account")
@@ -30,7 +32,7 @@ struct LoginView: View {
             
             VStack(spacing: 20){
                 EmailField(email: $email)
-                PasswordField(password: $password)
+                PasswordField(password: $password, showPassword: $showPassword)
             }
             
             HStack{
@@ -80,8 +82,6 @@ extension LoginView{
             
             SignInWithView(signInWithGoogleTapped: $signInWithGoogleTapped, signInWithMetaTapped: $signInWithMetaTapped, signInWithAppleTapped: $signInWithAppleTapped)
                 .padding(.vertical)
-            
-            RegistrationBottomHelperButton(descriptionLabel: "Don't have an account?", buttonLabel: "Sign Up", buttonClicked: $signUpButtonClicked)
         }
     }
     

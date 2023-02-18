@@ -14,6 +14,9 @@ struct NewPasswordView: View {
     @State private var continueButtonTapped = false
     @State private var showPasswordErrorAlert = false
     @State private var alertOffset = -10.0
+    
+    @State private var showPassword = false
+    
     var body: some View {
         ZStack{
             ScrollView(.vertical, showsIndicators: false){
@@ -78,8 +81,8 @@ extension NewPasswordView{
     
     private var inputFields: some View{
         VStack(spacing: 20){
-            PasswordField(password: $password)
-            PasswordConfirmField(password: $confirmPassword)
+            PasswordField(password: $password, showPassword: $showPassword)
+            PasswordConfirmField(password: $confirmPassword, showPassword: $showPassword)
         }
         .padding(.bottom)
     }

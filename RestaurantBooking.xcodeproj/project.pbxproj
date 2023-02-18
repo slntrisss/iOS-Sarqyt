@@ -30,6 +30,8 @@
 		FF41F229299CC566003B1745 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F228299CC566003B1745 /* ProfileImageView.swift */; };
 		FF41F22B299CC721003B1745 /* ProfileImageViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F22A299CC721003B1745 /* ProfileImageViewModifier.swift */; };
 		FF470E6929A0DE1E00314934 /* NewPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E6829A0DE1E00314934 /* NewPasswordView.swift */; };
+		FF470E6C29A129D400314934 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E6B29A129D400314934 /* Credentials.swift */; };
+		FF470E6F29A12A1600314934 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E6E29A12A1600314934 /* LoginViewModel.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -63,6 +65,8 @@
 		FF41F228299CC566003B1745 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		FF41F22A299CC721003B1745 /* ProfileImageViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewModifier.swift; sourceTree = "<group>"; };
 		FF470E6829A0DE1E00314934 /* NewPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordView.swift; sourceTree = "<group>"; };
+		FF470E6B29A129D400314934 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		FF470E6E29A12A1600314934 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -104,6 +108,7 @@
 				FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */,
 				FF41F1E8299C939B003B1745 /* ContentView.swift */,
 				FFBB2FED299F83FF0061771C /* Services */,
+				FF470E6A29A129C200314934 /* Models */,
 				FF41F1F4299C9780003B1745 /* Core */,
 				FF41F1F5299C978C003B1745 /* Extensions */,
 				FF41F1EA299C939E003B1745 /* Assets.xcassets */,
@@ -186,6 +191,7 @@
 		FF41F206299CA437003B1745 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				FF470E6D29A129FF00314934 /* ViewModel */,
 				FF41F207299CA43F003B1745 /* View */,
 			);
 			path = Login;
@@ -265,6 +271,22 @@
 				FF41F226299CC3E1003B1745 /* ProfileSetupView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		FF470E6A29A129C200314934 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FF470E6B29A129D400314934 /* Credentials.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FF470E6D29A129FF00314934 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FF470E6E29A12A1600314934 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		FFBB2FED299F83FF0061771C /* Services */ = {
@@ -398,6 +420,7 @@
 				FF41F210299CAF6B003B1745 /* EmailPasswordModifier.swift in Sources */,
 				FF41F20D299CACDA003B1745 /* PasswordField.swift in Sources */,
 				FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */,
+				FF470E6C29A129D400314934 /* Credentials.swift in Sources */,
 				FF41F229299CC566003B1745 /* ProfileImageView.swift in Sources */,
 				FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */,
 				FF41F1FC299C98E0003B1745 /* SignInView.swift in Sources */,
@@ -408,6 +431,7 @@
 				FF41F205299CA209003B1745 /* RegistrationBottomHelperButton.swift in Sources */,
 				FFBB2FFD299FB0B80061771C /* ResetTypeView.swift in Sources */,
 				FF41F21C299CBAB5003B1745 /* SignUpView.swift in Sources */,
+				FF470E6F29A12A1600314934 /* LoginViewModel.swift in Sources */,
 				FF41F209299CA44A003B1745 /* LoginView.swift in Sources */,
 				FF41F218299CB256003B1745 /* RememberMeToogle.swift in Sources */,
 				FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */,
@@ -549,8 +573,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -578,8 +603,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

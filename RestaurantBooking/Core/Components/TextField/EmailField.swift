@@ -15,6 +15,8 @@ struct EmailField: View {
                 Image(systemName: "envelope.fill")
                     .foregroundColor(Color.theme.secondaryText)
                 TextField("Email", text: $email)
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.never)
             }
             .emailPasswordMode()
         }

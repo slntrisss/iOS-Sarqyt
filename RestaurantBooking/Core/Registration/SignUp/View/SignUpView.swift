@@ -18,6 +18,8 @@ struct SignUpView: View {
     @State private var signInWithMetaTapped = false
     @State private var signInWithAppleTapped = false
     
+    @State private var showPassword: Bool = false
+    
     var body: some View {
         ScrollView{
             title
@@ -66,8 +68,8 @@ extension SignUpView{
     private var fields: some View{
         VStack(spacing: 20){
             EmailField(email: $email)
-            PasswordField(password: $password)
-            PasswordConfirmField(password: $confirmPassword)
+            PasswordField(password: $password, showPassword: $showPassword)
+            PasswordConfirmField(password: $confirmPassword, showPassword: $showPassword)
         }
     }
 }
