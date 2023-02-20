@@ -13,6 +13,12 @@
 		FF2CAB5829A3744500E062E1 /* BookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB5729A3744500E062E1 /* BookingView.swift */; };
 		FF2CAB5B29A3745300E062E1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB5A29A3745300E062E1 /* ProfileView.swift */; };
 		FF2CAB5E29A37BE300E062E1 /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB5D29A37BE300E062E1 /* SearchFieldView.swift */; };
+		FF2CAB6129A3820100E062E1 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6029A3820100E062E1 /* Category.swift */; };
+		FF2CAB6329A382B400E062E1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6229A382B400E062E1 /* HomeViewModel.swift */; };
+		FF2CAB6529A3886A00E062E1 /* CategoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6429A3886A00E062E1 /* CategoryCollectionView.swift */; };
+		FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */; };
+		FF2CAB6929A38EA400E062E1 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6829A38EA400E062E1 /* Restaurant.swift */; };
+		FF2CAB6B29A3CDC500E062E1 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */; };
 		FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */; };
 		FF41F1E9299C939B003B1745 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F1E8299C939B003B1745 /* ContentView.swift */; };
 		FF41F1EB299C939E003B1745 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF41F1EA299C939E003B1745 /* Assets.xcassets */; };
@@ -57,6 +63,12 @@
 		FF2CAB5729A3744500E062E1 /* BookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingView.swift; sourceTree = "<group>"; };
 		FF2CAB5A29A3745300E062E1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		FF2CAB5D29A37BE300E062E1 /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
+		FF2CAB6029A3820100E062E1 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		FF2CAB6229A382B400E062E1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		FF2CAB6429A3886A00E062E1 /* CategoryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionView.swift; sourceTree = "<group>"; };
+		FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
+		FF2CAB6829A38EA400E062E1 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
+		FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		FF41F1E3299C939B003B1745 /* RestaurantBooking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantBooking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantBookingApp.swift; sourceTree = "<group>"; };
 		FF41F1E8299C939B003B1745 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -175,8 +187,17 @@
 			isa = PBXGroup;
 			children = (
 				FF2CAB5D29A37BE300E062E1 /* SearchFieldView.swift */,
+				FF2CAB6429A3886A00E062E1 /* CategoryCollectionView.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		FF2CAB5F29A381BC00E062E1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FF2CAB6229A382B400E062E1 /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		FF41F1DA299C939B003B1745 = {
@@ -242,6 +263,8 @@
 				FF41F215299CB046003B1745 /* View.swift */,
 				FF0E2A0A299D47FA0011BF01 /* String.swift */,
 				FFBB2FF9299FA92E0061771C /* Notification.swift */,
+				FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */,
+				FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -377,6 +400,7 @@
 		FF43291A29A210DE00AEA0EA /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				FF2CAB5F29A381BC00E062E1 /* ViewModel */,
 				FF43291D29A2289300AEA0EA /* View */,
 			);
 			path = Home;
@@ -394,6 +418,8 @@
 			isa = PBXGroup;
 			children = (
 				FF470E7429A1322200314934 /* Auth */,
+				FF2CAB6029A3820100E062E1 /* Category.swift */,
+				FF2CAB6829A38EA400E062E1 /* Restaurant.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -554,14 +580,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF2CAB6929A38EA400E062E1 /* Restaurant.swift in Sources */,
 				FF470E6929A0DE1E00314934 /* NewPasswordView.swift in Sources */,
 				FF41F203299C9E92003B1745 /* PrimaryButton.swift in Sources */,
 				FF41F20B299CAA99003B1745 /* EmailField.swift in Sources */,
 				FF0E2A0B299D47FA0011BF01 /* String.swift in Sources */,
 				FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */,
 				FF43291F29A2289F00AEA0EA /* HomeView.swift in Sources */,
+				FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */,
 				FF41F21E299CBD8E003B1745 /* PasswordConfirmField.swift in Sources */,
 				FF41F1E9299C939B003B1745 /* ContentView.swift in Sources */,
+				FF2CAB6529A3886A00E062E1 /* CategoryCollectionView.swift in Sources */,
 				FF2CAB4F29A368A600E062E1 /* MainView.swift in Sources */,
 				FF41F210299CAF6B003B1745 /* EmailPasswordModifier.swift in Sources */,
 				FF41F20D299CACDA003B1745 /* PasswordField.swift in Sources */,
@@ -569,6 +598,7 @@
 				FF470E6C29A129D400314934 /* Credentials.swift in Sources */,
 				FF41F229299CC566003B1745 /* ProfileImageView.swift in Sources */,
 				FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */,
+				FF2CAB6B29A3CDC500E062E1 /* UIApplication.swift in Sources */,
 				FF41F1FC299C98E0003B1745 /* SignInView.swift in Sources */,
 				FF2CAB5B29A3745300E062E1 /* ProfileView.swift in Sources */,
 				FF2CAB5E29A37BE300E062E1 /* SearchFieldView.swift in Sources */,
@@ -576,6 +606,7 @@
 				FF470E7A29A1457B00314934 /* Authentication.swift in Sources */,
 				FF41F227299CC3E1003B1745 /* ProfileSetupView.swift in Sources */,
 				FF41F1FF299C9D41003B1745 /* DividerWithText.swift in Sources */,
+				FF2CAB6329A382B400E062E1 /* HomeViewModel.swift in Sources */,
 				FF41F216299CB046003B1745 /* View.swift in Sources */,
 				FF41F205299CA209003B1745 /* RegistrationBottomHelperButton.swift in Sources */,
 				FFBB2FFD299FB0B80061771C /* ResetTypeView.swift in Sources */,
@@ -585,6 +616,7 @@
 				FF470E6F29A12A1600314934 /* LoginViewModel.swift in Sources */,
 				FF41F209299CA44A003B1745 /* LoginView.swift in Sources */,
 				FF41F218299CB256003B1745 /* RememberMeToogle.swift in Sources */,
+				FF2CAB6129A3820100E062E1 /* Category.swift in Sources */,
 				FF43291C29A21DD900AEA0EA /* KeychainService.swift in Sources */,
 				FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */,
 				FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */,

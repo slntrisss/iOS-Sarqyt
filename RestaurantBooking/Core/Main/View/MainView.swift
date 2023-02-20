@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MainView: View {
+    init(){
+        UIScrollView.appearance().keyboardDismissMode = .interactive
+    }
     var body: some View {
         TabView{
             HomeView()
@@ -31,7 +34,6 @@ struct MainView: View {
                     Text("Profile")
                 }
         }
-        .accentColor(Color.theme.green)
     }
 }
 

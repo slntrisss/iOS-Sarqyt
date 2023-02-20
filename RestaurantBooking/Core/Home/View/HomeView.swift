@@ -8,19 +8,27 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var searchQuery = ""
+    @StateObject private var homeVM = HomeViewModel()
+    @State private var searchFieldInFocus = false
     var body: some View {
         NavigationView{
             ScrollView(.vertical, showsIndicators: false) {
-                SearchFieldView(searchQuery: $searchQuery)
+                SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus)
+                    .padding()
+                CategoryCollectionView(collections: homeVM.categories, selectedCollection: $homeVM.selectedCategory)
+                    .padding(.leading)
+                    .padding(.bottom)
+                if searchFieldInFocus{
+                    seacrhResultView
+                }
             }
-            .padding()
             .navigationTitle("Hello, Raim 👋")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {navLeadingItems}
                 ToolbarItem(placement: .navigationBarTrailing) {navTrailingItems}
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -57,5 +65,37 @@ extension HomeView{
                 Image(systemName: "bookmark")
             }
         }
+    }
+    
+    private var seacrhResultView: some View{
+        VStack(alignment: .leading){
+            Divider()
+            HStack{
+                Text("Recent")
+                    .foregroundColor(Color.theme.accent)
+                    .font(.caption.bold())
+                Spacer()
+            }
+            .padding(.top)
+            ForEach(homeVM.restaurants) { restaurant in
+                HStack{
+                    VStack(alignment: .leading, spacing: 5){
+                        Text(restaurant.name)
+                            .foregroundColor(Color.theme.accent.opacity(0.95))
+                        Text(restaurant.address)
+                            .font(.caption2)
+                            .foregroundColor(Color.theme.secondaryText)
+                    }
+                    .padding(.vertical)
+                    Spacer()
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(Color.theme.secondaryText)
+                }
+                Divider()
+            }
+            .onDelete(perform: homeVM.deleteSearchHistory)
+        }
+        .transition(.move(edge: .leading))
+        .padding(.horizontal)
     }
 }
