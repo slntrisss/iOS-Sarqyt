@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var homeVM = HomeViewModel()
-    @State private var searchFieldInFocus = false
+    @State private var searchFieldInFocus = true
     var body: some View {
         NavigationView{
             ScrollView(.vertical, showsIndicators: false) {
@@ -69,7 +69,6 @@ extension HomeView{
     
     private var seacrhResultView: some View{
         VStack(alignment: .leading){
-            Divider()
             HStack{
                 Text("Recent")
                     .foregroundColor(Color.theme.accent)
@@ -77,23 +76,26 @@ extension HomeView{
                 Spacer()
             }
             .padding(.top)
-            ForEach(homeVM.restaurants) { restaurant in
-                HStack{
-                    VStack(alignment: .leading, spacing: 5){
-                        Text(restaurant.name)
-                            .foregroundColor(Color.theme.accent.opacity(0.95))
-                        Text(restaurant.address)
-                            .font(.caption2)
+            List{
+                ForEach(homeVM.restaurants) { restaurant in
+                    HStack{
+                        VStack(alignment: .leading, spacing: 5){
+                            Text(restaurant.name)
+                                .foregroundColor(Color.theme.accent.opacity(0.95))
+                            Text(restaurant.address)
+                                .font(.caption2)
+                                .foregroundColor(Color.theme.secondaryText)
+                        }
+                        .padding(.vertical)
+                        Spacer()
+                        Image(systemName: "magnifyingglass")
                             .foregroundColor(Color.theme.secondaryText)
                     }
-                    .padding(.vertical)
-                    Spacer()
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(Color.theme.secondaryText)
                 }
-                Divider()
+                .onDelete(perform: homeVM.deleteSearchHistory)
             }
-            .onDelete(perform: homeVM.deleteSearchHistory)
+            .listStyle(PlainListStyle())
+            .frame(minHeight: UIScreen.main.bounds.height * 0.7)
         }
         .transition(.move(edge: .leading))
         .padding(.horizontal)

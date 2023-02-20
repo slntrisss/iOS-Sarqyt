@@ -10,7 +10,7 @@ import Foundation
 class HomeViewModel: ObservableObject{
     @Published var searchQuery = ""
     @Published var restaurants: [Restaurant] = DeveloperPreview.instance.restaurants
-    var categories: [String] = []
+    @Published var categories: [String] = []
     @Published var selectedCategory = Category.recommended.rawValue
     init(){
         categories = Category.allCases.map{$0.rawValue}
