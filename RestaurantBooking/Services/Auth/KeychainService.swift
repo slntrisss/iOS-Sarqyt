@@ -51,6 +51,20 @@ final class KeychainService{
             return nil
         }
     }
+    
+    func exists(service: String, account: String) -> Bool{
+        let query = [
+            kSecAttrService: service,
+            kSecAttrAccount: account,
+            kSecClass: kSecClassGenericPassword,
+            kSecReturnData: true
+        ] as CFDictionary
+        
+        var result: AnyObject?
+        let status = SecItemCopyMatching(query, &result)
+        
+        return status == errSecSuccess || status == errSecInteractionNotAllowed
+    }
 }
 
 extension KeychainService{

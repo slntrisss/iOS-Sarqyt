@@ -10,6 +10,7 @@ import Combine
 
 class LoginViewModel: ObservableObject{
     @Published var credentials = Credentials(email: "", password: "")
+    @Published var authentication = Authentication()
     
     @Published var showCredentialsError = false
     @Published var error: Authentication.AuthenticationError?
@@ -43,5 +44,9 @@ class LoginViewModel: ObservableObject{
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    func authenticateUsingBiometrics(){
+        authentication.requestBiomotricAuthentication()
     }
 }

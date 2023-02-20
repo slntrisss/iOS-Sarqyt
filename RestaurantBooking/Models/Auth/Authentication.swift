@@ -6,9 +6,16 @@
 //
 
 import Foundation
+import LocalAuthentication
 
 class Authentication: ObservableObject{
     @Published var isAuthenticated = false
+    
+    enum BiometricType{
+        case none
+        case touchID
+        case faceID
+    }
     
     enum AuthenticationError: Error, LocalizedError, Identifiable {
         case emailOrPasswordNotProvided
@@ -39,6 +46,52 @@ class Authentication: ObservableObject{
                 return NSLocalizedString("Your face or fingerprint were not recognized.", comment: "")
             case .credentialsNotSaved:
                 return NSLocalizedString("Your credentials have not been saved. Do you want to save them after the next successful login?", comment: "")
+            }
+        }
+    }
+    
+    func biometricType() -> BiometricType{
+        let authContext = LAContext()
+        let _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        
+        switch authContext.biometryType{
+        case .none:
+            return .none
+        case .touchID:
+            return .touchID
+        case .faceID:
+            return .faceID
+        @unknown default:
+            return .none
+        }
+    }
+    
+    func requestBiomotricAuthentication(){
+        let context = LAContext()
+        var error: NSError?
+        
+        let canEvaluate = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        
+        if let error = error {
+            switch error.code{
+            case -6:
+                print("Denied access")
+            case -7:
+                print("noFaceId/noTouchId enrolled")
+            default:
+                print("Biometric error")
+            }
+        }
+        if canEvaluate{
+            if context.biometryType != .none{
+                let reason = "Allow access to your \"FaceId\" information to authenticate to the system."
+                context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, error in
+                    if let error = error {
+                        print("Biometric error: \(error)")
+                    }else{
+                        print("Success.")
+                    }
+                }
             }
         }
     }
