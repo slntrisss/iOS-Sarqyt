@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     init(){
-        UIScrollView.appearance().keyboardDismissMode = .interactive
+        UIScrollView.appearance().keyboardDismissMode = .onDrag
     }
     var body: some View {
         TabView{

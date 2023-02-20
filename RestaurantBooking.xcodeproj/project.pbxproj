@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		FF0E2A0B299D47FA0011BF01 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0E2A0A299D47FA0011BF01 /* String.swift */; };
+		FF1E49A829A3EA03004B6FE1 /* RestaurantBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */; };
+		FF1E49AA29A3EB2F004B6FE1 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E49A929A3EB2F004B6FE1 /* Double.swift */; };
 		FF2CAB4F29A368A600E062E1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB4E29A368A600E062E1 /* MainView.swift */; };
 		FF2CAB5529A3743600E062E1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB5429A3743600E062E1 /* MapView.swift */; };
 		FF2CAB5829A3744500E062E1 /* BookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB5729A3744500E062E1 /* BookingView.swift */; };
@@ -58,6 +60,8 @@
 
 /* Begin PBXFileReference section */
 		FF0E2A0A299D47FA0011BF01 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantBannerView.swift; sourceTree = "<group>"; };
+		FF1E49A929A3EB2F004B6FE1 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		FF2CAB4E29A368A600E062E1 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		FF2CAB5429A3743600E062E1 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		FF2CAB5729A3744500E062E1 /* BookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingView.swift; sourceTree = "<group>"; };
@@ -265,6 +269,7 @@
 				FFBB2FF9299FA92E0061771C /* Notification.swift */,
 				FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */,
 				FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */,
+				FF1E49A929A3EB2F004B6FE1 /* Double.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -401,17 +406,18 @@
 			isa = PBXGroup;
 			children = (
 				FF2CAB5F29A381BC00E062E1 /* ViewModel */,
-				FF43291D29A2289300AEA0EA /* View */,
+				FF43291D29A2289300AEA0EA /* Views */,
 			);
 			path = Home;
 			sourceTree = "<group>";
 		};
-		FF43291D29A2289300AEA0EA /* View */ = {
+		FF43291D29A2289300AEA0EA /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				FF43291E29A2289F00AEA0EA /* HomeView.swift */,
+				FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		FF470E6A29A129C200314934 /* Models */ = {
@@ -615,8 +621,10 @@
 				FF2CAB5529A3743600E062E1 /* MapView.swift in Sources */,
 				FF470E6F29A12A1600314934 /* LoginViewModel.swift in Sources */,
 				FF41F209299CA44A003B1745 /* LoginView.swift in Sources */,
+				FF1E49AA29A3EB2F004B6FE1 /* Double.swift in Sources */,
 				FF41F218299CB256003B1745 /* RememberMeToogle.swift in Sources */,
 				FF2CAB6129A3820100E062E1 /* Category.swift in Sources */,
+				FF1E49A829A3EA03004B6FE1 /* RestaurantBannerView.swift in Sources */,
 				FF43291C29A21DD900AEA0EA /* KeychainService.swift in Sources */,
 				FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */,
 				FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */,

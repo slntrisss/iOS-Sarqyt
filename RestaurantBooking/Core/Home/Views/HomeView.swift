@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var homeVM = HomeViewModel()
-    @State private var searchFieldInFocus = true
+    @State private var searchFieldInFocus = false
     var body: some View {
         NavigationView{
             ScrollView(.vertical, showsIndicators: false) {
@@ -18,8 +18,18 @@ struct HomeView: View {
                 CategoryCollectionView(collections: homeVM.categories, selectedCollection: $homeVM.selectedCategory)
                     .padding(.leading)
                     .padding(.bottom)
-                if searchFieldInFocus{
-                    seacrhResultView
+                ZStack{
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack{
+                            ForEach(0..<homeVM.restaurants.count, id: \.self) { index in
+                                RestaurantBannerView(restaurant: $homeVM.restaurants[index])
+                            }
+                        }
+                    }
+                    .padding(.leading)
+                    if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
+                        seacrhResultView
+                    }
                 }
             }
             .navigationTitle("Hello, Raim 👋")
@@ -77,12 +87,12 @@ extension HomeView{
             }
             .padding(.top)
             List{
-                ForEach(homeVM.restaurants) { restaurant in
+                ForEach(homeVM.recentSearchHistory) { restaurant in
                     HStack{
                         VStack(alignment: .leading, spacing: 5){
                             Text(restaurant.name)
                                 .foregroundColor(Color.theme.accent.opacity(0.95))
-                            Text(restaurant.address)
+                            Text(restaurant.address.location)
                                 .font(.caption2)
                                 .foregroundColor(Color.theme.secondaryText)
                         }
