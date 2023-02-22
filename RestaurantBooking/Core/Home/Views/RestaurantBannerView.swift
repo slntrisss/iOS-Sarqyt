@@ -13,11 +13,9 @@ struct RestaurantBannerView: View {
         Image(restaurant.image)
             .resizable()
             .scaledToFill()
-            .frame(width: 250, height: 400)
-            .overlay(
-                content
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 30))
+            .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.height * 0.5)
+            .overlay(content)
+            .clipShape(RoundedRectangle(cornerRadius: 50))
     }
 }
 
@@ -43,7 +41,7 @@ extension RestaurantBannerView{
                 }
             }
             .foregroundColor(.white)
-            .padding()
+            .padding(30)
         }
     }
     
@@ -84,9 +82,11 @@ extension RestaurantBannerView{
             Spacer()
             Button{
                 restaurant.bookmarked.toggle()
+                print("tapped")
             }label: {
                 Image(systemName: restaurant.bookmarked ? "bookmark.fill" : "bookmark")
             }
+            .buttonStyle(BorderlessButtonStyle())
         }
     }
 }

@@ -20,7 +20,7 @@ struct HomeView: View {
                     .padding(.leading)
                     .padding(.bottom)
                 ZStack{
-                    Carousel(list: $homeVM.restaurants, spacing: 0, trailingSpacing: 125) { restaurant in
+                    Carousel(list: $homeVM.restaurants, spacing: 20, trailingSpacing: 80) { restaurant in
                         RestaurantBannerView(restaurant: restaurant)
                     }
                     .opacity(searchFieldInFocus ? 0.0 : 1.0)

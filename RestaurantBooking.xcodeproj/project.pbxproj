@@ -21,6 +21,7 @@
 		FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */; };
 		FF2CAB6929A38EA400E062E1 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6829A38EA400E062E1 /* Restaurant.swift */; };
 		FF2CAB6B29A3CDC500E062E1 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */; };
+		FF337DAF29A60FDE00A5135C /* SnapCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF337DAE29A60FDE00A5135C /* SnapCarousel.swift */; };
 		FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */; };
 		FF41F1E9299C939B003B1745 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F1E8299C939B003B1745 /* ContentView.swift */; };
 		FF41F1EB299C939E003B1745 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF41F1EA299C939E003B1745 /* Assets.xcassets */; };
@@ -74,6 +75,7 @@
 		FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		FF2CAB6829A38EA400E062E1 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		FF337DAE29A60FDE00A5135C /* SnapCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapCarousel.swift; sourceTree = "<group>"; };
 		FF41F1E3299C939B003B1745 /* RestaurantBooking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantBooking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantBookingApp.swift; sourceTree = "<group>"; };
 		FF41F1E8299C939B003B1745 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				FF41F221299CC2D2003B1745 /* Buttons */,
 				FF41F1FE299C9D41003B1745 /* DividerWithText.swift */,
 				FF470E7729A13D7600314934 /* ProcessingView.swift */,
+				FF337DAE29A60FDE00A5135C /* SnapCarousel.swift */,
 				FF95225E29A53781000E0F57 /* Carousel.swift */,
 			);
 			path = Components;
@@ -597,6 +600,7 @@
 				FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */,
 				FF43291F29A2289F00AEA0EA /* HomeView.swift in Sources */,
 				FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */,
+				FF337DAF29A60FDE00A5135C /* SnapCarousel.swift in Sources */,
 				FF41F21E299CBD8E003B1745 /* PasswordConfirmField.swift in Sources */,
 				FF41F1E9299C939B003B1745 /* ContentView.swift in Sources */,
 				FF2CAB6529A3886A00E062E1 /* CategoryCollectionView.swift in Sources */,

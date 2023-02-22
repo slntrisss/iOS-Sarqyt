@@ -31,7 +31,7 @@ struct Carousel<Content: View, T: Identifiable>: View {
         GeometryReader{ proxy in
             let width = proxy.size.width - (trailingSpace - spacing)
             HStack(spacing: spacing){
-                ForEach($list) { item in
+                ForEach($list, id: \.id) { item in
                     content(item)
                         .frame(width: abs(proxy.size.width - trailingSpace))
                 }
@@ -76,6 +76,6 @@ extension Carousel{
     }
     
     private var xOffset: CGFloat{
-        return offset + (currentIndex == bounds ? trailingSpace : 0)
+        return offset + (currentIndex == bounds ? (trailingSpace - (spacing * 2)) : 0)
     }
 }
