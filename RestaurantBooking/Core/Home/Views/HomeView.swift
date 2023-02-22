@@ -20,13 +20,10 @@ struct HomeView: View {
                     .padding(.leading)
                     .padding(.bottom)
                 ZStack{
-                    
                     Carousel(list: $homeVM.restaurants, spacing: 0, trailingSpacing: 125) { restaurant in
                         RestaurantBannerView(restaurant: restaurant)
                     }
-//                    SnapCarousel(index: $currentIndex, items: homeVM.restaurants) { restaurant in
-//                        RestaurantBannerView(restaurant: $homeVM.restaurants[currentIndex])
-//                    }
+                    .opacity(searchFieldInFocus ? 0.0 : 1.0)
                     if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
                         seacrhResultView
                     }
@@ -85,7 +82,6 @@ extension HomeView{
                     .font(.caption.bold())
                 Spacer()
             }
-            .padding(.top)
             List{
                 ForEach(homeVM.recentSearchHistory) { restaurant in
                     HStack{
@@ -107,7 +103,7 @@ extension HomeView{
             .listStyle(PlainListStyle())
             .frame(minHeight: UIScreen.main.bounds.height * 0.7)
         }
-        .transition(.move(edge: .leading))
+        .transition(.move(edge: .bottom))
         .padding(.horizontal)
     }
 }
