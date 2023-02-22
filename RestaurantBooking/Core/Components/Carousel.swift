@@ -33,11 +33,11 @@ struct Carousel<Content: View, T: Identifiable>: View {
             HStack(spacing: spacing){
                 ForEach($list) { item in
                     content(item)
-                        .frame(width: proxy.size.width - trailingSpace)
+                        .frame(width: abs(proxy.size.width - trailingSpace))
                 }
             }
             .padding(.horizontal, spacing)
-            .offset(x: CGFloat(currentIndex) * (-width) + offset + (currentIndex == bounds ? trailingSpace : 0))
+            .offset(x: CGFloat(currentIndex) * (-width) + xOffset + adjustmentWidth)
             .gesture(dragGesture(width: width))
         }
         .animation(.easeInOut, value: offset)
@@ -66,5 +66,16 @@ extension Carousel{
     
     private var bounds: Int{
         return list.count - 1
+    }
+    
+    private var adjustmentWidth: CGFloat{
+        if currentIndex > 0 && currentIndex < bounds{
+            return (trailingSpace / 2) - spacing
+        }
+        return 0
+    }
+    
+    private var xOffset: CGFloat{
+        return offset + (currentIndex == bounds ? trailingSpace : 0)
     }
 }

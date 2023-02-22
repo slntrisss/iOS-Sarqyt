@@ -24,6 +24,9 @@ struct HomeView: View {
                     Carousel(list: $homeVM.restaurants, spacing: 0, trailingSpacing: 125) { restaurant in
                         RestaurantBannerView(restaurant: restaurant)
                     }
+//                    SnapCarousel(index: $currentIndex, items: homeVM.restaurants) { restaurant in
+//                        RestaurantBannerView(restaurant: $homeVM.restaurants[currentIndex])
+//                    }
                     if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
                         seacrhResultView
                     }
