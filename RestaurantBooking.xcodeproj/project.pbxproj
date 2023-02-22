@@ -21,7 +21,6 @@
 		FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */; };
 		FF2CAB6929A38EA400E062E1 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6829A38EA400E062E1 /* Restaurant.swift */; };
 		FF2CAB6B29A3CDC500E062E1 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */; };
-		FF337DAF29A60FDE00A5135C /* SnapCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF337DAE29A60FDE00A5135C /* SnapCarousel.swift */; };
 		FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */; };
 		FF41F1E9299C939B003B1745 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F1E8299C939B003B1745 /* ContentView.swift */; };
 		FF41F1EB299C939E003B1745 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF41F1EA299C939E003B1745 /* Assets.xcassets */; };
@@ -58,6 +57,9 @@
 		FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF9299FA92E0061771C /* Notification.swift */; };
 		FFBB2FFD299FB0B80061771C /* ResetTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FFC299FB0B80061771C /* ResetTypeView.swift */; };
 		FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB3000299FF10C0061771C /* CodeVerificationView.swift */; };
+		FFFC84FF29A64B4200C1130D /* RestaurantCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFC84FE29A64B4200C1130D /* RestaurantCardView.swift */; };
+		FFFC850129A668FF00C1130D /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFC850029A668FF00C1130D /* Int.swift */; };
+		FFFC850329A6B0B300C1130D /* RestaurantPromotionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFC850229A6B0B300C1130D /* RestaurantPromotionsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,7 +77,6 @@
 		FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		FF2CAB6829A38EA400E062E1 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
-		FF337DAE29A60FDE00A5135C /* SnapCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapCarousel.swift; sourceTree = "<group>"; };
 		FF41F1E3299C939B003B1745 /* RestaurantBooking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantBooking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantBookingApp.swift; sourceTree = "<group>"; };
 		FF41F1E8299C939B003B1745 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -114,6 +115,9 @@
 		FFBB2FF9299FA92E0061771C /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		FFBB2FFC299FB0B80061771C /* ResetTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTypeView.swift; sourceTree = "<group>"; };
 		FFBB3000299FF10C0061771C /* CodeVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeVerificationView.swift; sourceTree = "<group>"; };
+		FFFC84FE29A64B4200C1130D /* RestaurantCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantCardView.swift; sourceTree = "<group>"; };
+		FFFC850029A668FF00C1130D /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		FFFC850229A6B0B300C1130D /* RestaurantPromotionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantPromotionsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +278,7 @@
 				FF2CAB6629A38AAA00E062E1 /* PreviewProvider.swift */,
 				FF2CAB6A29A3CDC500E062E1 /* UIApplication.swift */,
 				FF1E49A929A3EB2F004B6FE1 /* Double.swift */,
+				FFFC850029A668FF00C1130D /* Int.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -317,8 +322,8 @@
 				FF41F221299CC2D2003B1745 /* Buttons */,
 				FF41F1FE299C9D41003B1745 /* DividerWithText.swift */,
 				FF470E7729A13D7600314934 /* ProcessingView.swift */,
-				FF337DAE29A60FDE00A5135C /* SnapCarousel.swift */,
 				FF95225E29A53781000E0F57 /* Carousel.swift */,
+				FFFC84FE29A64B4200C1130D /* RestaurantCardView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -422,6 +427,7 @@
 			children = (
 				FF43291E29A2289F00AEA0EA /* HomeView.swift */,
 				FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */,
+				FFFC850229A6B0B300C1130D /* RestaurantPromotionsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -600,7 +606,6 @@
 				FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */,
 				FF43291F29A2289F00AEA0EA /* HomeView.swift in Sources */,
 				FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */,
-				FF337DAF29A60FDE00A5135C /* SnapCarousel.swift in Sources */,
 				FF41F21E299CBD8E003B1745 /* PasswordConfirmField.swift in Sources */,
 				FF41F1E9299C939B003B1745 /* ContentView.swift in Sources */,
 				FF2CAB6529A3886A00E062E1 /* CategoryCollectionView.swift in Sources */,
@@ -611,6 +616,8 @@
 				FF470E6C29A129D400314934 /* Credentials.swift in Sources */,
 				FF41F229299CC566003B1745 /* ProfileImageView.swift in Sources */,
 				FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */,
+				FFFC84FF29A64B4200C1130D /* RestaurantCardView.swift in Sources */,
+				FFFC850329A6B0B300C1130D /* RestaurantPromotionsView.swift in Sources */,
 				FF2CAB6B29A3CDC500E062E1 /* UIApplication.swift in Sources */,
 				FF41F1FC299C98E0003B1745 /* SignInView.swift in Sources */,
 				FF2CAB5B29A3745300E062E1 /* ProfileView.swift in Sources */,
@@ -639,6 +646,7 @@
 				FF2CAB5829A3744500E062E1 /* BookingView.swift in Sources */,
 				FF41F220299CBF2C003B1745 /* SignInWithView.swift in Sources */,
 				FF470E7229A12FCA00314934 /* AuthService.swift in Sources */,
+				FFFC850129A668FF00C1130D /* Int.swift in Sources */,
 				FF41F1F7299C979C003B1745 /* Color.swift in Sources */,
 				FF41F22B299CC721003B1745 /* ProfileImageViewModifier.swift in Sources */,
 			);

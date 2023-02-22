@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RestaurantBannerView: View {
-    @Binding var restaurant: Restaurant
+    let restaurant: Restaurant
     var body: some View {
         Image(restaurant.image)
             .resizable()
@@ -21,7 +21,7 @@ struct RestaurantBannerView: View {
 
 struct RestaurantBannerView_Previews: PreviewProvider {
     static var previews: some View {
-        RestaurantBannerView(restaurant: .constant(dev.restaurant))
+        RestaurantBannerView(restaurant: dev.restaurant)
     }
 }
 
@@ -37,7 +37,8 @@ extension RestaurantBannerView{
                     Text(restaurant.name)
                         .font(.title3.bold())
                     addressView
-                    priceAndBookmarkView
+                    Text("₸"+restaurant.reserveAmount.formattedWithAbbreviations())
+                        .font(.headline)
                 }
             }
             .foregroundColor(.white)
@@ -73,20 +74,5 @@ extension RestaurantBannerView{
         }
         .font(.caption2)
         .foregroundColor(.white.opacity(0.8))
-    }
-    
-    private var priceAndBookmarkView: some View{
-        HStack{
-            Text("₸"+restaurant.reserveAmount.formattedWithAbbreviations())
-                .font(.headline)
-            Spacer()
-            Button{
-                restaurant.bookmarked.toggle()
-                print("tapped")
-            }label: {
-                Image(systemName: restaurant.bookmarked ? "bookmark.fill" : "bookmark")
-            }
-            .buttonStyle(BorderlessButtonStyle())
-        }
     }
 }

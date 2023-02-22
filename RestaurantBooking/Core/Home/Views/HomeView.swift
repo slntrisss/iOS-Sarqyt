@@ -16,12 +16,13 @@ struct HomeView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus)
                     .padding()
-                CategoryCollectionView(collections: homeVM.categories, selectedCollection: $homeVM.selectedCategory)
-                    .padding(.leading)
-                    .padding(.bottom)
                 ZStack{
-                    Carousel(list: $homeVM.restaurants, spacing: 20, trailingSpacing: 80) { restaurant in
-                        RestaurantBannerView(restaurant: restaurant)
+                    VStack{
+                        recommendedRestaurantsView
+                        
+                        promotedRestaurantsView
+                        
+                        listOfRestaurants
                     }
                     .opacity(searchFieldInFocus ? 0.0 : 1.0)
                     if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
@@ -104,6 +105,61 @@ extension HomeView{
             .frame(minHeight: UIScreen.main.bounds.height * 0.7)
         }
         .transition(.move(edge: .bottom))
+        .padding(.horizontal)
+    }
+    
+    private var recommendedRestaurantsView: some View{
+        VStack{
+            HStack{
+                Text("Recommended")
+                    .font(.title.weight(.semibold))
+                    .foregroundColor(Color.theme.accent)
+                Spacer()
+                Button{
+                    //Do something
+                }label: {
+                    Text("See all")
+                        .foregroundColor(Color.theme.green)
+                        .font(.subheadline)
+                }
+            }
+            .padding(.horizontal)
+            Carousel(list: homeVM.restaurants, spacing: 20, trailingSpacing: 80) { restaurant in
+                RestaurantBannerView(restaurant: restaurant)
+            }
+            .frame(height: UIScreen.main.bounds.height * 0.51)
+        }
+    }
+    
+    private var promotedRestaurantsView: some View{
+        VStack{
+            HStack{
+                Text("Promotion")
+                    .font(.title.weight(.semibold))
+                    .foregroundColor(Color.theme.accent)
+                Spacer()
+                Button{
+                    //Do something
+                }label: {
+                    Text("See all")
+                        .foregroundColor(Color.theme.green)
+                        .font(.subheadline)
+                }
+            }
+            .padding(.horizontal)
+            Carousel(list: homeVM.restaurants, spacing: 5, trailingSpacing: 55) { restaurant in
+                RestaurantPromotionsView(restaurant: restaurant)
+            }
+            .frame(height: 200)
+            .padding(.bottom)
+        }
+    }
+    
+    private var listOfRestaurants: some View{
+        ForEach(homeVM.restaurants.indices, id: \.self){ index in
+            RestaurantCardView(restaurant: $homeVM.restaurants[index])
+                .padding(.vertical, 5)
+        }
         .padding(.horizontal)
     }
 }

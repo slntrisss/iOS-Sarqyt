@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct Carousel<Content: View, T: Identifiable>: View {
-    @Binding var list: [T]
+    var list: [T]
     
     var spacing: CGFloat
     var trailingSpace: CGFloat
-    var content: (Binding<T>) -> Content
+    var content: (T) -> Content
     
     @GestureState private var offset: CGFloat = 0
     @State private var currentIndex = 0
     
-    init(list: Binding<[T]>,
+    init(list: [T],
          spacing: CGFloat = 0,
          trailingSpacing: CGFloat = 120,
-         @ViewBuilder content: @escaping (Binding<T>) -> Content){
-        self._list = list
+         @ViewBuilder content: @escaping (T) -> Content){
+        self.list = list
         self.spacing = spacing
         self.trailingSpace = trailingSpacing
         self.content = content
@@ -31,7 +31,7 @@ struct Carousel<Content: View, T: Identifiable>: View {
         GeometryReader{ proxy in
             let width = proxy.size.width - (trailingSpace - spacing)
             HStack(spacing: spacing){
-                ForEach($list, id: \.id) { item in
+                ForEach(list, id: \.id) { item in
                     content(item)
                         .frame(width: abs(proxy.size.width - trailingSpace))
                 }

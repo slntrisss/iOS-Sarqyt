@@ -1,25 +1,13 @@
 //
-//  Double.swift
+//  Int.swift
 //  RestaurantBooking
 //
-//  Created by Raiymbek Merekeyev on 20.02.2023.
+//  Created by Raiymbek Merekeyev on 22.02.2023.
 //
 
 import Foundation
 
-extension Double{
-    
-    
-    /// Convert a Double to a String with K, M, Bn, Tr abbreviations.
-    /// ```
-    /// Convert 12 to 12.00
-    /// Convert 1234 to 1.23K
-    /// Convert 123456 to 123.45K
-    /// Convert 12345678 to 12.34M
-    /// Convert 1234567890 to 1.23Bn
-    /// Convert 123456789012 to 123.45Bn
-    /// Convert 12345678901234 to 12.34Tr
-    /// ```
+extension Int{
     func formattedWithAbbreviations() -> String {
         let num = abs(Double(self))
         let sign = (self < 0) ? "-" : ""
@@ -53,23 +41,7 @@ extension Double{
     ///```
     ///Convert 1.23456 to "1.2"
     ///```
-    func asNumberStringWithOneDigit() -> String{
-        return String(format: "%.1f", self)
-    }
-    
-    ///Converst a double into a String
-    ///```
-    /// Convert 1.23456 to "1.23"
-    ///```
     func asNumberStringWithTwoDigits() -> String{
         return String(format: "%.2f", self)
-    }
-    
-    ///Converst a double into a percentage out of "5.0"
-    ///```
-    /// Convert 4.8 to "96%"
-    ///```
-    func toPercent() -> String{
-        return "\(Int((self * 100) / 5.0))%"
     }
 }
