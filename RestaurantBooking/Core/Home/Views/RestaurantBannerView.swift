@@ -13,7 +13,7 @@ struct RestaurantBannerView: View {
         Image(restaurant.image)
             .resizable()
             .scaledToFill()
-            .frame(width: UIScreen.main.bounds.width * 0.6, height: UIScreen.main.bounds.height * 0.4)
+            .frame(width: 250, height: 400)
             .overlay(
                 content
             )

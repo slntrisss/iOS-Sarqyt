@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var homeVM = HomeViewModel()
     @State private var searchFieldInFocus = false
+    @State private var currentIndex = 0
     var body: some View {
         NavigationView{
             ScrollView(.vertical, showsIndicators: false) {
@@ -19,14 +20,10 @@ struct HomeView: View {
                     .padding(.leading)
                     .padding(.bottom)
                 ZStack{
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack{
-                            ForEach(0..<homeVM.restaurants.count, id: \.self) { index in
-                                RestaurantBannerView(restaurant: $homeVM.restaurants[index])
-                            }
-                        }
+                    
+                    Carousel(list: $homeVM.restaurants, spacing: 0, trailingSpacing: 125) { restaurant in
+                        RestaurantBannerView(restaurant: restaurant)
                     }
-                    .padding(.leading)
                     if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
                         seacrhResultView
                     }
