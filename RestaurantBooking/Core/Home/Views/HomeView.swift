@@ -17,16 +17,14 @@ struct HomeView: View {
                 SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus)
                     .padding()
                 ZStack{
-                    VStack{
-                        recommendedRestaurantsView
-                        
-                        promotedRestaurantsView
-                        
-                        listOfRestaurants
-                    }
-                    .opacity(searchFieldInFocus ? 0.0 : 1.0)
                     if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
                         seacrhResultView
+                    }else{
+                        VStack{
+                            recommendedRestaurantsView
+                            promotedRestaurantsView
+                            listOfRestaurants
+                        }
                     }
                 }
             }
