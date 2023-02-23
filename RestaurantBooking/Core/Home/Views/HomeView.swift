@@ -10,8 +10,6 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var homeVM = HomeViewModel()
     @State private var searchFieldInFocus = false
-    @State private var currentIndex = 0
-    @State private var showPopupView = false
     var body: some View {
         NavigationStack{
             ScrollView(.vertical, showsIndicators: false) {
@@ -33,6 +31,18 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {navLeadingItems}
                 ToolbarItem(placement: .navigationBarTrailing) {navTrailingItems}
+            }
+            .navigationDestination(isPresented: $homeVM.showRecommended) {
+                RestaurantListView(title: "Recommended")
+                    .environmentObject(homeVM)
+            }
+            .navigationDestination(isPresented: $homeVM.showPromoted) {
+                RestaurantListView(title: "Promoted")
+                    .environmentObject(homeVM)
+            }
+            .navigationDestination(isPresented: $homeVM.showBookmarked) {
+                RestaurantListView(title: "Bookmarked")
+                    .environmentObject(homeVM)
             }
         }
     }
@@ -67,7 +77,8 @@ extension HomeView{
             
             Button{
                 //do something
-                showPopupView.toggle()
+                homeVM.getBookmarkedRestaurants()
+                homeVM.showBookmarked.toggle()
             }label: {
                 Image(systemName: "bookmark")
             }
@@ -116,6 +127,8 @@ extension HomeView{
                 Spacer()
                 Button{
                     //Do something
+                    homeVM.getRecommnededRestaurants()
+                    homeVM.showRecommended = true
                 }label: {
                     Text("See all")
                         .foregroundColor(Color.theme.green)

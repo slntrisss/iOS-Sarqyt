@@ -9,9 +9,11 @@ import SwiftUI
 
 struct RestaurantCardView: View {
     @Binding var restaurant: Restaurant
+    
     @State private var showRemoveBookmarkView = false
     @State private var cancelButtonTapped = false
     @State private var removeButtonTapped = false
+    
     var body: some View {
         HStack{
             cardImage
