@@ -103,7 +103,7 @@ extension RestaurantCardView{
     
     private var reviews: String{
         if restaurant.reviewAmount > 0{
-            let count = restaurant.reviewAmount
+            let count = Double(restaurant.reviewAmount)
             return "(\(count.formattedWithAbbreviations()) \(count > 1 ? "reviews" : "review"))"
         }
         return ""

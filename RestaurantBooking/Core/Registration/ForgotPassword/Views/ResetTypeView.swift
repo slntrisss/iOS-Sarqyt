@@ -28,10 +28,10 @@ struct ResetTypeView: View {
                     PrimaryButton(buttonLabel: "Continue", buttonClicked: $continueButtonTapped)
                         .padding(.vertical)
                 }
-                NavigationLink(isActive: $continueButtonTapped) { CodeVerificationView()} label: { EmptyView() }
             }
             .padding()
             .navigationTitle("Forgot password")
+            .navigationDestination(isPresented: $continueButtonTapped, destination:{CodeVerificationView()})
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: continueButtonTapped, perform: { newValue in
                 if !resetViaSMS && !resetViaEmail{

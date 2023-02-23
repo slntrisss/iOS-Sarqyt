@@ -45,16 +45,13 @@ struct LoginView: View {
                     .onChange(of: vm.signInButtonTapped) { _ in vm.signIn()}
                 
                 forgotPasswordButton
-                    .background(
-                        NavigationLink(isActive: $forgotPasswordButtonClicked,
-                                       destination: {ResetTypeView()},
-                                       label: {EmptyView()}))
                 
                 bottomViewButtons
             }
             .padding()
             .navigationTitle("Login")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $forgotPasswordButtonClicked) {ResetTypeView()}
             ProcessingView(showProcessingView: $vm.showProcessingView)
             credentialsNotProvidedError
         }

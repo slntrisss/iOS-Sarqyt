@@ -11,7 +11,7 @@ struct SignInView: View {
     @State private var signInWithPasswordButtonClicked = false
     @State private var signUpButtonClicked = false
     var body: some View {
-        NavigationView{
+        NavigationStack{
             VStack{
                 VStack(){
                     Spacer()
@@ -27,15 +27,10 @@ struct SignInView: View {
                 }
                 .padding()
             }
-            .background(
-                Group{
-                    loginViewNavigation
-                    signUpViewNavigation
-                }
-            )
             .navigationTitle("Sign In")
+            .navigationDestination(isPresented: $signUpButtonClicked) {SignUpView()}
+            .navigationDestination(isPresented: $signInWithPasswordButtonClicked) {LoginView()}
         }
-        .navigationViewStyle(.stack)
     }
 }
 
@@ -106,24 +101,6 @@ extension SignInView{
             RoundedRectangle(cornerRadius: 20)
                 .stroke(Color.theme.secondaryText, lineWidth: 0.5)
         )
-    }
-    
-    private var loginViewNavigation: some View{
-        // LoginView
-        NavigationLink(isActive: $signInWithPasswordButtonClicked, destination: {
-            LoginView()
-        }, label: {
-            EmptyView()
-        })
-    }
-    
-    private var signUpViewNavigation: some View{
-        // SignUpView
-        NavigationLink(isActive: $signUpButtonClicked) {
-            SignUpView()
-        } label: {
-            EmptyView()
-        }
     }
     
     private var signInButtons: some View{
