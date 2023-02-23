@@ -9,6 +9,9 @@ import SwiftUI
 
 struct RestaurantCardView: View {
     @Binding var restaurant: Restaurant
+    @State private var showRemoveBookmarkView = false
+    @State private var cancelButtonTapped = false
+    @State private var removeButtonTapped = false
     var body: some View {
         HStack{
             cardImage
@@ -20,6 +23,7 @@ struct RestaurantCardView: View {
         }
         .padding()
         .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.theme.field, lineWidth: 3))
+        .sheet(isPresented: $showRemoveBookmarkView, content: {bottomSheetView})
         .background(Color.theme.background)
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
@@ -93,11 +97,44 @@ extension RestaurantCardView{
     
     private var bookmarkButton: some View{
         Button{
-            restaurant.bookmarked.toggle()
+            if restaurant.bookmarked{
+                showRemoveBookmarkView = true
+            }else{
+                restaurant.bookmarked.toggle()
+            }
         }label: {
             Image(systemName: restaurant.bookmarked ? "bookmark.fill" : "bookmark")
                 .font(.subheadline.bold())
                 .foregroundColor(Color.theme.green)
+        }
+    }
+    
+    private var bottomSheetView: some View{
+        VStack{
+            Capsule()
+                .fill(Color.theme.secondaryText.opacity(0.5))
+                .frame(width: 40, height: 5)
+                .padding(.bottom)
+            Text("Remove from bookmark?")
+                .font(.title.weight(.semibold))
+                .foregroundColor(Color.theme.accent)
+            Divider()
+            RestaurantCardView(restaurant: $restaurant)
+                .padding(.vertical)
+                .disabled(true)
+            HStack{
+                SecondaryButton(buttonLabel: "Cancel", buttonClicked: $cancelButtonTapped)
+                PrimaryButton(buttonLabel: "Yes, Remove", buttonClicked: $removeButtonTapped)
+            }
+        }
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.theme.sheetBackground.ignoresSafeArea(.all))
+        .presentationDetents([.height(350)])
+        .onChange(of: cancelButtonTapped) { _ in showRemoveBookmarkView = false}
+        .onChange(of: removeButtonTapped) { _ in
+            restaurant.bookmarked.toggle()
+            showRemoveBookmarkView = false
         }
     }
     

@@ -11,8 +11,9 @@ struct HomeView: View {
     @StateObject private var homeVM = HomeViewModel()
     @State private var searchFieldInFocus = false
     @State private var currentIndex = 0
+    @State private var showPopupView = false
     var body: some View {
-        NavigationView{
+        NavigationStack{
             ScrollView(.vertical, showsIndicators: false) {
                 SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus)
                     .padding()
@@ -34,7 +35,6 @@ struct HomeView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {navTrailingItems}
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
@@ -67,6 +67,7 @@ extension HomeView{
             
             Button{
                 //do something
+                showPopupView.toggle()
             }label: {
                 Image(systemName: "bookmark")
             }

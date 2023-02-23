@@ -30,11 +30,7 @@ struct CodeVerificationView: View {
                 resendVerificationCodeView
             }
             .padding()
-            .background(
-                NavigationLink(isActive: $validVerificationCode,
-                               destination: {NewPasswordView()},
-                               label: {EmptyView()})
-            )
+            .navigationDestination(isPresented: $validVerificationCode, destination: {NewPasswordView()})
             ProcessingView(showProcessingView: $showLoadingAlert)
             invalidCodeAlert
         }

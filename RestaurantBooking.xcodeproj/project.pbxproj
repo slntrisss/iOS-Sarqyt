@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FF0E2A0B299D47FA0011BF01 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0E2A0A299D47FA0011BF01 /* String.swift */; };
-		FF1A339129A7675D00BA9732 /* PopupViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1A339029A7675D00BA9732 /* PopupViewBuilder.swift */; };
 		FF1A339329A76AB500BA9732 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1A339229A76AB500BA9732 /* SecondaryButton.swift */; };
 		FF1E49A829A3EA03004B6FE1 /* RestaurantBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */; };
 		FF1E49AA29A3EB2F004B6FE1 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E49A929A3EB2F004B6FE1 /* Double.swift */; };
@@ -65,7 +64,6 @@
 
 /* Begin PBXFileReference section */
 		FF0E2A0A299D47FA0011BF01 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		FF1A339029A7675D00BA9732 /* PopupViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewBuilder.swift; sourceTree = "<group>"; };
 		FF1A339229A76AB500BA9732 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantBannerView.swift; sourceTree = "<group>"; };
 		FF1E49A929A3EB2F004B6FE1 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -508,7 +506,6 @@
 			isa = PBXGroup;
 			children = (
 				FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */,
-				FF1A339029A7675D00BA9732 /* PopupViewBuilder.swift */,
 			);
 			path = ViewBuilders;
 			sourceTree = "<group>";
@@ -647,7 +644,6 @@
 				FF43291C29A21DD900AEA0EA /* KeychainService.swift in Sources */,
 				FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */,
 				FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */,
-				FF1A339129A7675D00BA9732 /* PopupViewBuilder.swift in Sources */,
 				FF2CAB5829A3744500E062E1 /* BookingView.swift in Sources */,
 				FF41F220299CBF2C003B1745 /* SignInWithView.swift in Sources */,
 				FF470E7229A12FCA00314934 /* AuthService.swift in Sources */,
