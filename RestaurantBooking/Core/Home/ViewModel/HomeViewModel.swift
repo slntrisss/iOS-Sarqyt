@@ -10,14 +10,14 @@ import Combine
 
 class HomeViewModel: ObservableObject{
     @Published var searchQuery = ""
-    @Published var restaurants: [Restaurant] = DeveloperPreview.instance.restaurants
+    @Published var allRestaurants: [Restaurant] = DeveloperPreview.instance.restaurants
     @Published var recentSearchHistory: [Restaurant] = []
     
     @Published var showRecommended = false
     @Published var showPromoted = false
     @Published var showBookmarked = false
     
-    @Published var bookmarkedRestaurants: [Restaurant] = []
+    @Published var restaurants: [Restaurant] = []
     
     var cancellables = Set<AnyCancellable>()
     init(){
@@ -30,42 +30,29 @@ class HomeViewModel: ObservableObject{
     }
     
     func getRecommnededRestaurants(){
-        
+        restaurants = allRestaurants.filter({$0.rating > 3})
     }
     
     func getPromotedRestaurants(){
-        
+        restaurants = allRestaurants.filter({$0.rating > 4})
     }
     
     func getBookmarkedRestaurants(){
-        bookmarkedRestaurants = restaurants.filter{$0.bookmarked}
+        restaurants = allRestaurants.filter{$0.bookmarked}
     }
     
     func removeFromBookmarked(restaurant: Restaurant){
-        if let index = bookmarkedRestaurants.firstIndex(where: {$0.id == restaurant.id}){
-            bookmarkedRestaurants.remove(at: index)
-        }
         if let index = restaurants.firstIndex(where: {$0.id == restaurant.id}){
-            restaurants[index].bookmarked.toggle()
+            restaurants.remove(at: index)
+        }
+        if let index = allRestaurants.firstIndex(where: {$0.id == restaurant.id}){
+            allRestaurants[index].bookmarked.toggle()
         }
     }
     
     func bookmarkRestaurant(restaurant: Restaurant){
-        if let index = bookmarkedRestaurants.firstIndex(where: {$0.id == restaurant.id}){
-            restaurants[index].bookmarked.toggle()
+        if let index = restaurants.firstIndex(where: {$0.id == restaurant.id}){
+            allRestaurants[index].bookmarked.toggle()
         }
-    }
-    
-    func subscribe(){
-        $restaurants
-            .sink {[weak self] restaurants in
-                guard let self = self else{return}
-                let bookmarked = self.restaurants.filter({$0.bookmarked})
-                for i in bookmarked{
-                    print(i.name)
-                }
-                print("\n")
-            }
-            .store(in: &cancellables)
     }
 }

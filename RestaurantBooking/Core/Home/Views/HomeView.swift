@@ -136,7 +136,7 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.restaurants, spacing: 20, trailingSpacing: 80) { restaurant in
+            Carousel(list: homeVM.allRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
                 RestaurantBannerView(restaurant: restaurant)
             }
             .frame(height: UIScreen.main.bounds.height * 0.51)
@@ -152,6 +152,8 @@ extension HomeView{
                 Spacer()
                 Button{
                     //Do something
+                    homeVM.getRecommnededRestaurants()
+                    homeVM.showRecommended.toggle()
                 }label: {
                     Text("See all")
                         .foregroundColor(Color.theme.green)
@@ -159,7 +161,7 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.restaurants, spacing: 5, trailingSpacing: 55) { restaurant in
+            Carousel(list: homeVM.allRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
                 RestaurantPromotionsView(restaurant: restaurant)
             }
             .frame(height: 200)
@@ -168,8 +170,8 @@ extension HomeView{
     }
     
     private var listOfRestaurants: some View{
-        ForEach(homeVM.restaurants.indices, id: \.self){ index in
-            RestaurantCardView(restaurant: $homeVM.restaurants[index])
+        ForEach(homeVM.allRestaurants.indices, id: \.self){ index in
+            RestaurantCardView(restaurant: $homeVM.allRestaurants[index])
                 .environmentObject(homeVM)
                 .padding(.vertical, 5)
         }
