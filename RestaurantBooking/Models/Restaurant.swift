@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Restaurant: Codable, Identifiable{
+struct Restaurant: Codable, Identifiable, Equatable, Hashable{
     let id: String
     let name: String
     let address: Address
@@ -18,12 +18,16 @@ struct Restaurant: Codable, Identifiable{
     let reviewAmount: Int
     let reserveAmount: Double
     var bookmarked: Bool
+    
+    static func == (lhs: Restaurant, rhs: Restaurant) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct Address: Codable{
+struct Address: Codable, Hashable{
     let city: String
     let location: String
 }
 
-struct RestaurantDetails: Codable{
+struct RestaurantDetails: Codable, Hashable{
 }

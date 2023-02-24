@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RestaurantCardView: View {
+    @EnvironmentObject private var homeVM: HomeViewModel
     @Binding var restaurant: Restaurant
     
     @State private var showRemoveBookmarkView = false
@@ -35,11 +36,13 @@ struct RestaurantCardView_Previews: PreviewProvider {
     static var previews: some View {
         Group{
             RestaurantCardView(restaurant: .constant(dev.restaurant))
+                .environmentObject(HomeViewModel())
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.light)
                 .padding()
             
             RestaurantCardView(restaurant: .constant(dev.restaurant))
+                .environmentObject(HomeViewModel())
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.dark)
         }
@@ -103,6 +106,7 @@ extension RestaurantCardView{
                 showRemoveBookmarkView = true
             }else{
                 restaurant.bookmarked.toggle()
+                homeVM.bookmarkRestaurant(restaurant: restaurant)
             }
         }label: {
             Image(systemName: restaurant.bookmarked ? "bookmark.fill" : "bookmark")
@@ -135,7 +139,8 @@ extension RestaurantCardView{
         .presentationDetents([.height(350)])
         .onChange(of: cancelButtonTapped) { _ in showRemoveBookmarkView = false}
         .onChange(of: removeButtonTapped) { _ in
-            restaurant.bookmarked.toggle()
+            homeVM.removeFromBookmarked(restaurant: restaurant)
+//            restaurant.bookmarked.toggle()
             showRemoveBookmarkView = false
         }
     }

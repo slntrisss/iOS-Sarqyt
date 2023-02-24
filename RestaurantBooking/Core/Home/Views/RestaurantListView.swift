@@ -12,11 +12,14 @@ struct RestaurantListView: View {
     let title: String
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
-            ForEach(homeVM.restaurants.indices, id: \.self) { index in
-                RestaurantCardView(restaurant: $homeVM.restaurants[index])
+            ForEach(homeVM.bookmarkedRestaurants.indices, id: \.self) { index in
+                RestaurantCardView(restaurant: $homeVM.bookmarkedRestaurants[index])
+                    .environmentObject(homeVM)
                     .padding(.vertical, 5)
                     .padding(.horizontal)
+                    .transition(.move(edge: .leading))
             }
+            .animation(.easeOut, value: homeVM.bookmarkedRestaurants)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
         }

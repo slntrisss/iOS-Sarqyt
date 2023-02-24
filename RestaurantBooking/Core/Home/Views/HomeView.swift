@@ -170,6 +170,7 @@ extension HomeView{
     private var listOfRestaurants: some View{
         ForEach(homeVM.restaurants.indices, id: \.self){ index in
             RestaurantCardView(restaurant: $homeVM.restaurants[index])
+                .environmentObject(homeVM)
                 .padding(.vertical, 5)
         }
         .padding(.horizontal)
