@@ -9,6 +9,8 @@ import Foundation
 import Combine
 
 class HomeViewModel: ObservableObject{
+    @Published var filterVM = FilterViewModel()
+    
     @Published var searchQuery = ""
     @Published var allRestaurants: [Restaurant] = DeveloperPreview.instance.restaurants
     @Published var recentSearchHistory: [Restaurant] = []
@@ -20,9 +22,9 @@ class HomeViewModel: ObservableObject{
     @Published var restaurants: [Restaurant] = []
     
     var cancellables = Set<AnyCancellable>()
+    
     init(){
         recentSearchHistory = DeveloperPreview.instance.restaurants
-        subscribe()
     }
     
     func deleteSearchHistory(at offsets: IndexSet){

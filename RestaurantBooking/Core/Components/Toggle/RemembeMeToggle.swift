@@ -7,16 +7,16 @@
 
 import SwiftUI
 //square
-struct RememberMeToogle: View {
-    @Binding var rememberMe:Bool
+struct RemembeMeToggle: View {
+    @Binding var isOn:Bool
     var body: some View {
         HStack{
-            Image(systemName: rememberMe ? "checkmark.square.fill" : "square")
+            Image(systemName: isOn ? "checkmark.square.fill" : "square")
                 .foregroundColor(Color.theme.green)
                 .onTapGesture {
-                    rememberMe.toggle()
+                    isOn.toggle()
                 }
-            Text("Remember me")
+            Text("Remember Me")
                 .font(.caption)
                 .fontWeight(.semibold)
         }
@@ -26,12 +26,12 @@ struct RememberMeToogle: View {
 struct RememberMeToogle_Previews: PreviewProvider {
     static var previews: some View {
         Group{
-            RememberMeToogle(rememberMe: .constant(true))
+            RemembeMeToggle(isOn: .constant(true))
                 .preferredColorScheme(.light)
                 .previewLayout(.sizeThatFits)
                 .padding()
             
-            RememberMeToogle(rememberMe: .constant(false))
+            RemembeMeToggle(isOn: .constant(false))
                 .preferredColorScheme(.dark)
                 .previewLayout(.sizeThatFits)
                 .padding()

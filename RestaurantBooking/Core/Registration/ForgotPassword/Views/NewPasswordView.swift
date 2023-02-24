@@ -32,7 +32,7 @@ struct NewPasswordView: View {
                     inputFields
                     
                     HStack{
-                        RememberMeToogle(rememberMe: $rememberMe)
+                        RemembeMeToggle(isOn: $rememberMe)
                         Spacer()
                     }
                     

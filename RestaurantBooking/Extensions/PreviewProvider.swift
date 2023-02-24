@@ -95,6 +95,21 @@ class DeveloperPreview{
                    reserveAmount: 4000,
                    bookmarked: false),
     ]
+    
+    let filterData = FilterProvider.shared
+}
+
+extension DeveloperPreview{
+    class FilterProvider{
+        static let shared = FilterProvider()
+        private init(){}
+        
+        let availableCities = ["Almaty", "Astana", "Semey", "Takdykorgan", "Oskemen", "Aktau", "Shymkent"]
+        let categories = Category.allCases.map{$0.rawValue}
+        let availableRatings = [5, 4, 3, 2, 1]
+        let availableFacilities = ["Wi-Fi", "Parking", "Terassa", "Blues"]
+        let accomodationTypes = ["Pizzerias", "Cafés", "Fast casual restaurants", "Casual dining restaurants"]
+    }
 }
 
 extension PreviewProvider{

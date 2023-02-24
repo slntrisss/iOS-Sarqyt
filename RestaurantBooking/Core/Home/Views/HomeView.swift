@@ -10,10 +10,11 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var homeVM = HomeViewModel()
     @State private var searchFieldInFocus = false
+    @State private var showFilterView = false
     var body: some View {
         NavigationStack{
             ScrollView(.vertical, showsIndicators: false) {
-                SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus)
+                SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus, showFilterView: $showFilterView)
                     .padding()
                 ZStack{
                     if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
@@ -27,6 +28,7 @@ struct HomeView: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Hello, Raim 👋")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {navLeadingItems}
@@ -43,6 +45,10 @@ struct HomeView: View {
             .navigationDestination(isPresented: $homeVM.showBookmarked) {
                 RestaurantListView(title: "Bookmarked")
                     .environmentObject(homeVM)
+            }
+            .sheet(isPresented: $showFilterView) {
+                FilterView()
+                    .environmentObject(homeVM.filterVM)
             }
         }
     }

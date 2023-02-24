@@ -28,7 +28,7 @@ struct SignUpView: View {
                 .padding(.vertical)
             
             HStack{
-                RememberMeToogle(rememberMe: $rememberMe)
+                RemembeMeToggle(isOn: $rememberMe)
                 Spacer()
             }
             

@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchFieldView: View {
     @Binding var searchQuery: String
     @Binding var searchFieldInFocus: Bool
+    @Binding var showFilterView: Bool
     var body: some View {
         HStack{
             Image(systemName: "magnifyingglass")
@@ -32,12 +33,12 @@ struct SearchFieldView: View {
 struct SearchFieldView_Previews: PreviewProvider {
     static var previews: some View {
         Group{
-            SearchFieldView(searchQuery: .constant(""), searchFieldInFocus: .constant(true))
+            SearchFieldView(searchQuery: .constant(""), searchFieldInFocus: .constant(true), showFilterView: .constant(false))
                 .padding()
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.light)
             
-            SearchFieldView(searchQuery: .constant(""), searchFieldInFocus: .constant(true))
+            SearchFieldView(searchQuery: .constant(""), searchFieldInFocus: .constant(true), showFilterView: .constant(false))
                 .padding()
                 .previewLayout(.sizeThatFits)
                 .preferredColorScheme(.dark)
@@ -64,6 +65,7 @@ extension SearchFieldView{
     private var filterButton: some View{
         Button{
             //do something
+            showFilterView.toggle()
         }label: {
             Image(systemName: "slider.horizontal.3")
                 .foregroundColor(Color.theme.green)

@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct MainView: View {
-    init(){
-        UIScrollView.appearance().keyboardDismissMode = .onDrag
-    }
     var body: some View {
         TabView{
             HomeView()

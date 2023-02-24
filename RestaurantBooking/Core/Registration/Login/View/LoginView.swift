@@ -35,7 +35,7 @@ struct LoginView: View {
                 }
                 
                 HStack{
-                    RememberMeToogle(rememberMe: $rememberMe)
+                    RemembeMeToggle(isOn: $rememberMe)
                     Spacer()
                 }
                 .padding(.vertical)

@@ -8,13 +8,42 @@
 import SwiftUI
 
 struct BookingView: View {
+    @State private var currentTab = 0
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            TabView{
+                BookingListView(label: "Ongoing")
+                    .tag(0)
+                BookingListView(label: "Completed")
+                    .tag(1)
+                BookingListView(label: "Cancelled")
+                    .tag(2)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .padding()
+            .toolbar{ToolbarItem(placement: .navigation) {navBar}}
+        }
     }
 }
 
 struct BookingView_Previews: PreviewProvider {
     static var previews: some View {
-        BookingView()
+        NavigationStack{
+            BookingView()
+        }
+    }
+}
+
+extension BookingView{
+    private var navBar: some View{
+        HStack{
+            Image("logo")
+                .resizable()
+                .scaledToFit()
+            Text("My Booking")
+                .font(.title.bold())
+                .foregroundColor(Color.theme.accent)
+            
+        }
     }
 }
