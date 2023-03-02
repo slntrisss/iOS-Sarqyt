@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		FF0E2A0B299D47FA0011BF01 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0E2A0A299D47FA0011BF01 /* String.swift */; };
 		FF1A339329A76AB500BA9732 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1A339229A76AB500BA9732 /* SecondaryButton.swift */; };
+		FF1E1A3F29B0FAB000449C89 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E1A3E29B0FAB000449C89 /* TabBarView.swift */; };
+		FF1E1A4129B0FACD00449C89 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E1A4029B0FACD00449C89 /* TabBarItem.swift */; };
 		FF1E49A829A3EA03004B6FE1 /* RestaurantBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */; };
 		FF1E49AA29A3EB2F004B6FE1 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1E49A929A3EB2F004B6FE1 /* Double.swift */; };
 		FF2CAB4F29A368A600E062E1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2CAB4E29A368A600E062E1 /* MainView.swift */; };
@@ -75,6 +77,8 @@
 /* Begin PBXFileReference section */
 		FF0E2A0A299D47FA0011BF01 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		FF1A339229A76AB500BA9732 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
+		FF1E1A3E29B0FAB000449C89 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		FF1E1A4029B0FACD00449C89 /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		FF1E49A729A3EA03004B6FE1 /* RestaurantBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantBannerView.swift; sourceTree = "<group>"; };
 		FF1E49A929A3EB2F004B6FE1 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		FF2CAB4E29A368A600E062E1 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -151,6 +155,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FF1E1A3D29B0FA8200449C89 /* TabBarButtons */ = {
+			isa = PBXGroup;
+			children = (
+				FF1E1A3E29B0FAB000449C89 /* TabBarView.swift */,
+				FF1E1A4029B0FACD00449C89 /* TabBarItem.swift */,
+			);
+			path = TabBarButtons;
+			sourceTree = "<group>";
+		};
 		FF2CAB4C29A3689000E062E1 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,7 +183,7 @@
 		FF2CAB5029A3698600E062E1 /* Booking */ = {
 			isa = PBXGroup;
 			children = (
-				FF2CAB5629A3743A00E062E1 /* View */,
+				FF2CAB5629A3743A00E062E1 /* Views */,
 			);
 			path = Booking;
 			sourceTree = "<group>";
@@ -199,13 +212,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		FF2CAB5629A3743A00E062E1 /* View */ = {
+		FF2CAB5629A3743A00E062E1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FF1E1A3D29B0FA8200449C89 /* TabBarButtons */,
 				FF2CAB5729A3744500E062E1 /* BookingView.swift */,
 				FFAFDFAE29A94D99002A000B /* BookingListView.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		FF2CAB5929A3744900E062E1 /* View */ = {
@@ -683,7 +697,9 @@
 				FFAFDFAB29A8C8BE002A000B /* StarRatingView.swift in Sources */,
 				FF1A339329A76AB500BA9732 /* SecondaryButton.swift in Sources */,
 				FFBB2FFD299FB0B80061771C /* ResetTypeView.swift in Sources */,
+				FF1E1A4129B0FACD00449C89 /* TabBarItem.swift in Sources */,
 				FFAFDFAD29A8CA40002A000B /* StarRatingCollectionView.swift in Sources */,
+				FF1E1A3F29B0FAB000449C89 /* TabBarView.swift in Sources */,
 				FF470E7829A13D7600314934 /* ProcessingView.swift in Sources */,
 				FFAFDFAF29A94D99002A000B /* BookingListView.swift in Sources */,
 				FF41F21C299CBAB5003B1745 /* SignUpView.swift in Sources */,
