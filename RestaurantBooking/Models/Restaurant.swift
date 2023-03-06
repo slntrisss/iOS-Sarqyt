@@ -4,8 +4,8 @@
 //
 //  Created by Raiymbek Merekeyev on 20.02.2023.
 //
-
 import Foundation
+import MapKit
 import SwiftUI
 
 struct Restaurant: Codable, Identifiable, Equatable, Hashable{
@@ -18,6 +18,7 @@ struct Restaurant: Codable, Identifiable, Equatable, Hashable{
     let reviewAmount: Int
     let reserveAmount: Double
     var bookmarked: Bool
+    var bookingStatus: BookingStatus
     
     static func == (lhs: Restaurant, rhs: Restaurant) -> Bool {
         return lhs.id == rhs.id
@@ -27,6 +28,12 @@ struct Restaurant: Codable, Identifiable, Equatable, Hashable{
 struct Address: Codable, Hashable{
     let city: String
     let location: String
+    let latitude: Double
+    let longitude: Double
+    
+    var coordinates: CLLocationCoordinate2D{
+        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
+    }
 }
 
 struct RestaurantDetails: Codable, Hashable{

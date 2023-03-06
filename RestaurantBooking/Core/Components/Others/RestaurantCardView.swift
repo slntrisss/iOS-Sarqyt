@@ -140,7 +140,6 @@ extension RestaurantCardView{
         .onChange(of: cancelButtonTapped) { _ in showRemoveBookmarkView = false}
         .onChange(of: removeButtonTapped) { _ in
             homeVM.removeFromBookmarked(restaurant: restaurant)
-//            restaurant.bookmarked.toggle()
             showRemoveBookmarkView = false
         }
     }

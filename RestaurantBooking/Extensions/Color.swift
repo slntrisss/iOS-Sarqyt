@@ -23,4 +23,6 @@ struct ThemeColor{
     let sheetBackground = Color("SheetBackgroundColor")
     let collectionBackground = Color("CollectionBackgroundColor")
     let secondaryButtonText = Color("SecondaryButtonTextColor")
+    let redStatus = Color("RedStatusColor")
+    let greenStatus = Color("GreenStatusColor")
 }

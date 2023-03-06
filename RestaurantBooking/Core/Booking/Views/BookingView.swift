@@ -8,24 +8,28 @@
 import SwiftUI
 
 struct BookingView: View {
+    @StateObject private var bookingVM = BookingViewModel()
     @State private var currentTab = 1
     var body: some View {
         NavigationStack{
-            ZStack(alignment: .top){
-                
-                TabView(selection: $currentTab){
-                    BookingListView(label: "Ongoing")
-                        .tag(0)
-                    BookingListView(label: "Completed")
-                        .tag(1)
-                    BookingListView(label: "Cancelled")
-                        .tag(2)
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .toolbar{ToolbarItem(placement: .navigation) {navBar}}
-                
+            VStack{
                 TabBarView(currentTab: $currentTab)
                     .padding(.vertical)
+                
+                TabView(selection: $currentTab){
+                    BookingListView(bookingList: $bookingVM.ongoingBookings)
+                        .environmentObject(bookingVM)
+                        .tag(0)
+                    BookingListView(bookingList: $bookingVM.completedBookings)
+                        .environmentObject(bookingVM)
+                        .tag(1)
+                    BookingListView(bookingList: $bookingVM.cancelledBookings)
+                        .environmentObject(bookingVM)
+                        .tag(2)
+                }
+                .padding()
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .toolbar{ToolbarItem(placement: .navigation) {navBar}}
             }
         }
     }

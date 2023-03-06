@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct BookingListView: View {
-    let label: String
+    @EnvironmentObject var bookingVM: BookingViewModel
+    @Binding var bookingList: [Restaurant]
     var body: some View {
-        Text(label)
+        ScrollView(.vertical, showsIndicators: false){
+            ForEach(bookingList) { list in
+                BookingCardView(restaurant: list)
+                    .padding(.bottom, 40)
+            }
+        }
     }
 }
 
 struct BookingListView_Previews: PreviewProvider {
     static var previews: some View {
-        BookingListView(label: "Completed")
+        BookingListView(bookingList: .constant([]))
     }
 }
