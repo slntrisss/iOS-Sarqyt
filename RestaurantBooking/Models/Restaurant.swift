@@ -37,4 +37,6 @@ struct Address: Codable, Hashable{
 }
 
 struct RestaurantDetails: Codable, Hashable{
+    let description: String
+    static let categories:[String] = ["Italian's kitchen", "China's kitchen", "Children room", "pizza", "Vegetarian"]
 }

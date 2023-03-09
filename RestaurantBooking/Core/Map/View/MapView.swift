@@ -10,12 +10,20 @@ import MapKit
 
 struct MapView: View {
     @StateObject private var mapVM = MapViewModel()
-    
     var body: some View {
         ZStack{
-            Map(coordinateRegion: $mapVM.mapRegion)
+            Map(coordinateRegion: $mapVM.mapRegion,
+                annotationItems: mapVM.restaurants) { restaurant in
+                MapAnnotation(coordinate: restaurant.address.coordinates) {
+                    RestaurantMapAnnotationView()
+                        .scaleEffect(mapVM.mapRestaurant == restaurant ? 1.0 : 0.8)
+                        .shadow(radius: 10)
+                        .onTapGesture {
+                            mapVM.showNextRestaurant(restaurant: restaurant)
+                        }
+                }
+            }
                 .ignoresSafeArea()
-            
             VStack(spacing: 0) {
                 
                 header
@@ -52,19 +60,23 @@ extension MapView{
     private var header: some View{
         VStack {
             Button(action: mapVM.toggleShowList) {
-                Text(mapVM.mapRestaurant.name + ", " + mapVM.mapRestaurant.address.city)
-                    .font(.title3)
-                    .fontWeight(.black)
-                    .foregroundColor(Color.theme.accent)
-                    .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .overlay(alignment: .leading) {
-                        Image(systemName: "arrow.down")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                            .rotationEffect(.degrees(mapVM.showListView ? 180 : 0))
-                            .padding()
-                    }
+                HStack{
+                    Image(systemName: "arrow.down")
+                        .font(.headline)
+                        .foregroundColor(Color.theme.accent)
+                        .rotationEffect(.degrees(mapVM.showListView ? 180 : 0))
+                        .padding()
+                    
+                    Text(mapVM.mapRestaurant.name + ", " + mapVM.mapRestaurant.address.city)
+                        .font(.title3)
+                        .fontWeight(.black)
+                        .foregroundColor(Color.theme.accent)
+                        .frame(height: 55)
+                        .frame(maxWidth: .infinity)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                }
+                .padding(.horizontal)
             }
             if mapVM.showListView{
                 MapListView()

@@ -15,6 +15,8 @@ struct BookingCardView: View {
     
     @State private var dismissCancelBookingDialogTapped = false
     @State private var cancelBooking = false
+    
+    @State private var showDetail = false
     var body: some View {
         VStack(alignment: .leading){
             HStack(spacing: 15){
@@ -50,9 +52,15 @@ struct BookingCardView: View {
                     .onChange(of: dismissCancelBookingDialogTapped, perform: {_ in cancelBookingTapped.toggle()})
             }
         }
+        .onTapGesture {
+            showDetail = true
+        }
         .sheet(isPresented: $cancelBookingTapped, content: {
             CancelBookingView(dismissButtonTapped: $dismissCancelBookingDialogTapped,
                               cancelButtonTapped: $cancelBooking)})
+        .navigationDestination(isPresented: $showDetail) {
+            DetailView(restaurant: restaurant)
+        }
     }
 }
 
