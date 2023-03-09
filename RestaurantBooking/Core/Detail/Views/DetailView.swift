@@ -9,8 +9,15 @@ import SwiftUI
 
 struct DetailView: View {
     @StateObject private var detailVM = RestaurantDetailViewModel()
+    let details: RestaurantDetails
     let restaurant: Restaurant
     @State private var showFullDescription = false
+    @State private var booknowButtonPressed = false
+    
+    init(restaurant: Restaurant){
+        self.restaurant = restaurant
+        details = restaurant.details
+    }
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
             mainImage
@@ -19,23 +26,21 @@ struct DetailView: View {
                 addressView
                 ratingsAndReviewsView
                 descriptionView
-                HStack{
-                    HStack{
-                        Image(systemName: "phone.circle")
-                    }
-                }
                 DetailMapView()
                     .environmentObject(detailVM)
+                contactsView
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
         }
+        .overlay(
+            bottomBar,
+            alignment: .bottom)
         .ignoresSafeArea()
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {navBookmarkButton}
             ToolbarItem(placement: .navigationBarLeading) {navBackButton}
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -136,7 +141,7 @@ extension DetailView{
         VStack(alignment: .leading) {
             Text("Description")
                 .font(.title3.weight(.medium))
-            Text(restaurant.details.description)
+            Text(details.description)
                 .lineLimit(showFullDescription ? nil : 3)
                 .font(.callout)
             .foregroundColor(Color.theme.secondaryText)
@@ -157,6 +162,50 @@ extension DetailView{
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical)
+    }
+    
+    private var contactsView: some View{
+        HStack{
+            HStack{
+                Image(systemName: "phone.circle")
+                    .font(.caption)
+                Text(details.phoneNumber)
+                    .font(.caption2)
+            }
+            .foregroundColor(Color.theme.green)
+            .padding(.leading)
+            Spacer()
+            HStack(spacing: 10){
+                if let instaLink = details.instragramLink{
+                    Image("insta-icon")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .overlay(Link("", destination: URL(string: instaLink)!))
+                }
+                if let metaLink = details.metaLink{
+                    Image("meta-icon")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .overlay(Link("", destination: URL(string: metaLink)!))
+                }
+            }
+            .padding(.trailing)
+        }
+    }
+    
+    private var bottomBar: some View{
+        HStack{
+            Text("\("₸" + restaurant.reserveAmount.formattedWithAbbreviations())")
+                .font(.title3.weight(.semibold))
+                .foregroundColor(Color.theme.green)
+                .padding(.horizontal)
+            
+            PrimaryButton(buttonLabel: "Book Now", buttonClicked: $booknowButtonPressed)
+        }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 20).fill(.thinMaterial))
     }
     
     private var reviews: String{
