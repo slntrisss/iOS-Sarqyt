@@ -35,6 +35,7 @@ struct DetailView: View {
                     DetailMapView()
                         .environmentObject(detailVM)
                     contactsView
+                        .padding(.vertical)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
@@ -170,33 +171,38 @@ extension DetailView{
     }
     
     private var contactsView: some View{
-        HStack{
+        VStack(alignment: .leading){
+            Text("Contact us")
+                .font(.subheadline.weight(.medium))
+                .foregroundColor(Color.theme.accent.opacity(0.8))
             HStack{
-                Image(systemName: "phone.circle")
-                    .font(.caption)
-                Text(details.phoneNumber)
-                    .font(.caption2)
-            }
-            .foregroundColor(Color.theme.green)
-            .padding(.leading)
-            Spacer()
-            HStack(spacing: 10){
-                if let instaLink = details.instragramLink{
-                    Image("insta-icon")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .overlay(Link("", destination: URL(string: instaLink)!))
+                HStack{
+                    Image(systemName: "phone.circle")
+                        .font(.caption)
+                    Text(details.phoneNumber)
+                        .font(.caption2)
                 }
-                if let metaLink = details.metaLink{
-                    Image("meta-icon")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .overlay(Link("", destination: URL(string: metaLink)!))
+                .foregroundColor(Color.theme.green)
+                .padding(.leading)
+                Spacer()
+                HStack(spacing: 10){
+                    if let instaLink = details.instragramLink{
+                        Image("insta-icon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .overlay(Link("", destination: URL(string: instaLink)!))
+                    }
+                    if let metaLink = details.metaLink{
+                        Image("meta-icon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .overlay(Link("", destination: URL(string: metaLink)!))
+                    }
                 }
+                .padding(.trailing)
             }
-            .padding(.trailing)
         }
     }
     
