@@ -11,7 +11,7 @@ struct DetailView: View {
     @StateObject private var detailVM = RestaurantDetailViewModel()
     let details: RestaurantDetails
     let restaurant: Restaurant
-    @State private var showFullDescription = false
+    @State private var showFullDescription = true
     @State private var booknowButtonPressed = false
     
     @State private var totalHeightForCategoriesList = CGFloat.zero
@@ -22,30 +22,48 @@ struct DetailView: View {
     var body: some View {
         VStack{
             ScrollView(.vertical, showsIndicators: false){
-                mainImage
-                VStack(alignment: .leading){
-                    titleView
-                    addressView
-                    ratingsAndReviewsView
-                    GeometryReader{ proxy in
-                        self.generateContent(in: proxy)
+                LazyVStack(alignment: .leading, pinnedViews: [.sectionHeaders]){
+                    
+                    GeometryReader{ proxy -> AnyView in
+                        let offset = proxy.frame(in: .global).minY
+                        if -offset >= 0{
+                            DispatchQueue.main.async {
+                                detailVM.mainImageOffset = -offset
+                            }
+                        }
+                        return AnyView(
+                            mainImage
+                                .frame(height: 250 + (offset > 0 ? offset : 0))
+                                .cornerRadius(2)
+                                .offset(y: (offset > 0 ? -offset : 0))
+                        )
                     }
-                    .frame(height: totalHeightForCategoriesList)
-                    descriptionView
-                    DetailMapView()
-                        .environmentObject(detailVM)
-                    contactsView
-                        .padding(.vertical)
+                    .frame(height: 250)
+                    
+                    Section(header: titleView) {
+                        addressView
+                        ratingsAndReviewsView
+                        GeometryReader{ proxy in
+                            self.generateContent(in: proxy)
+                        }
+                        .frame(height: totalHeightForCategoriesList)
+                        descriptionView
+                        DetailMapView()
+                            .environmentObject(detailVM)
+                        contactsView
+                            .padding(.vertical)
+                    }
+                    .padding(.horizontal)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
             }
+            .overlay (
+                Color.theme.background
+                    .frame(height: topSafeAreaInset)
+                    .opacity(detailVM.mainImageOffset > 250 ? 1 : 0)
+                    .ignoresSafeArea(.all, edges: .top),
+                alignment: .top
+            )
             bottomBar
-        }
-        .ignoresSafeArea()
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {navBookmarkButton}
-            ToolbarItem(placement: .navigationBarLeading) {navBackButton}
         }
     }
 }
@@ -66,7 +84,26 @@ extension DetailView{
                 .resizable()
                 .scaledToFill()
                 .overlay(Color.black.opacity(0.25))
-                .frame(maxWidth: .infinity)
+                .frame(width: UIScreen.main.bounds.width)
+            HStack(alignment: .top){
+                Button{
+                    
+                }label: {
+                    Image(systemName: "arrow.left")
+                        .foregroundColor(.white)
+                        .font(.title3.bold())
+                }
+                Spacer()
+                Button{
+                    
+                }label: {
+                    Image(systemName: "bookmark")
+                        .foregroundColor(.white)
+                        .font(.title3.bold())
+                }
+            }
+            .padding()
+            .offset(y: 30)
         }
     }
     
@@ -128,9 +165,16 @@ extension DetailView{
     }
     
     private var titleView: some View{
-        HStack{
+        HStack(spacing: 0){
+            Button {} label: {
+                Image(systemName: "arrow.left")
+                    .font(.title3.bold())
+                    .frame(width: getSize(), height: getSize())
+                    .opacity(getSize() > 0 ? 1.0 : 0.0)
+                    .foregroundColor(Color.theme.accent)
+            }
             Text(restaurant.name)
-                .font(.largeTitle.weight(.semibold))
+                .font(.title.weight(.semibold))
                 .lineLimit(2)
                 .minimumScaleFactor(0.8)
             Spacer()
@@ -140,7 +184,17 @@ extension DetailView{
                 Image(systemName: "hand.thumbsup")
             }
         }
-        .padding(.bottom)
+        .padding(.horizontal)
+        .background(Color.theme.background)
+        .padding(.bottom, 10)
+    }
+    
+    private func getSize() -> CGFloat{
+        if detailVM.mainImageOffset > 200{
+            let progress = (detailVM.mainImageOffset - 200) / 50
+            return progress <= 1.0 ? (progress * 40) : 40
+        }
+        return 0
     }
     
     private var descriptionView: some View{
@@ -227,12 +281,6 @@ extension DetailView{
         return ""
     }
     
-    
-    
-    
-    
-    
-    
     private func generateContent(in g: GeometryProxy) -> some View {
         var width = CGFloat.zero
         var height = CGFloat.zero
@@ -281,5 +329,13 @@ extension DetailView{
             .padding(.trailing)
             .font(.callout)
             .foregroundColor(Color.theme.secondaryText)
+    }
+    
+    private var topSafeAreaInset: CGFloat?{
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let topWindow = windowScene.windows.first {
+            return topWindow.safeAreaInsets.top
+        }
+        return nil
     }
 }

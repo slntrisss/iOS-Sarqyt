@@ -13,6 +13,7 @@ class RestaurantDetailViewModel: ObservableObject{
     @Published var mapRegion: MKCoordinateRegion
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     
+    @Published var mainImageOffset: CGFloat = 0
     init(){
         let restaurant = DeveloperPreview.instance.restaurant
         self._restaurant = Published(initialValue: restaurant)
