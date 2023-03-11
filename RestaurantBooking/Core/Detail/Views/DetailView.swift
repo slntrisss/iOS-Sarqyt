@@ -19,23 +19,23 @@ struct DetailView: View {
         details = restaurant.details
     }
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false){
-            mainImage
-            VStack(alignment: .leading){
-                titleView
-                addressView
-                ratingsAndReviewsView
-                descriptionView
-                DetailMapView()
-                    .environmentObject(detailVM)
-                contactsView
+        VStack{
+            ScrollView(.vertical, showsIndicators: false){
+                mainImage
+                VStack(alignment: .leading){
+                    titleView
+                    addressView
+                    ratingsAndReviewsView
+                    descriptionView
+                    DetailMapView()
+                        .environmentObject(detailVM)
+                    contactsView
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal)
+            bottomBar
         }
-        .overlay(
-            bottomBar,
-            alignment: .bottom)
         .ignoresSafeArea()
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {navBookmarkButton}
