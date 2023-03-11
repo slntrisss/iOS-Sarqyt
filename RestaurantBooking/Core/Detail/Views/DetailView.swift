@@ -11,7 +11,7 @@ struct DetailView: View {
     @StateObject private var detailVM = RestaurantDetailViewModel()
     let details: RestaurantDetails
     let restaurant: Restaurant
-    @State private var showFullDescription = true
+    @State private var showFullDescription = false
     @State private var booknowButtonPressed = false
     
     @State private var totalHeightForCategoriesList = CGFloat.zero
