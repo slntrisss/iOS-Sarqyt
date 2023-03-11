@@ -112,6 +112,7 @@ extension DetailView{
                 .environmentObject(detailVM)
             contactsView
                 .padding(.vertical)
+            reviewsView
         }
         .padding(.horizontal)
     }
@@ -229,6 +230,33 @@ extension DetailView{
                     }
                 }
                 .padding(.trailing)
+            }
+        }
+    }
+    
+    private var reviewsView: some View{
+        VStack{
+            HStack{
+                Text("Reviews")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundColor(Color.theme.accent.opacity(0.8))
+                Text(detailVM.reviews)
+                    .font(.caption)
+                    .foregroundColor(Color.theme.secondaryText)
+                Spacer()
+                Button{
+                    
+                }label: {
+                    Text("See all")
+                        .font(.caption)
+                        .foregroundColor(Color.theme.green)
+                }
+            }
+            
+            ForEach(detailVM.comments){ comment in
+                CommentBoxView(comment: comment)
+                    .environmentObject(detailVM)
+                    .padding(.vertical, 5)
             }
         }
     }

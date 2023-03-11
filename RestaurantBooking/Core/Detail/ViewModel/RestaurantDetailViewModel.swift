@@ -10,15 +10,28 @@ import SwiftUI
 
 class RestaurantDetailViewModel: ObservableObject{
     @Published var restaurant: Restaurant
+    @Published var comments: [Comment]
     @Published var mapRegion: MKCoordinateRegion
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     
     @Published var mainImageOffset: CGFloat = 0
+    
+    let detailComments: [Comment]
+    
     init(){
         let restaurant = DeveloperPreview.instance.restaurant
         self._restaurant = Published(initialValue: restaurant)
         let coordinates = restaurant.address.coordinates
         mapRegion = MKCoordinateRegion(center: coordinates, span: mapSpan)
+        
+        let comments = DeveloperPreview.instance.comments
+        self.comments = comments
+        
+        if comments.count > 3 {
+            detailComments = Array(comments.prefix(3))
+        }else{
+            detailComments = comments
+        }
     }
     
     var topSafeAreaInset: CGFloat? {

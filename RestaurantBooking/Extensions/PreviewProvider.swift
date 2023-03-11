@@ -160,6 +160,48 @@ class DeveloperPreview{
                    bookingStatus: .cancelled),
     ]
     
+    let comments = [
+        Comment(
+            id: UUID().uuidString,
+            date: Date(),
+            user: User(
+                id: UUID().uuidString,
+                firstName: "Ruslan",
+                lastName: "Zhakiyanov",
+                email: "ruslan.zhakiyanov@mail.ru",
+                birthDate: Calendar.current.date(from: DateComponents(calendar: Calendar.current, year: 2001, month: 8, day: 2))!,
+                phoneNumber: "7-(747)-469-02-94",
+                gender: "Male"),
+            text: "I recently visited this restaurant and was blown away by the quality of the food! The flavors were perfectly balanced, and everything was cooked to perfection. The service was also excellent, with friendly and attentive staff who made sure we had everything we needed. I highly recommend this restaurant to anyone looking for a top-notch dining experience!",
+            rating: 5),
+        Comment(
+            id: UUID().uuidString,
+            date: Date(),
+            user: User(
+                id: UUID().uuidString,
+                firstName: "Azamat",
+                lastName: "Bektursyn",
+                email: "ruslan.zhakiyanov@mail.ru",
+                birthDate: Calendar.current.date(from: DateComponents(calendar: Calendar.current, year: 2001, month: 8, day: 2))!,
+                phoneNumber: "7-(747)-469-02-94",
+                gender: "Male"),
+            text: "I had such a wonderful experience dining at this restaurant! The ambiance was cozy and welcoming, and the menu had a great variety of options to choose from. I ended up ordering the chef's special and was not disappointed! The dish was beautifully presented and tasted absolutely delicious. The staff were also very knowledgeable about the menu and gave great recommendations. I will definitely be returning to this restaurant soon!",
+            rating: 3),
+        Comment(
+            id: UUID().uuidString,
+            date: Date(),
+            user: User(
+                id: UUID().uuidString,
+                firstName: "Adilzhan",
+                lastName: "Rymbayev",
+                email: "ruslan.zhakiyanov@mail.ru",
+                birthDate: Calendar.current.date(from: DateComponents(calendar: Calendar.current, year: 2001, month: 8, day: 2))!,
+                phoneNumber: "7-(747)-469-02-94",
+                gender: "Male"),
+            text: "I stumbled upon this hidden gem of a restaurant and was blown away by the amazing food! The dishes were creative and packed with flavor, and the presentation was beautiful. The atmosphere was also fantastic, with a cozy and romantic vibe that made for a perfect date night. The staff were attentive and friendly, and overall it was a wonderful dining experience. I highly recommend giving this restaurant a try!",
+            rating: 4),
+    ]
+    
     let filterData = FilterProvider.shared
 }
 
