@@ -26,6 +26,9 @@ struct DetailView: View {
                     titleView
                     addressView
                     ratingsAndReviewsView
+                    GeometryReader{ proxy in
+                        self.generateContent(in: proxy)
+                    }
                     descriptionView
                     DetailMapView()
                         .environmentObject(detailVM)
@@ -215,4 +218,49 @@ extension DetailView{
         }
         return ""
     }
+    
+    
+    
+    
+    
+    
+    
+    private func generateContent(in g: GeometryProxy) -> some View {
+            var width = CGFloat.zero
+            var height = CGFloat.zero
+
+            return ZStack(alignment: .topLeading) {
+                ForEach(RestaurantDetails.categories, id: \.self) { platform in
+                    self.item(for: platform)
+                        .padding([.horizontal, .vertical], 4)
+                        .alignmentGuide(.leading, computeValue: { d in
+                            if (abs(width - d.width) > g.size.width){
+                                width = 0
+                                height -= d.height
+                            }
+                            let result = width
+                            if let category = RestaurantDetails.categories.last, platform == category {
+                                width = 0 //last item
+                            } else {
+                                width -= d.width
+                            }
+                            return result
+                        })
+                        .alignmentGuide(.top, computeValue: {d in
+                            let result = height
+                            if let category = RestaurantDetails.categories.last, platform == category {
+                                height = 0 // last item
+                            }
+                            return result
+                        })
+                }
+            }
+        }
+
+        func item(for text: String) -> some View {
+            Text("•"+text)
+                .padding(.trailing)
+                .font(.callout)
+                .foregroundColor(Color.theme.secondaryText)
+        }
 }

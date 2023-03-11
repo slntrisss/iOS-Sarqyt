@@ -6,6 +6,7 @@
 //
 
 import MapKit
+import SwiftUI
 
 class RestaurantDetailViewModel: ObservableObject{
     @Published var restaurant: Restaurant
