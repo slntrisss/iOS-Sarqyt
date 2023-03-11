@@ -32,7 +32,6 @@ struct RestaurantRatingStarView: View {
                     .foregroundColor(.white)
                     .overlay(getGradient(at: index))
                     .mask(Image(systemName: "star.fill").renderingMode(.template))
-                    .frame(width: 20, height: 20)
             }
         }
     }
@@ -47,7 +46,7 @@ struct RestaurantRatingStarView: View {
             colors += [.yellow, .white]
         }
         let gradient = LinearGradient(colors: colors, startPoint: .leading, endPoint: .trailing)
-            .mask(Rectangle().frame(width: 100, height: 100))
+            .mask(Rectangle().frame(width: 20, height: 20))
         return gradient
     }
 }

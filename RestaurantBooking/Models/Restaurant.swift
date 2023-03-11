@@ -42,4 +42,5 @@ struct RestaurantDetails: Codable, Hashable{
     let phoneNumber: String
     let instragramLink: String?
     let metaLink: String?
+    let commentRatingStatus: [Double]
 }

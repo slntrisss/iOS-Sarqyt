@@ -57,4 +57,15 @@ class RestaurantDetailViewModel: ObservableObject{
         }
         return 0
     }
+    
+    func getStatus(for rating: Int) -> Double{
+        switch rating{
+        case 5:return restaurant.details.commentRatingStatus[0]
+        case 4:return restaurant.details.commentRatingStatus[1]
+        case 3:return restaurant.details.commentRatingStatus[2]
+        case 2:return restaurant.details.commentRatingStatus[3]
+        case 1:return restaurant.details.commentRatingStatus[4]
+        default:return 0
+        }
+    }
 }
