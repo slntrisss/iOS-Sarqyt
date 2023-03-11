@@ -14,6 +14,7 @@ struct DetailView: View {
     @State private var showFullDescription = false
     @State private var booknowButtonPressed = false
     
+    @State private var totalHeightForCategoriesList = CGFloat.zero
     init(restaurant: Restaurant){
         self.restaurant = restaurant
         details = restaurant.details
@@ -29,6 +30,7 @@ struct DetailView: View {
                     GeometryReader{ proxy in
                         self.generateContent(in: proxy)
                     }
+                    .frame(height: totalHeightForCategoriesList)
                     descriptionView
                     DetailMapView()
                         .environmentObject(detailVM)
@@ -226,41 +228,52 @@ extension DetailView{
     
     
     private func generateContent(in g: GeometryProxy) -> some View {
-            var width = CGFloat.zero
-            var height = CGFloat.zero
-
-            return ZStack(alignment: .topLeading) {
-                ForEach(RestaurantDetails.categories, id: \.self) { platform in
-                    self.item(for: platform)
-                        .padding([.horizontal, .vertical], 4)
-                        .alignmentGuide(.leading, computeValue: { d in
-                            if (abs(width - d.width) > g.size.width){
-                                width = 0
-                                height -= d.height
-                            }
-                            let result = width
-                            if let category = RestaurantDetails.categories.last, platform == category {
-                                width = 0 //last item
-                            } else {
-                                width -= d.width
-                            }
-                            return result
-                        })
-                        .alignmentGuide(.top, computeValue: {d in
-                            let result = height
-                            if let category = RestaurantDetails.categories.last, platform == category {
-                                height = 0 // last item
-                            }
-                            return result
-                        })
-                }
+        var width = CGFloat.zero
+        var height = CGFloat.zero
+        
+        return ZStack(alignment: .topLeading) {
+            ForEach(RestaurantDetails.categories, id: \.self) { platform in
+                self.item(for: platform)
+                    .padding([.horizontal, .vertical], 4)
+                    .alignmentGuide(.leading, computeValue: { d in
+                        if (abs(width - d.width) > g.size.width){
+                            width = 0
+                            height -= d.height
+                        }
+                        let result = width
+                        if let category = RestaurantDetails.categories.last, platform == category {
+                            width = 0 //last item
+                        } else {
+                            width -= d.width
+                        }
+                        return result
+                    })
+                    .alignmentGuide(.top, computeValue: {d in
+                        let result = height
+                        if let category = RestaurantDetails.categories.last, platform == category {
+                            height = 0 // last item
+                        }
+                        return result
+                    })
             }
         }
-
-        func item(for text: String) -> some View {
-            Text("•"+text)
-                .padding(.trailing)
-                .font(.callout)
-                .foregroundColor(Color.theme.secondaryText)
+        .background(viewHeightReader($totalHeightForCategoriesList))
+    }
+    
+    private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View{
+        return GeometryReader{ geo -> Color in
+            let rect = geo.frame(in: .local)
+            DispatchQueue.main.async {
+                binding.wrappedValue = rect.size.height
+            }
+            return .clear
         }
+    }
+    
+    func item(for text: String) -> some View {
+        Text("•"+text)
+            .padding(.trailing)
+            .font(.callout)
+            .foregroundColor(Color.theme.secondaryText)
+    }
 }
