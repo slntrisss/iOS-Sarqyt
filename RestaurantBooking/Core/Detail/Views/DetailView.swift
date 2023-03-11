@@ -30,6 +30,7 @@ struct DetailView: View {
             .overlay (titleBackgroundView, alignment: .top)
             bottomBar
         }
+        .ignoresSafeArea(.all, edges: .bottom)
     }
 }
 
