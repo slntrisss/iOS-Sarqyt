@@ -20,4 +20,28 @@ class RestaurantDetailViewModel: ObservableObject{
         let coordinates = restaurant.address.coordinates
         mapRegion = MKCoordinateRegion(center: coordinates, span: mapSpan)
     }
+    
+    var topSafeAreaInset: CGFloat? {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let topWindow = windowScene.windows.first {
+            return topWindow.safeAreaInsets.top
+        }
+        return nil
+    }
+    
+    var reviews: String{
+        if restaurant.reviewAmount > 0{
+            let count = Double(restaurant.reviewAmount)
+            return "(\(count.formattedWithAbbreviations()) \(count > 1 ? "reviews" : "review"))"
+        }
+        return ""
+    }
+    
+    func getSize() -> CGFloat{
+        if mainImageOffset > 200{
+            let progress = (mainImageOffset - 200) / 50
+            return progress <= 1.0 ? (progress * 40) : 40
+        }
+        return 0
+    }
 }

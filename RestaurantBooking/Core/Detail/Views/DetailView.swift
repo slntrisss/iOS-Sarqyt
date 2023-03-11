@@ -23,46 +23,11 @@ struct DetailView: View {
         VStack{
             ScrollView(.vertical, showsIndicators: false){
                 LazyVStack(alignment: .leading, pinnedViews: [.sectionHeaders]){
-                    
-                    GeometryReader{ proxy -> AnyView in
-                        let offset = proxy.frame(in: .global).minY
-                        if -offset >= 0{
-                            DispatchQueue.main.async {
-                                detailVM.mainImageOffset = -offset
-                            }
-                        }
-                        return AnyView(
-                            mainImage
-                                .frame(height: 250 + (offset > 0 ? offset : 0))
-                                .cornerRadius(2)
-                                .offset(y: (offset > 0 ? -offset : 0))
-                        )
-                    }
-                    .frame(height: 250)
-                    
-                    Section(header: titleView) {
-                        addressView
-                        ratingsAndReviewsView
-                        GeometryReader{ proxy in
-                            self.generateContent(in: proxy)
-                        }
-                        .frame(height: totalHeightForCategoriesList)
-                        descriptionView
-                        DetailMapView()
-                            .environmentObject(detailVM)
-                        contactsView
-                            .padding(.vertical)
-                    }
-                    .padding(.horizontal)
+                    scrollableImage
+                    contentView
                 }
             }
-            .overlay (
-                Color.theme.background
-                    .frame(height: topSafeAreaInset)
-                    .opacity(detailVM.mainImageOffset > 250 ? 1 : 0)
-                    .ignoresSafeArea(.all, edges: .top),
-                alignment: .top
-            )
+            .overlay (titleBackgroundView, alignment: .top)
             bottomBar
         }
     }
@@ -90,16 +55,24 @@ extension DetailView{
                     
                 }label: {
                     Image(systemName: "arrow.left")
-                        .foregroundColor(.white)
-                        .font(.title3.bold())
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .font(.headline.weight(.heavy))
+                        .foregroundColor(Color.white.opacity(0.8))
+                        .padding()
                 }
                 Spacer()
                 Button{
                     
                 }label: {
                     Image(systemName: "bookmark")
-                        .foregroundColor(.white)
-                        .font(.title3.bold())
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .font(.headline.weight(.heavy))
+                        .foregroundColor(Color.white.opacity(0.8))
+                        .padding()
                 }
             }
             .padding()
@@ -107,39 +80,39 @@ extension DetailView{
         }
     }
     
-    private var navBackButton: some View{
-        HStack{
-            Button{
-                
-            }label: {
-                Image(systemName: "arrow.left")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 25, height: 25)
-                    .font(.headline.weight(.heavy))
-                    .foregroundColor(Color.white.opacity(0.8))
-                    .clipShape(Circle())
-                    .padding()
+    private var scrollableImage: some View{
+        GeometryReader{ proxy -> AnyView in
+            let offset = proxy.frame(in: .global).minY
+            if -offset >= 0{
+                DispatchQueue.main.async {
+                    detailVM.mainImageOffset = -offset
+                }
             }
-            Spacer()
+            return AnyView(
+                mainImage
+                    .frame(height: 250 + (offset > 0 ? offset : 0))
+                    .cornerRadius(2)
+                    .offset(y: (offset > 0 ? -offset : 0))
+            )
         }
+        .frame(height: 250)
     }
     
-    private var navBookmarkButton: some View{
-        HStack{
-            Spacer()
-            Button{
-                
-            }label: {
-                Image(systemName: "bookmark")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 25, height: 25)
-                    .font(.headline.weight(.heavy))
-                    .foregroundColor(Color.white.opacity(0.8))
-                    .padding()
+    private var contentView: some View{
+        Section(header: titleView) {
+            addressView
+            ratingsAndReviewsView
+            GeometryReader{ proxy in
+                self.generateContent(in: proxy)
             }
+            .frame(height: totalHeightForCategoriesList)
+            descriptionView
+            DetailMapView()
+                .environmentObject(detailVM)
+            contactsView
+                .padding(.vertical)
         }
+        .padding(.horizontal)
     }
     
     private var ratingsAndReviewsView: some View{
@@ -148,7 +121,7 @@ extension DetailView{
             Text("\(restaurant.rating.asNumberStringWithOneDigit())")
                 .font(.caption)
                 .foregroundColor(Color.theme.secondaryText)
-            Text(reviews)
+            Text(detailVM.reviews)
                 .font(.caption)
                 .foregroundColor(Color.theme.secondaryText)
         }
@@ -169,8 +142,8 @@ extension DetailView{
             Button {} label: {
                 Image(systemName: "arrow.left")
                     .font(.title3.bold())
-                    .frame(width: getSize(), height: getSize())
-                    .opacity(getSize() > 0 ? 1.0 : 0.0)
+                    .frame(width: detailVM.getSize(), height: detailVM.getSize())
+                    .opacity(detailVM.getSize() > 0 ? 1.0 : 0.0)
                     .foregroundColor(Color.theme.accent)
             }
             Text(restaurant.name)
@@ -189,12 +162,11 @@ extension DetailView{
         .padding(.bottom, 10)
     }
     
-    private func getSize() -> CGFloat{
-        if detailVM.mainImageOffset > 200{
-            let progress = (detailVM.mainImageOffset - 200) / 50
-            return progress <= 1.0 ? (progress * 40) : 40
-        }
-        return 0
+    private var titleBackgroundView: some View{
+        Color.theme.background
+            .frame(height: detailVM.topSafeAreaInset)
+            .opacity(detailVM.mainImageOffset > 250 ? 1 : 0)
+            .ignoresSafeArea(.all, edges: .top)
     }
     
     private var descriptionView: some View{
@@ -273,14 +245,6 @@ extension DetailView{
         .background(RoundedRectangle(cornerRadius: 20).fill(.thinMaterial))
     }
     
-    private var reviews: String{
-        if restaurant.reviewAmount > 0{
-            let count = Double(restaurant.reviewAmount)
-            return "(\(count.formattedWithAbbreviations()) \(count > 1 ? "reviews" : "review"))"
-        }
-        return ""
-    }
-    
     private func generateContent(in g: GeometryProxy) -> some View {
         var width = CGFloat.zero
         var height = CGFloat.zero
@@ -329,13 +293,5 @@ extension DetailView{
             .padding(.trailing)
             .font(.callout)
             .foregroundColor(Color.theme.secondaryText)
-    }
-    
-    private var topSafeAreaInset: CGFloat?{
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let topWindow = windowScene.windows.first {
-            return topWindow.safeAreaInsets.top
-        }
-        return nil
     }
 }
