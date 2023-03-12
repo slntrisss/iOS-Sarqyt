@@ -15,7 +15,7 @@ class RestaurantDetailViewModel: ObservableObject{
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     
     @Published var mainImageOffset: CGFloat = 0
-    
+    @Published var showAllReviews = false
     let detailComments: [Comment]
     
     init(){

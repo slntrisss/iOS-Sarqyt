@@ -31,6 +31,7 @@ struct DetailView: View {
             bottomBar
         }
         .ignoresSafeArea(.all, edges: .bottom)
+        .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView().environmentObject(detailVM)}
     }
 }
 
@@ -245,7 +246,7 @@ extension DetailView{
                     .foregroundColor(Color.theme.secondaryText)
                 Spacer()
                 Button{
-                    
+                    detailVM.showAllReviews.toggle()
                 }label: {
                     Text("See all")
                         .font(.caption)
