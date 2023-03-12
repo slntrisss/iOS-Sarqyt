@@ -32,6 +32,7 @@ struct DetailView: View {
         }
         .ignoresSafeArea(.all, edges: .bottom)
         .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView().environmentObject(detailVM)}
+        .background(Color.theme.background)
     }
 }
 
