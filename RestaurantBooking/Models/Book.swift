@@ -13,6 +13,7 @@ struct Book: Identifiable, Codable{
     var date: Date
     var selectedTime: Date
     var numberOfGuests: Int
+    var specialWishes: String
     
     init(){
         self.id = UUID().uuidString
@@ -26,5 +27,6 @@ struct Book: Identifiable, Codable{
         self.date = Date()
         self.selectedTime = Date()
         self.numberOfGuests = 1
+        self.specialWishes = ""
     }
 }

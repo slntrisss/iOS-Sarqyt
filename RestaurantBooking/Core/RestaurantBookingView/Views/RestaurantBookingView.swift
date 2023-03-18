@@ -10,7 +10,7 @@ import SwiftUI
 struct RestaurantBookingView: View {
     @StateObject private var bookVM = BookViewModel()
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false){
+        ScrollView(.vertical){
             LazyVStack {
                 Group{
                     dateAndTimeLabel
@@ -21,6 +21,9 @@ struct RestaurantBookingView: View {
                 timePickerView
                 numberOfGuestsLabel
                 numberOfGuestsView
+                specialWishLabel
+                specialWishesView
+                footerView
             }
         }
         .navigationTitle("Book")
@@ -125,5 +128,35 @@ extension RestaurantBookingView{
         .padding(.horizontal)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 3)
+    }
+    
+    private var specialWishLabel: some View{
+        HStack{
+            Image(systemName: "sparkles")
+            Text("Special Wishes")
+                .font(.headline)
+            Spacer()
+        }
+        .padding()
+    }
+    
+    private var specialWishesView: some View{
+        TextEditor(text: $bookVM.book.specialWishes)
+            .padding()
+            .foregroundColor(Color.theme.secondaryText)
+            .cornerRadius(10)
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.theme.secondaryText.opacity(0.2), lineWidth: 3))
+            .frame(height: 100)
+            .padding(.horizontal)
+    }
+    
+    private var footerView: some View{
+        VStack{
+            Text("Total ₸7,400")
+                .font(.headline)
+            PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
+        }
+        .padding(.horizontal)
+        .padding(.top, 50)
     }
 }

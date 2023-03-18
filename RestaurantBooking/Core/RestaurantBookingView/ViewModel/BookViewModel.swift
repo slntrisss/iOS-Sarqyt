@@ -12,6 +12,7 @@ class BookViewModel: ObservableObject{
     let futureDateRange = Date.now...
     var dateArray: [Date] = []
     @Published var selectedTimeInterval: Date? = nil
+    @Published var continueButtonTapped = false
     init(){
         let calendar = Calendar.current
         let startDate = Date() // the starting date (now)
