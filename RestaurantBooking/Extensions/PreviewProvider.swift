@@ -211,6 +211,12 @@ class DeveloperPreview{
     ]
     
     let filterData = FilterProvider.shared
+    
+    let foods = [
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce")
+    ]
+    
+    let food = Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce")
 }
 
 extension DeveloperPreview{
