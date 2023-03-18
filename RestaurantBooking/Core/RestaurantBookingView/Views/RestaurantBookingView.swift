@@ -103,7 +103,11 @@ extension RestaurantBookingView{
                     .foregroundColor(Color.theme.secondaryText)
             }
             Spacer()
-            numberOfGuestsLabel
+            HStack{
+                Text(bookVM.getGuestsLabel())
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(Color.theme.secondaryText)
+            }
             Spacer()
             Button{
                 bookVM.increaseNumberOfGuests()

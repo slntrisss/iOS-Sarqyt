@@ -49,4 +49,15 @@ class BookViewModel: ObservableObject{
             book.numberOfGuests -= 1
         }
     }
+    
+    private func constructNumberOfGuestsLabel() -> String{
+        if book.numberOfGuests > 1{
+            return "\(book.numberOfGuests) Guests"
+        }
+        return "\(book.numberOfGuests) Guest"
+    }
+    
+    func getGuestsLabel() -> String{
+        return constructNumberOfGuestsLabel()
+    }
 }
