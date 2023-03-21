@@ -213,7 +213,18 @@ class DeveloperPreview{
     let filterData = FilterProvider.shared
     
     let foods = [
-        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce")
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .burgers, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .burgers, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .cakes, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .chicken, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .chicken, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .chicken, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .doner, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .doner, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .iceCreams, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .iceCreams, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"),
+        Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .iceCreams, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce")
     ]
     
     let food = Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce")

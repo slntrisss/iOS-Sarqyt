@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum FoodType: String, Codable{
-    case salad
+enum FoodType: String, Codable, CaseIterable{
+    case pizza, salad, burgers, doner, noodles, cakes, lemonades, iceCreams, stakes, chicken
 }

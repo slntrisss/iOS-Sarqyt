@@ -14,7 +14,7 @@ struct FoodCardView: View {
     @State private var showQuantityLabel = false
     var body: some View {
         content
-            .frame(width: 150)
+            .frame(width: 130)
             .padding()
             .overlay(quantityLabelView,alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryButton))
@@ -25,6 +25,7 @@ struct FoodCardView: View {
 struct FoodCard_Previews: PreviewProvider {
     static var previews: some View {
         FoodCardView(food: DeveloperPreview.instance.food)
+            .previewLayout(.sizeThatFits)
     }
 }
 
@@ -38,9 +39,15 @@ extension FoodCardView{
                 .frame(width: 100, height: 100)
                 .shadow(radius: 4)
             Text(food.name)
-                .font(.subheadline)
+                .font(.caption)
                 .foregroundColor(Color.theme.secondaryText)
-            PrimaryButton(buttonLabel: "₸ \(food.price)", buttonClicked: $orderButtonTapped)
+            Button{
+                
+            }label: {
+                Text("₸\(food.price)")
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(Color.theme.green)
         }
     }
     
