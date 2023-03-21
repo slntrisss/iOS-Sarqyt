@@ -66,16 +66,30 @@ extension DetailView{
                         .padding()
                 }
                 Spacer()
-                Button{
+                HStack(spacing: 0){
+                    Button{
+                        
+                    }label: {
+                        Image(systemName: "hand.thumbsup")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25, height: 25)
+                            .font(.headline.weight(.heavy))
+                            .foregroundColor(Color.white.opacity(0.8))
+                            .padding()
+                    }
                     
-                }label: {
-                    Image(systemName: "bookmark")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25, height: 25)
-                        .font(.headline.weight(.heavy))
-                        .foregroundColor(Color.white.opacity(0.8))
-                        .padding()
+                    Button{
+                        
+                    }label: {
+                        Image(systemName: "bookmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25, height: 25)
+                            .font(.headline.weight(.heavy))
+                            .foregroundColor(Color.white.opacity(0.8))
+                            .padding()
+                    }
                 }
             }
             .padding()
@@ -158,7 +172,10 @@ extension DetailView{
             Button{
                 
             }label: {
-                Image(systemName: "hand.thumbsup")
+                HStack{
+                    Text("Menu")
+                    Image(systemName: "text.book.closed")
+                }
             }
         }
         .padding(.horizontal)

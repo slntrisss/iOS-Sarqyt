@@ -55,6 +55,8 @@ extension FoodView{
                 }
             }
         }
-        .background(Color.theme.background)
+        .background(Color.theme.background
+            .frame(height: foodVM.topSafeAreaInset)
+            .ignoresSafeArea(.all, edges: .top))
     }
 }

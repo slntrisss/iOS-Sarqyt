@@ -27,7 +27,8 @@ class FoodViewModel: ObservableObject{
         if selectedTabIndex == 0{
             foods = DeveloperPreview.instance.foods
         }else{
-            foods = foods.filter({$0.type == FoodType.allCases.first(where: {$0 == foods[index].type})})
+            let type = tabBars[index + 1]
+            foods = foods.filter({$0.type.rawValue == type})
         }
     }
     
@@ -37,5 +38,13 @@ class FoodViewModel: ObservableObject{
     
     func getSelectedTabBarFont(at index: Int) -> Font{
         return selectedTabIndex == index ? Font.headline : Font.subheadline
+    }
+    
+    var topSafeAreaInset: CGFloat? {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let topWindow = windowScene.windows.first {
+            return topWindow.safeAreaInsets.top
+        }
+        return nil
     }
 }
