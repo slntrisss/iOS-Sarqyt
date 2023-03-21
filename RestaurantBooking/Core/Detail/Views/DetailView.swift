@@ -13,7 +13,7 @@ struct DetailView: View {
     let restaurant: Restaurant
     @State private var showFullDescription = false
     @State private var booknowButtonPressed = false
-    
+    @State private var showMenu = false
     @State private var totalHeightForCategoriesList = CGFloat.zero
     init(restaurant: Restaurant){
         self.restaurant = restaurant
@@ -32,6 +32,7 @@ struct DetailView: View {
         }
         .ignoresSafeArea(.all, edges: .bottom)
         .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView().environmentObject(detailVM)}
+        .navigationDestination(isPresented: $showMenu, destination: {FoodView(title: restaurant.name)})
         .background(Color.theme.background)
     }
 }
@@ -170,7 +171,7 @@ extension DetailView{
                 .minimumScaleFactor(0.8)
             Spacer()
             Button{
-                
+                showMenu.toggle()
             }label: {
                 HStack{
                     Text("Menu")

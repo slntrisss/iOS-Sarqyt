@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct FoodView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var foodVM = FoodViewModel()
-    @State private var offset: CGPoint = .zero
     let columns = [
         GridItem(.adaptive(minimum: 150), spacing: 10),
         GridItem(.adaptive(minimum: 150), spacing: 10),
@@ -77,7 +77,7 @@ extension FoodView{
             Group{
                 HStack{
                     Button{
-                        
+                        dismiss()
                     }label: {
                         Image(systemName: "arrow.left")
                             .padding(.horizontal)
