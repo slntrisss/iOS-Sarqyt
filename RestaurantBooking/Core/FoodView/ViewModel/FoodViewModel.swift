@@ -5,17 +5,22 @@
 //  Created by Raiymbek Merekeyev on 20.03.2023.
 //
 
-import Foundation
+import Combine
 import SwiftUI
 
 class FoodViewModel: ObservableObject{
     @Published var foods: [Food] = []
-    @Published var orderedFoods: [String : OrderedFood] = [:]
+    @Published var orderedFoods: [String : OrderedFood] = [:]{
+        didSet{
+            self.changeOrderButtonState()
+        }
+    }
     @Published private var selectedTabIndex = 0
     
     @Published var showOrderButton = false
     var tabBars: [String] = []
     
+    var cancellables = Set<AnyCancellable>()
     init(){
         tabBars.insert("All", at: 0)
         tabBars.append(contentsOf: FoodType.allCases.map({String($0.rawValue)}))
@@ -64,5 +69,13 @@ class FoodViewModel: ObservableObject{
             totalPrice += orderedFood.price
         }
         return "Order \(count) for ₸\(totalPrice.toKZTCurrency())"
+    }
+    
+    private func changeOrderButtonState(){
+        if orderedFoods.isEmpty{
+            showOrderButton = false
+        }else{
+            showOrderButton = true
+        }
     }
 }

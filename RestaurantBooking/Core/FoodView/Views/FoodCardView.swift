@@ -23,6 +23,8 @@ struct FoodCardView: View {
             .overlay(quantityLabelView,alignment: .topLeading)
             .background(RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryButton))
             .shadow(radius: 5)
+            .onTapGesture {foodCardVM.showDetail.toggle()}
+            .sheet(isPresented: $foodCardVM.showDetail) {FoodDetailView(food: food, foodCardVM: foodCardVM)}
     }
 }
 
