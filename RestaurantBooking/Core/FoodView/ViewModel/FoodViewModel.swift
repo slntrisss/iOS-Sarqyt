@@ -10,6 +10,7 @@ import SwiftUI
 
 class FoodViewModel: ObservableObject{
     @Published var foods: [Food] = []
+    @Published var orderedFoods: [OrderedFood] = []
     @Published private var selectedTabIndex = 0
     var tabBars: [String] = []
     
@@ -46,5 +47,9 @@ class FoodViewModel: ObservableObject{
             return topWindow.safeAreaInsets.top
         }
         return nil
+    }
+    
+    func createOrderedFood(with food: Food) -> OrderedFood{
+        return OrderedFood(id: UUID().uuidString, food: food, count: 1, price: food.price, specialWishes: "")
     }
 }
