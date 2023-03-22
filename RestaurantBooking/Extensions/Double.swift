@@ -72,4 +72,22 @@ extension Double{
     func toPercent() -> String{
         return "\(Int((self * 100) / 5.0))%"
     }
+    
+    
+    //MARK: - Currency formatter
+    ///Converts double amount of price into currency in KZT
+    ///```
+    ///Convert "1234.56" to "₸1 234,56"
+    ///```
+    func toKZTCurrency() -> String{
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "kk_KZ")
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "KZT"
+        
+        if let formattedPrice = formatter.string(from: NSNumber(value: self)) {
+            return formattedPrice // returns: "₸1 234,56"
+        }
+        return self.formattedWithAbbreviations()
+    }
 }

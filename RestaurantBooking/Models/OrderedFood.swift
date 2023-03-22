@@ -10,6 +10,6 @@ struct OrderedFood: Codable, Identifiable{
     let id: String
     let food: Food
     var count: Int
-    var price: Int
+    var price: Double
     var specialWishes: String
 }

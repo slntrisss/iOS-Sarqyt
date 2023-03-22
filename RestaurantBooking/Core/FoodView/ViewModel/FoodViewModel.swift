@@ -12,6 +12,8 @@ class FoodViewModel: ObservableObject{
     @Published var foods: [Food] = []
     @Published var orderedFoods: [String : OrderedFood] = [:]
     @Published private var selectedTabIndex = 0
+    
+    @Published var showOrderButton = false
     var tabBars: [String] = []
     
     init(){
@@ -20,6 +22,11 @@ class FoodViewModel: ObservableObject{
         foods = DeveloperPreview.instance.foods
     }
     
+    func orderButtonTapped(){
+        
+    }
+    
+    //MARK: - UI components
     func selectTabBar(at index: Int, scrollView: ScrollViewProxy){
         withAnimation {
             selectedTabIndex = index
@@ -49,7 +56,13 @@ class FoodViewModel: ObservableObject{
         return nil
     }
     
-    func createOrderedFood(with food: Food) -> OrderedFood{
-        return OrderedFood(id: UUID().uuidString, food: food, count: 1, price: food.price, specialWishes: "")
+    var orderButtonLabelText: String{
+        var count = 0
+        var totalPrice = 0.0
+        for (_, orderedFood) in orderedFoods{
+            count += orderedFood.count
+            totalPrice += orderedFood.price
+        }
+        return "Order \(count) for ₸\(totalPrice.toKZTCurrency())"
     }
 }

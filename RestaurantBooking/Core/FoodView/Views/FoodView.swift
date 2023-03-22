@@ -21,6 +21,7 @@ struct FoodView: View {
                 contentView
             }
         }
+        .safeAreaInset(edge: .bottom, content: {orderButtonView})
         .overlay(titleBackground, alignment: .top)
         .navigationBarBackButtonHidden(true)
     }
@@ -90,5 +91,21 @@ extension FoodView{
             }
             .frame(width: UIScreen.main.bounds.width * 0.33)
         }
+    }
+    
+    private var orderButtonView: some View{
+        Button{
+            foodVM.orderButtonTapped()
+        }label: {
+            Text(foodVM.orderButtonLabelText)
+                .font(.headline)
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Capsule().fill(.yellow))
+                .cornerRadius(10)
+        }
+        .padding(.horizontal)
+        .opacity(foodVM.showOrderButton ? 1.0 : 0.0)
     }
 }

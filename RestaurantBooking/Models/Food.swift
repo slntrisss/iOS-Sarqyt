@@ -12,6 +12,6 @@ struct Food: Codable, Identifiable{
     let name: String
     let image: String
     let type: FoodType
-    let price: Int
+    let price: Double
     let description: String
 }

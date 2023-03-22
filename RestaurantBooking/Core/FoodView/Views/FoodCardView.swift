@@ -53,7 +53,7 @@ extension FoodCardView{
                         Image(systemName: "minus.circle.fill")
                             .foregroundColor(Color.theme.green)
                     }
-                    Text("₸\(foodCardVM.orderedFood.price)")
+                    Text(foodCardVM.orderedFood.price.toKZTCurrency())
                         .font(.headline)
                         .foregroundColor(Color.theme.accent)
                         .lineLimit(1)
@@ -71,7 +71,7 @@ extension FoodCardView{
                 Button{
                     foodCardVM.displayQuantityLabel()
                 }label: {
-                    Text("₸\(food.price)")
+                    Text(food.price.toKZTCurrency())
                 }
                 .opacity(foodCardVM.showQuantityLabel ? 0.0 : 1.0)
                 .buttonStyle(.borderedProminent)

@@ -13,12 +13,14 @@ class FoodCardViewModel: ObservableObject{
     @Published var showQuantityLabel: Bool = false
     init(food: Food, foodVM: FoodViewModel){
         self.foodVM = foodVM
-        self.orderedFood = OrderedFood(id: UUID().uuidString, food: food, count: 1, price: food.price, specialWishes: "")
+        self.orderedFood = OrderedFood(id: UUID().uuidString, food: food, count: 0, price: 0, specialWishes: "")
     }
     
     func displayQuantityLabel(){
         withAnimation(.easeInOut(duration: 0.4)) {
             showQuantityLabel = true
+            increaseQuantityButtonTapped()
+            foodVM.showOrderButton = true
         }
     }
     
@@ -35,6 +37,7 @@ class FoodCardViewModel: ObservableObject{
         }else{
             withAnimation(.easeInOut(duration: 0.4)) {
                 showQuantityLabel = false
+                foodVM.showOrderButton = false
             }
         }
         setupOrderedFood()
