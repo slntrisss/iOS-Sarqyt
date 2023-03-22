@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct FoodCardView: View {
-    @EnvironmentObject private var foodVM: FoodViewModel
+    @ObservedObject private var foodVM: FoodViewModel
     @StateObject private var foodCardVM: FoodCardViewModel
     let food: Food
-    init(food: Food){
+    init(food: Food, foodVM: FoodViewModel){
         self.food = food
-        self._foodCardVM = StateObject(wrappedValue: FoodCardViewModel(food: food))
+        self.foodVM = foodVM
+        self._foodCardVM = StateObject(wrappedValue: FoodCardViewModel(food: food, foodVM: foodVM))
     }
     var body: some View {
         content
@@ -27,7 +28,7 @@ struct FoodCardView: View {
 
 struct FoodCard_Previews: PreviewProvider {
     static var previews: some View {
-        FoodCardView(food: DeveloperPreview.instance.food)
+        FoodCardView(food: DeveloperPreview.instance.food, foodVM: FoodViewModel())
             .previewLayout(.sizeThatFits)
     }
 }

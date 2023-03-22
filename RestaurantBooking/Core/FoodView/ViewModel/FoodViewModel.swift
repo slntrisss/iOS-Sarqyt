@@ -10,7 +10,7 @@ import SwiftUI
 
 class FoodViewModel: ObservableObject{
     @Published var foods: [Food] = []
-    @Published var orderedFoods: [OrderedFood] = []
+    @Published var orderedFoods: [String : OrderedFood] = [:]
     @Published private var selectedTabIndex = 0
     var tabBars: [String] = []
     

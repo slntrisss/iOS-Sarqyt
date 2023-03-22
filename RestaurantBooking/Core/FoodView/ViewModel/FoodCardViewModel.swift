@@ -9,9 +9,11 @@ import SwiftUI
 
 class FoodCardViewModel: ObservableObject{
     @Published var orderedFood: OrderedFood
+    @Published var foodVM: FoodViewModel
     @Published var showQuantityLabel: Bool = false
-    init(food: Food){
-        orderedFood = OrderedFood(id: UUID().uuidString, food: food, count: 1, price: food.price, specialWishes: "")
+    init(food: Food, foodVM: FoodViewModel){
+        self.foodVM = foodVM
+        self.orderedFood = OrderedFood(id: UUID().uuidString, food: food, count: 1, price: food.price, specialWishes: "")
     }
     
     func displayQuantityLabel(){
@@ -23,6 +25,7 @@ class FoodCardViewModel: ObservableObject{
     func increaseQuantityButtonTapped(){
         orderedFood.count += 1
         orderedFood.price += orderedFood.food.price
+        setupOrderedFood()
     }
     
     func decreaseQuantityButtonTapped(){
@@ -33,6 +36,17 @@ class FoodCardViewModel: ObservableObject{
             withAnimation(.easeInOut(duration: 0.4)) {
                 showQuantityLabel = false
             }
+        }
+        setupOrderedFood()
+    }
+    
+    private func setupOrderedFood(){
+        if var food = foodVM.orderedFoods[orderedFood.id] {
+            food.count = self.orderedFood.count
+            food.price = self.orderedFood.price
+            foodVM.orderedFoods[food.id] = food
+        }else{
+            foodVM.orderedFoods[self.orderedFood.id] = orderedFood
         }
     }
 }

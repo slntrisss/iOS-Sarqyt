@@ -59,7 +59,7 @@ extension FoodView{
         Section(header: tabBarView) {
             LazyVGrid(columns: columns) {
                 ForEach(foodVM.foods) { food in
-                    FoodCardView(food: food)
+                    FoodCardView(food: food, foodVM: foodVM)
                         .padding(10)
                 }
             }
