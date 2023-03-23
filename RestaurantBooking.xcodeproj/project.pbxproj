@@ -54,6 +54,8 @@
 		FF470E7229A12FCA00314934 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E7129A12FCA00314934 /* AuthService.swift */; };
 		FF470E7829A13D7600314934 /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E7729A13D7600314934 /* ProcessingView.swift */; };
 		FF470E7A29A1457B00314934 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E7929A1457B00314934 /* Authentication.swift */; };
+		FF518F5629CB92CA00A285CD /* OrderedFoodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF518F5529CB92CA00A285CD /* OrderedFoodsView.swift */; };
+		FF518F5829CB951800A285CD /* OrderedFoodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF518F5729CB951800A285CD /* OrderedFoodViewModel.swift */; };
 		FF5391BC29BCAB61004AF07D /* CommentBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391BB29BCAB61004AF07D /* CommentBoxView.swift */; };
 		FF5391BE29BCAB7F004AF07D /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391BD29BCAB7F004AF07D /* Comment.swift */; };
 		FF5391C029BCAC06004AF07D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391BF29BCAC06004AF07D /* User.swift */; };
@@ -151,6 +153,8 @@
 		FF470E7129A12FCA00314934 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		FF470E7729A13D7600314934 /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
 		FF470E7929A1457B00314934 /* Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
+		FF518F5529CB92CA00A285CD /* OrderedFoodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedFoodsView.swift; sourceTree = "<group>"; };
+		FF518F5729CB951800A285CD /* OrderedFoodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedFoodViewModel.swift; sourceTree = "<group>"; };
 		FF5391BB29BCAB61004AF07D /* CommentBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBoxView.swift; sourceTree = "<group>"; };
 		FF5391BD29BCAB7F004AF07D /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		FF5391BF29BCAC06004AF07D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -353,7 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				FF9F903E29C5F64D00386B19 /* FoodView */,
-				FFEE49D729BDA7D0003E8466 /* RestaurantBookingView */,
+				FFEE49D729BDA7D0003E8466 /* RestaurantBooking */,
 				FF8BA8B329B85EA500D71861 /* Detail */,
 				FFBB2FF6299FA2C10061771C /* ViewBuilders */,
 				FF41F20E299CAF47003B1745 /* Modifilers */,
@@ -626,6 +630,7 @@
 			children = (
 				FF53992B29C8D2E800CA0F89 /* FoodViewModel.swift */,
 				FF936D4729CAF46D00302F3E /* FoodCardViewModel.swift */,
+				FF518F5729CB951800A285CD /* OrderedFoodViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -636,6 +641,7 @@
 				FF9F904529C601FE00386B19 /* FoodView.swift */,
 				FF9F904129C5F68B00386B19 /* FoodCardView.swift */,
 				FF936D4B29CB210600302F3E /* FoodDetailView.swift */,
+				FF518F5529CB92CA00A285CD /* OrderedFoodsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -724,13 +730,13 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		FFEE49D729BDA7D0003E8466 /* RestaurantBookingView */ = {
+		FFEE49D729BDA7D0003E8466 /* RestaurantBooking */ = {
 			isa = PBXGroup;
 			children = (
 				FFEE49D929BDA7EF003E8466 /* ViewModel */,
 				FFEE49D829BDA7EA003E8466 /* Views */,
 			);
-			path = RestaurantBookingView;
+			path = RestaurantBooking;
 			sourceTree = "<group>";
 		};
 		FFEE49D829BDA7EA003E8466 /* Views */ = {
@@ -841,6 +847,7 @@
 				FF9F904429C5F91700386B19 /* FoodType.swift in Sources */,
 				FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */,
 				FFAFDFA529A8B120002A000B /* RestaurantFilter.swift in Sources */,
+				FF518F5829CB951800A285CD /* OrderedFoodViewModel.swift in Sources */,
 				FF8BA8BD29B8B60400D71861 /* RestaurantDetailViewModel.swift in Sources */,
 				FFDF071529B3B4F400AB0173 /* BookingViewModel.swift in Sources */,
 				FF41F21E299CBD8E003B1745 /* PasswordConfirmField.swift in Sources */,
@@ -888,6 +895,7 @@
 				FF1E1A4129B0FACD00449C89 /* TabBarItem.swift in Sources */,
 				FFAFDFAD29A8CA40002A000B /* StarRatingCollectionView.swift in Sources */,
 				FF1E1A3F29B0FAB000449C89 /* TabBarView.swift in Sources */,
+				FF518F5629CB92CA00A285CD /* OrderedFoodsView.swift in Sources */,
 				FF470E7829A13D7600314934 /* ProcessingView.swift in Sources */,
 				FFF823B929B4A9170092BB73 /* MapViewModel.swift in Sources */,
 				FFAFDFAF29A94D99002A000B /* BookingListView.swift in Sources */,
