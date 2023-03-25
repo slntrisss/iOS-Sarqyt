@@ -54,7 +54,7 @@ class BookViewModel: ObservableObject{
             totalPriceForBooking += (Double(numberOfGuests) * bookingRestaurant.pricePerGuest)
         }
         
-        if selectedTimeInterval != nil,
+        if selectedTimeIntervalIndex != -1,
            let prices = bookingRestaurant.prices[selectedDate.startOfDay]{
             totalPriceForBooking += prices[selectedTimeIntervalIndex]
         }
@@ -102,7 +102,6 @@ class BookViewModel: ObservableObject{
         if let dateArray = bookingRestaurant?.availableBookingTimeInterval[selectedDate.startOfDay]{
             self.dateArray = dateArray
         }
-        selectedTimeInterval = nil
         selectedTimeIntervalIndex = -1
     }
 }

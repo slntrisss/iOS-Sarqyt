@@ -15,7 +15,7 @@ struct RestaurantBookingApp: App {
             ZStack{
                 Color.theme.background
                     .ignoresSafeArea()
-                FoodView(title: "Restaurant", bookVM: vm)
+                RestaurantBookingView(bookVM: vm)
             }
         }
     }

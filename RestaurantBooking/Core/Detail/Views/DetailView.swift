@@ -13,7 +13,6 @@ struct DetailView: View {
     let details: RestaurantDetails
     let restaurant: Restaurant
     @State private var showFullDescription = false
-    @State private var booknowButtonPressed = false
     @State private var showMenu = false
     @State private var totalHeightForCategoriesList = CGFloat.zero
     init(restaurant: Restaurant){
@@ -34,9 +33,9 @@ struct DetailView: View {
         }
         .ignoresSafeArea(.all, edges: .bottom)
         .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView().environmentObject(detailVM)}
-        .navigationDestination(isPresented: $showMenu, destination: {
-            FoodView(title: restaurant.name, bookVM: bookVM)
-        })
+        .navigationDestination(isPresented: $showMenu)
+        {FoodView(title: restaurant.name, bookVM: bookVM)}
+            .navigationDestination(isPresented: $detailVM.bookNow){RestaurantBookingView(bookVM: bookVM)}
         .background(Color.theme.background)
     }
 }
@@ -292,7 +291,7 @@ extension DetailView{
                 .foregroundColor(Color.theme.green)
                 .padding(.horizontal)
             
-            PrimaryButton(buttonLabel: "Book Now", buttonClicked: $booknowButtonPressed)
+            PrimaryButton(buttonLabel: "Book Now", buttonClicked: $detailVM.bookNow)
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 20).fill(.thinMaterial))

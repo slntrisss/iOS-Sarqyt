@@ -14,6 +14,7 @@ class FoodViewModel: ObservableObject{
     @Published private var bookVM: BookViewModel
     @Published var showOrderButton = false
     @Published private(set) var orderButtonTapped = false
+    @Published var showRestaurantBookingAlertView = false
     var tabBars: [String] = []
     
     init(bookVM: BookViewModel){
@@ -64,11 +65,6 @@ class FoodViewModel: ObservableObject{
         }
     }
     
-    func navigateToOrderView(){
-        orderButtonTapped = true
-        print("tapped")
-    }
-    
     var orderButtonLabelText: String{
         var count = 0
         var totalPrice = 0.0
@@ -77,5 +73,21 @@ class FoodViewModel: ObservableObject{
             totalPrice += orderedFood.price
         }
         return "Order \(count) for ₸\(totalPrice.toKZTCurrency())"
+    }
+    
+    //MARK: - Restaurant Booking Alert View
+    func navigateToOrderView(){
+        if bookVM.bookingRestaurant == nil{
+            showRestaurantBookingAlertView = true
+            return
+        }
+    }
+    
+    func openRestaurantBookingViewButtonTapped(){
+        showRestaurantBookingAlertView = false
+    }
+    
+    func cancelOrderButtonTapped(){
+        showRestaurantBookingAlertView = false
     }
 }

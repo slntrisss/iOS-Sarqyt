@@ -27,15 +27,18 @@ struct FoodView: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(pinnedViews: [.sectionHeaders]){
-                contentView
+        ZStack{
+            ScrollView {
+                LazyVStack(pinnedViews: [.sectionHeaders]){
+                    contentView
+                }
             }
+            .onChange(of: bookVM.orderedFoods, perform: { _ in foodVM.displayOrderButton()})
+            .safeAreaInset(edge: .bottom, content: {orderButtonView})
+            .overlay(titleBackground, alignment: .top)
+            .navigationBarBackButtonHidden(true)
+            restaurantBookingAlertView
         }
-        .onChange(of: bookVM.orderedFoods, perform: { _ in foodVM.displayOrderButton()})
-        .safeAreaInset(edge: .bottom, content: {orderButtonView})
-        .overlay(titleBackground, alignment: .top)
-        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -120,5 +123,45 @@ extension FoodView{
         }
         .padding(.horizontal)
         .opacity(foodVM.showOrderButton ? 1.0 : 0.0)
+    }
+    
+    private var restaurantBookingAlertView: some View{
+        AlertBuilder(showAlert: $foodVM.showRestaurantBookingAlertView) {
+            VStack{
+                Text("You have not booked restaurant yet. Before proceeding, please, book a table and time.")
+                    .foregroundColor(Color.theme.accent)
+                    .multilineTextAlignment(.center)
+                    .font(.callout)
+                    .fontWeight(.medium)
+                HStack{
+                    Button{
+                        withAnimation {
+                            foodVM.openRestaurantBookingViewButtonTapped()
+                        }
+                    }label: {
+                        Text("OK")
+                            .foregroundColor(Color.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.theme.green)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                    Button{
+                        withAnimation {
+                            foodVM.cancelOrderButtonTapped()
+                        }
+                    }label: {
+                        Text("Cancel")
+                            .foregroundColor(Color.theme.accent)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.theme.secondaryButton)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                }
+            }
+            .frame(width: 250)
+            .padding()
+        }
     }
 }
