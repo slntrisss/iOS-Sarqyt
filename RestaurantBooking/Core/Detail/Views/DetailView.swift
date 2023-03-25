@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DetailView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var detailVM = RestaurantDetailViewModel()
     @StateObject private var bookVM = BookViewModel()
     let details: RestaurantDetails
@@ -18,7 +19,6 @@ struct DetailView: View {
     init(restaurant: Restaurant){
         self.restaurant = restaurant
         details = restaurant.details
-        bookVM.setupRestaurant(restaurant: restaurant)
     }
     var body: some View {
         VStack{
@@ -37,6 +37,9 @@ struct DetailView: View {
         {FoodView(title: restaurant.name, bookVM: bookVM)}
             .navigationDestination(isPresented: $detailVM.bookNow){RestaurantBookingView(bookVM: bookVM)}
         .background(Color.theme.background)
+        .toolbar(.hidden, for: .tabBar)
+        .navigationBarBackButtonHidden(true)
+        .onAppear{bookVM.setupRestaurant(restaurant: restaurant)}
     }
 }
 
@@ -59,7 +62,7 @@ extension DetailView{
                 .frame(width: UIScreen.main.bounds.width)
             HStack(alignment: .top){
                 Button{
-                    
+                    dismiss()
                 }label: {
                     Image(systemName: "arrow.left")
                         .resizable()
