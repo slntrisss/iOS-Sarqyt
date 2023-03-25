@@ -46,6 +46,7 @@ class FoodCardViewModel: ObservableObject{
                 bookVM.orderedFoods.removeValue(forKey: orderedFood.id)
                 orderedFood.count -= 1
                 orderedFood.price -= orderedFood.food.price
+                orderedFood.specialWishes = ""
             }
         }
     }

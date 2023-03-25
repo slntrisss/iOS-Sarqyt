@@ -15,11 +15,13 @@ struct FoodDetailView: View {
         VStack{
             foodImageView
                 .padding(.vertical)
-            contentView
-            Spacer()
-            bottomBar
+            ScrollView{
+                contentView
+                Spacer()
+                bottomBar
+            }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.large])
     }
 }
 
