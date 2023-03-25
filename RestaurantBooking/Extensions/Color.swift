@@ -25,4 +25,5 @@ struct ThemeColor{
     let secondaryButtonText = Color("SecondaryButtonTextColor")
     let redStatus = Color("RedStatusColor")
     let greenStatus = Color("GreenStatusColor")
+    let yellowColor = Color("YellowColor")
 }

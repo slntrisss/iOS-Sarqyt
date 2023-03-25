@@ -66,6 +66,7 @@ class FoodViewModel: ObservableObject{
     
     func navigateToOrderView(){
         orderButtonTapped = true
+        print("tapped")
     }
     
     var orderButtonLabelText: String{

@@ -115,7 +115,7 @@ extension FoodView{
                 .foregroundColor(Color.theme.accent)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Capsule().fill(.yellow))
+                .background(Capsule().fill(Color.theme.yellowColor))
                 .cornerRadius(10)
         }
         .padding(.horizontal)
