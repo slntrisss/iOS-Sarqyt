@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct OrderedFoodsView: View {
-    @StateObject private var orderedFoodVM: OrderedFoodViewModel
-    init(orderedFoods: [OrderedFood]){
-        self._orderedFoodVM = StateObject(wrappedValue: OrderedFoodViewModel(orderedFoods: orderedFoods))
+struct OrderView: View {
+    @StateObject private var orderVM: OrderViewModel
+    init(orderedFoods: [OrderedFood], bookedRestaurant: Restaurant){
+        self._orderVM = StateObject(wrappedValue: OrderViewModel(orderedFoods: orderedFoods, bookedRestaurant: bookedRestaurant))
     }
     var body: some View {
         ScrollView{
             LazyVStack{
-                ForEach(orderedFoodVM.orderedFoods) { orderedFood in
+                ForEach(orderVM.orderedFoods) { orderedFood in
                     HStack{
                         Image(orderedFood.food.image)
                             .resizable()
@@ -75,7 +75,7 @@ struct OrderedFoodsView: View {
 struct OrderedFoodsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            OrderedFoodsView(orderedFoods: DeveloperPreview.instance.orderedFoods)
+            OrderView(orderedFoods: DeveloperPreview.instance.orderedFoods, bookedRestaurant: DeveloperPreview.instance.restaurant)
         }
     }
 }

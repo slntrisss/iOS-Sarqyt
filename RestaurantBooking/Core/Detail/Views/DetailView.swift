@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DetailView: View {
     @StateObject private var detailVM = RestaurantDetailViewModel()
+    @StateObject private var bookVM = BookViewModel()
     let details: RestaurantDetails
     let restaurant: Restaurant
     @State private var showFullDescription = false
@@ -18,6 +19,7 @@ struct DetailView: View {
     init(restaurant: Restaurant){
         self.restaurant = restaurant
         details = restaurant.details
+        bookVM.setupRestaurant(restaurant: restaurant)
     }
     var body: some View {
         VStack{
@@ -32,7 +34,9 @@ struct DetailView: View {
         }
         .ignoresSafeArea(.all, edges: .bottom)
         .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView().environmentObject(detailVM)}
-        .navigationDestination(isPresented: $showMenu, destination: {FoodView(title: restaurant.name)})
+        .navigationDestination(isPresented: $showMenu, destination: {
+            FoodView(title: restaurant.name, bookVM: bookVM)
+        })
         .background(Color.theme.background)
     }
 }

@@ -5,33 +5,28 @@
 //  Created by Raiymbek Merekeyev on 20.03.2023.
 //
 
-import Combine
+
 import SwiftUI
 
 class FoodViewModel: ObservableObject{
     @Published var foods: [Food] = []
-    @Published var orderedFoods: [String : OrderedFood] = [:]{
-        didSet{
-            self.changeOrderButtonState()
-        }
-    }
     @Published private var selectedTabIndex = 0
-    
+    @Published private var bookVM: BookViewModel
     @Published var showOrderButton = false
+    @Published private(set) var orderButtonTapped = false
     var tabBars: [String] = []
     
-    var cancellables = Set<AnyCancellable>()
-    init(){
+    init(bookVM: BookViewModel){
         tabBars.insert("All", at: 0)
         tabBars.append(contentsOf: FoodType.allCases.map({String($0.rawValue)}))
         foods = DeveloperPreview.instance.foods
+        self.bookVM = bookVM
     }
     
-    func orderButtonTapped(){
-        
-    }
     
     //MARK: - UI components
+    
+    //MARK: TabBar logic
     func selectTabBar(at index: Int, scrollView: ScrollViewProxy){
         withAnimation {
             selectedTabIndex = index
@@ -61,21 +56,25 @@ class FoodViewModel: ObservableObject{
         return nil
     }
     
+    func displayOrderButton(){
+        if !bookVM.orderedFoods.isEmpty{
+            self.showOrderButton = true
+        }else{
+            self.showOrderButton = false
+        }
+    }
+    
+    func navigateToOrderView(){
+        orderButtonTapped = true
+    }
+    
     var orderButtonLabelText: String{
         var count = 0
         var totalPrice = 0.0
-        for (_, orderedFood) in orderedFoods{
+        for (_, orderedFood) in bookVM.orderedFoods{
             count += orderedFood.count
             totalPrice += orderedFood.price
         }
         return "Order \(count) for ₸\(totalPrice.toKZTCurrency())"
-    }
-    
-    private func changeOrderButtonState(){
-        if orderedFoods.isEmpty{
-            showOrderButton = false
-        }else{
-            showOrderButton = true
-        }
     }
 }

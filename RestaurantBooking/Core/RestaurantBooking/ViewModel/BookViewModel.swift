@@ -8,31 +8,65 @@
 import SwiftUI
 
 class BookViewModel: ObservableObject{
-    @Published var book = Book()
-    let futureDateRange = Date.now...
-    var dateArray: [Date] = []
-    @Published var selectedTimeInterval: Date? = nil
+    @Published var selectedDate = Date(){
+        didSet{
+            self.setupAvailableTimeIntervals()
+            self.computeTotalBookingPrice()
+        }
+    }
+    @Published var selectedTimeInterval: Date? = nil{didSet{computeTotalBookingPrice()}}
     @Published var continueButtonTapped = false
-    init(){
-        let calendar = Calendar.current
-        let startDate = Date() // the starting date (now)
-        let endDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: startDate)!) // the end date (midnight of the next day)
-        let interval = TimeInterval(30 * 60) // 30 minutes in seconds
-        
-        
-
-        var currentDate = startDate
-
-        while currentDate <= endDate {
-            dateArray.append(currentDate)
-            currentDate = calendar.date(byAdding: .second, value: Int(interval), to: currentDate)!
+    @Published var numberOfGuests = 1
+    @Published var specialWishes = ""
+    var totalPriceForBooking = 0.0
+    private(set) var selectedTimeIntervalIndex = -1
+    
+    var dateArray: [Date] = []
+    
+    let bookingService = BookingService.shared
+    
+    //Restaurant booking
+    var restaurant: Restaurant? = nil
+    var bookingRestaurant: BookingRestaurant? = nil
+    
+    //Food ordering
+    @Published var orderedFoods: [String : OrderedFood] = [:]
+    
+    func setupBookingRestaurant(){
+        self.bookingRestaurant = bookingService.getBookingRestaurant()
+        setupAvailableTimeIntervals()
+        computeTotalBookingPrice()
+    }
+    
+    func setupRestaurant(restaurant: Restaurant){
+        self.restaurant = restaurant
+    }
+    
+    func setSelectedTimeInterval(index: Int){
+        self.selectedTimeIntervalIndex = index
+        self.selectedTimeInterval = dateArray[index]
+    }
+    
+    private func computeTotalBookingPrice(){
+        guard let bookingRestaurant = bookingRestaurant else{return}
+        totalPriceForBooking = 0
+        if numberOfGuests > 0{
+            totalPriceForBooking += (Double(numberOfGuests) * bookingRestaurant.pricePerGuest)
         }
-
-        // If the last date added to the array is after midnight, remove it
-        if let lastDate = dateArray.last, calendar.isDate(lastDate, inSameDayAs: endDate) == false {
-            dateArray.removeLast()
-        }
         
+        if selectedTimeInterval != nil,
+           let prices = bookingRestaurant.prices[selectedDate.startOfDay]{
+            totalPriceForBooking += prices[selectedTimeIntervalIndex]
+        }
+    }
+
+    //MARK: - UI Components
+    
+    //MARK: RestaurantBookingView
+    var allowedDatesToChoose:ClosedRange<Date>{
+        guard let minDate = bookingRestaurant?.availableBookingTimeInterval.keys.min(),
+              let maxDate = bookingRestaurant?.availableBookingTimeInterval.keys.max() else{return Date()...Date()}
+        return minDate...maxDate
     }
     
     func isSelectedTimeInterval(index: Int) -> Bool{
@@ -40,25 +74,35 @@ class BookViewModel: ObservableObject{
     }
     
     func increaseNumberOfGuests(){
-        if book.numberOfGuests < 10{
-            book.numberOfGuests += 1
+        if let maxNumberOfGuest = bookingRestaurant?.maxGuestNumber, numberOfGuests < maxNumberOfGuest{
+            numberOfGuests += 1
+            computeTotalBookingPrice()
         }
     }
     
     func decreaseNumberOfGuests(){
-        if book.numberOfGuests > 1{
-            book.numberOfGuests -= 1
+        if numberOfGuests > 1{
+            numberOfGuests -= 1
+            computeTotalBookingPrice()
         }
     }
     
     private func constructNumberOfGuestsLabel() -> String{
-        if book.numberOfGuests > 1{
-            return "\(book.numberOfGuests) Guests"
+        if numberOfGuests > 1{
+            return "\(numberOfGuests) Guests"
         }
-        return "\(book.numberOfGuests) Guest"
+        return "\(numberOfGuests) Guest"
     }
     
     func getGuestsLabel() -> String{
         return constructNumberOfGuestsLabel()
+    }
+    
+    private func setupAvailableTimeIntervals(){
+        if let dateArray = bookingRestaurant?.availableBookingTimeInterval[selectedDate.startOfDay]{
+            self.dateArray = dateArray
+        }
+        selectedTimeInterval = nil
+        selectedTimeIntervalIndex = -1
     }
 }

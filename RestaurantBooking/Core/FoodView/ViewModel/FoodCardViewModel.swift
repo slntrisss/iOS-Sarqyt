@@ -9,15 +9,15 @@ import SwiftUI
 
 class FoodCardViewModel: ObservableObject{
     @Published var orderedFood: OrderedFood
-    @Published var foodVM: FoodViewModel
+    @Published var bookVM: BookViewModel
     @Published private(set) var showQuantityLabel: Bool = false
     @Published var showDetail = false
     
     //FoodDetailView parameters
     @Published var detailFoodCount = 1
     
-    init(food: Food, foodVM: FoodViewModel){
-        self.foodVM = foodVM
+    init(food: Food, bookVM: BookViewModel){
+        self.bookVM = bookVM
         self.orderedFood = OrderedFood(id: UUID().uuidString, food: food, count: 0, price: 0, specialWishes: "")
     }
     
@@ -43,7 +43,7 @@ class FoodCardViewModel: ObservableObject{
         }else{
             withAnimation(.easeInOut(duration: 0.4)) {
                 showQuantityLabel = false
-                foodVM.orderedFoods.removeValue(forKey: orderedFood.id)
+                bookVM.orderedFoods.removeValue(forKey: orderedFood.id)
                 orderedFood.count -= 1
                 orderedFood.price -= orderedFood.food.price
             }
@@ -51,10 +51,10 @@ class FoodCardViewModel: ObservableObject{
     }
     
     private func setupOrderedFood(){
-        if let food = foodVM.orderedFoods[orderedFood.id] {
-            foodVM.orderedFoods[food.id] = orderedFood
+        if let food = bookVM.orderedFoods[orderedFood.id] {
+            bookVM.orderedFoods[food.id] = orderedFood
         }else{
-            foodVM.orderedFoods[self.orderedFood.id] = orderedFood
+            bookVM.orderedFoods[self.orderedFood.id] = orderedFood
         }
     }
     

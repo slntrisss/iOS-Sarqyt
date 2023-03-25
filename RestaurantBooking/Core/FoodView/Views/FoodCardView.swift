@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct FoodCardView: View {
-    @ObservedObject private var foodVM: FoodViewModel
+    @ObservedObject private var bookVM: BookViewModel
     @StateObject private var foodCardVM: FoodCardViewModel
     let food: Food
-    init(food: Food, foodVM: FoodViewModel){
+    init(food: Food, bookVM: BookViewModel){
         self.food = food
-        self.foodVM = foodVM
-        self._foodCardVM = StateObject(wrappedValue: FoodCardViewModel(food: food, foodVM: foodVM))
+        self._bookVM = ObservedObject(wrappedValue: bookVM)
+        self._foodCardVM = StateObject(wrappedValue: FoodCardViewModel(food: food, bookVM: bookVM))
     }
     var body: some View {
         content
@@ -30,7 +30,8 @@ struct FoodCardView: View {
 
 struct FoodCard_Previews: PreviewProvider {
     static var previews: some View {
-        FoodCardView(food: DeveloperPreview.instance.food, foodVM: FoodViewModel())
+        FoodCardView(food: DeveloperPreview.instance.food, bookVM: BookViewModel())
+            .environmentObject(BookViewModel())
             .previewLayout(.sizeThatFits)
     }
 }

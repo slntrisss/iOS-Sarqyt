@@ -236,6 +236,23 @@ class DeveloperPreview{
         OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 2, price: 2890, specialWishes: ""),
         OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 3, price: 2890, specialWishes: ""),
     ]
+    
+    var bookingRestaurant: BookingRestaurant{
+        var availableTimeInterval = [Date: [Date]]()
+        let today = Calendar.current.startOfDay(for: Date())
+        let tomorrow = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: Date())!)
+        let theDayAfterTomorrow = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 2, to: Date())!)
+        availableTimeInterval[today] = createTimeInterval(from: createDay(from: Date()))
+        availableTimeInterval[tomorrow] = createTimeInterval(from: tomorrow)
+        availableTimeInterval[theDayAfterTomorrow] = createTimeInterval(from: theDayAfterTomorrow)
+
+        var prices = [Date: [Double]]()
+        for i in availableTimeInterval.keys{
+            createPricesForEachDate(for: &prices, from: availableTimeInterval[i]!, date: i)
+        }
+        
+        return BookingRestaurant(id: UUID().uuidString, maxGuestNumber: 10, availableBookingTimeInterval: availableTimeInterval, prices: prices, pricePerGuest: 1200.0)
+    }
 }
 
 extension DeveloperPreview{
@@ -248,6 +265,44 @@ extension DeveloperPreview{
         let availableRatings = [5, 4, 3, 2, 1]
         let availableFacilities = ["Wi-Fi", "Parking", "Terassa", "Blues"]
         let accomodationTypes = ["Pizzerias", "Cafés", "Fast casual restaurants", "Casual dining restaurants"]
+    }
+    
+    //MARK: - Booking Restaurant date builder
+    private func createPricesForEachDate(for prices: inout [Date: [Double]], from dateArray: [Date], date: Date) {
+        let initialPrice = 1500.0
+        var factor = 0.0
+        prices[date] = [Double]()
+        for _ in dateArray {
+            prices[date]?.append(initialPrice + factor)
+            factor += 250.0
+        }
+    }
+    private func createTimeInterval(from date: Date) -> [Date]{
+        var dateArray = [Date]()
+        let calendar = Calendar.current
+        let startDate = date
+        let endDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: startDate)!)
+        let interval = TimeInterval(30 * 60)
+        var currentDate = startDate
+
+        while currentDate <= endDate {
+            dateArray.append(currentDate)
+            currentDate = calendar.date(byAdding: .second, value: Int(interval), to: currentDate)!
+        }
+
+        // If the last date added to the array is after midnight, remove it
+        if let lastDate = dateArray.last, calendar.isDate(lastDate, inSameDayAs: endDate) == false {
+            dateArray.removeLast()
+        }
+        return dateArray
+    }
+    private func createDay(from date: Date) -> Date{
+        let startDate = date
+
+        let calendar = Calendar.current
+        let minutes = calendar.component(.minute, from: startDate)
+        let roundedMinutes = 5 * Int((Float(minutes) / 5.0).rounded())
+        return calendar.date(bySetting: .minute, value: roundedMinutes, of: startDate)!
     }
 }
 

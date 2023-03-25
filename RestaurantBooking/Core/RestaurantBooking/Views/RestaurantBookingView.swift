@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct RestaurantBookingView: View {
-    @StateObject private var bookVM = BookViewModel()
+    @ObservedObject var bookVM: BookViewModel
+    init(bookVM: BookViewModel) {
+        self.bookVM = bookVM
+        self.bookVM.setupBookingRestaurant()
+    }
     var body: some View {
         ScrollView(.vertical){
             LazyVStack {
@@ -34,7 +38,7 @@ struct RestaurantBookingView: View {
 struct RestaurantBookingView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            RestaurantBookingView()
+            RestaurantBookingView(bookVM: BookViewModel())
         }
     }
 }
@@ -51,7 +55,7 @@ extension RestaurantBookingView{
     }
     
     private var datePickerView: some View{
-        DatePicker("Select a Date", selection: $bookVM.book.date, in: bookVM.futureDateRange, displayedComponents: .date)
+        DatePicker("Select a Date", selection: $bookVM.selectedDate, in: bookVM.allowedDatesToChoose, displayedComponents: .date)
             .tint(Color.theme.green)
             .foregroundColor(Color.theme.green)
             .datePickerStyle(GraphicalDatePickerStyle())
@@ -66,7 +70,7 @@ extension RestaurantBookingView{
             LazyHStack {
                 ForEach(0..<bookVM.dateArray.count, id: \.self) { index in
                     Button{
-                        bookVM.selectedTimeInterval = bookVM.dateArray[index]
+                        bookVM.setSelectedTimeInterval(index: index)
                     }label: {
                         Text(bookVM.dateArray[index].formatted(date: .omitted, time: .shortened))
                             .font(.subheadline.weight(.medium))
@@ -141,7 +145,7 @@ extension RestaurantBookingView{
     }
     
     private var specialWishesView: some View{
-        TextEditor(text: $bookVM.book.specialWishes)
+        TextEditor(text: $bookVM.specialWishes)
             .padding()
             .foregroundColor(Color.theme.secondaryText)
             .cornerRadius(10)
@@ -152,7 +156,7 @@ extension RestaurantBookingView{
     
     private var footerView: some View{
         VStack{
-            Text("Total ₸7,400")
+            Text("\(bookVM.totalPriceForBooking.toKZTCurrency())")
                 .font(.headline)
             PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
         }

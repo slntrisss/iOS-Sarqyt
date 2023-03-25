@@ -9,18 +9,30 @@ import SwiftUI
 
 struct FoodView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var foodVM = FoodViewModel()
+    @ObservedObject private var bookVM: BookViewModel
+    @StateObject private var foodVM: FoodViewModel
+    
     let columns = [
         GridItem(.adaptive(minimum: 150), spacing: 10),
         GridItem(.adaptive(minimum: 150), spacing: 10),
     ]
+    
     let title: String
+    
+    init(title: String, bookVM: BookViewModel){
+        self.title = title
+        self.bookVM = bookVM
+        let foodVM = FoodViewModel(bookVM: bookVM)
+        self._foodVM = StateObject(wrappedValue: foodVM)
+    }
+    
     var body: some View {
         ScrollView {
             LazyVStack(pinnedViews: [.sectionHeaders]){
                 contentView
             }
         }
+        .onChange(of: bookVM.orderedFoods, perform: { _ in foodVM.displayOrderButton()})
         .safeAreaInset(edge: .bottom, content: {orderButtonView})
         .overlay(titleBackground, alignment: .top)
         .navigationBarBackButtonHidden(true)
@@ -29,7 +41,8 @@ struct FoodView: View {
 
 struct FoodView_Previews: PreviewProvider {
     static var previews: some View {
-        FoodView(title: "Restaurant")
+        FoodView(title: "Restaurant", bookVM: BookViewModel())
+            .environmentObject(BookViewModel())
     }
 }
 
@@ -60,7 +73,7 @@ extension FoodView{
         Section(header: tabBarView) {
             LazyVGrid(columns: columns) {
                 ForEach(foodVM.foods) { food in
-                    FoodCardView(food: food, foodVM: foodVM)
+                    FoodCardView(food: food, bookVM: bookVM)
                         .padding(10)
                 }
             }
@@ -95,7 +108,7 @@ extension FoodView{
     
     private var orderButtonView: some View{
         Button{
-            foodVM.orderButtonTapped()
+            foodVM.navigateToOrderView()
         }label: {
             Text(foodVM.orderButtonLabelText)
                 .font(.headline)
