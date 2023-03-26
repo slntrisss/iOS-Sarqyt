@@ -8,6 +8,7 @@
 import MapKit
 import SwiftUI
 
+@MainActor
 class RestaurantDetailViewModel: ObservableObject{
     @Published var restaurant: Restaurant
     @Published var comments: [Comment]

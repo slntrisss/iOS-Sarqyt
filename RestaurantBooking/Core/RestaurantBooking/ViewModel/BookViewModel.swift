@@ -18,6 +18,8 @@ class BookViewModel: ObservableObject{
     @Published var continueButtonTapped = false
     @Published var numberOfGuests = 1
     @Published var specialWishes = ""
+    @Published var showOrderFoodAlertView = false
+    @Published var showRequiredFieldsMissedAlertView = false
     var totalPriceForBooking = 0.0
     private(set) var selectedTimeIntervalIndex = -1
     
@@ -103,5 +105,18 @@ class BookViewModel: ObservableObject{
             self.dateArray = dateArray
         }
         selectedTimeIntervalIndex = -1
+    }
+    
+    func bookButtonTapped(){
+        
+        if selectedTimeIntervalIndex == -1{
+            showRequiredFieldsMissedAlertView = true
+            return
+        }
+        
+        if orderedFoods.isEmpty{
+            showOrderFoodAlertView = true
+            return
+        }
     }
 }

@@ -37,6 +37,7 @@ struct FoodView: View {
             .safeAreaInset(edge: .bottom, content: {orderButtonView})
             .overlay(titleBackground, alignment: .top)
             .navigationBarBackButtonHidden(true)
+            .navigationDestination(isPresented: $foodVM.navigateToRestaurantBookingView) {RestaurantBookingView(bookVM: bookVM)}
             restaurantBookingAlertView
         }
     }

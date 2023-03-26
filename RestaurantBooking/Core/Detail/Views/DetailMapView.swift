@@ -11,14 +11,26 @@ import MapKit
 struct DetailMapView: View {
     @EnvironmentObject private var detailVM: RestaurantDetailViewModel
     var body: some View {
-        Map(coordinateRegion: $detailVM.mapRegion, annotationItems: [detailVM.restaurant]) { restaurant in
-            MapAnnotation(coordinate: restaurant.address.coordinates) {
+        Map(coordinateRegion: region, annotationItems: [AnnotationItem(coordinate: detailVM.restaurant.address.coordinates)]) { restaurant in
+            MapAnnotation(coordinate: restaurant.coordinate) {
                 RestaurantMapAnnotationView()
             }
         }
         .frame(maxWidth: .infinity)
         .frame(height: 100)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+    private var region: Binding<MKCoordinateRegion>{
+        Binding{
+            detailVM.mapRegion
+        }set: { newRegion in
+            DispatchQueue.main.async {
+                detailVM.mapRegion = newRegion
+            }
+        }
+    }
+    private var annotationItems: [AnnotationItem] {
+        return [AnnotationItem(coordinate: detailVM.restaurant.address.coordinates)]
     }
 }
 

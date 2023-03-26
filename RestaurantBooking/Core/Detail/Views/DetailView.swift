@@ -39,7 +39,10 @@ struct DetailView: View {
         .background(Color.theme.background)
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
-        .onAppear{bookVM.setupRestaurant(restaurant: restaurant)}
+        .onAppear{
+            bookVM.setupRestaurant(restaurant: restaurant)
+            bookVM.setupBookingRestaurant()
+        }
     }
 }
 
