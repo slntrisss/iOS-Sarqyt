@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DetailView: View {
     @Environment(\.dismiss) private var dismiss
+    @State var animate = false
     @StateObject private var detailVM = RestaurantDetailViewModel()
     @StateObject private var bookVM = BookViewModel()
     let details: RestaurantDetails
@@ -41,7 +42,7 @@ struct DetailView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear{
             bookVM.setupRestaurant(restaurant: restaurant)
-            bookVM.setupBookingRestaurant()
+//            bookVM.setupBookingRestaurant()
         }
     }
 }
@@ -167,28 +168,25 @@ extension DetailView{
     
     private var titleView: some View{
         HStack(spacing: 0){
-            Button {} label: {
+            Button {
+                dismiss()
+            } label: {
                 Image(systemName: "arrow.left")
                     .font(.title3.bold())
                     .frame(width: detailVM.getSize(), height: detailVM.getSize())
                     .opacity(detailVM.getSize() > 0 ? 1.0 : 0.0)
                     .foregroundColor(Color.theme.accent)
             }
-            Text(restaurant.name)
-                .font(.title.weight(.semibold))
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-            Spacer()
-            Button{
-                showMenu.toggle()
-            }label: {
-                HStack{
-                    Text("Menu")
-                    Image(systemName: "text.book.closed")
-                }
+            ScrollView{
+                Text(restaurant.name+"kjelrjkgvlwerjk")
+                    .fixedSize(horizontal: true, vertical: false)
+                    .font(.title.weight(.semibold))
+                    .offset(x: animate ? -200 : 300)
+                    .frame(maxWidth: .infinity)
+                    .animation(Animation.linear(duration: 8).repeatForever(autoreverses: false), value: animate)
+                    .onAppear{animate.toggle()}
             }
         }
-        .padding(.horizontal)
         .background(Color.theme.background)
         .padding(.bottom, 10)
     }
@@ -202,8 +200,19 @@ extension DetailView{
     
     private var descriptionView: some View{
         VStack(alignment: .leading) {
-            Text("Description")
-                .font(.title3.weight(.medium))
+            HStack{
+                Text("Description")
+                    .font(.title3.weight(.medium))
+                Spacer()
+                Button{
+                    showMenu.toggle()
+                }label: {
+                    HStack{
+                        Text("Menu")
+                        Image(systemName: "text.book.closed")
+                    }
+                }
+            }
             Text(details.description)
                 .lineLimit(showFullDescription ? nil : 3)
                 .font(.callout)
