@@ -5,7 +5,7 @@
 //  Created by Raiymbek Merekeyev on 15.02.2023.
 //
 
-import Foundation
+import UIKit
 
 extension String{
     
@@ -20,6 +20,12 @@ extension String{
         if digits.count == 11 {
             self = digits.replacingOccurrences(of: "(\\d{1})(\\d{3})(\\d{3})(\\d{4})", with: "+$1-($2)-$3-$4", options: .regularExpression, range: nil)
         }
+    }
+    
+    public func widthOfString(usingFont font: UIFont) -> CGFloat {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttributes)
+        return size.width
     }
 }
 

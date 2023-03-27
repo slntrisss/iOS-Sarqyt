@@ -42,6 +42,7 @@ struct DetailView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear{
             bookVM.setupRestaurant(restaurant: restaurant)
+            detailVM.animateRestaurantTitleScroll.toggle()
 //            bookVM.setupBookingRestaurant()
         }
     }
@@ -178,13 +179,12 @@ extension DetailView{
                     .foregroundColor(Color.theme.accent)
             }
             ScrollView{
-                Text(restaurant.name+"kjelrjkgvlwerjk")
+                Text(restaurant.name)
                     .fixedSize(horizontal: true, vertical: false)
                     .font(.title.weight(.semibold))
-                    .offset(x: animate ? -200 : 300)
+                    .offset(x: detailVM.animateRestaurantTitleScroll ? detailVM.restaurantTitleLeftOffsetAnimation : detailVM.restaurantTitleRightOffsetAnimation)
                     .frame(maxWidth: .infinity)
-                    .animation(Animation.linear(duration: 8).repeatForever(autoreverses: false), value: animate)
-                    .onAppear{animate.toggle()}
+                    .animation(Animation.linear(duration: 8).repeatForever(autoreverses: false), value: detailVM.animateRestaurantTitleScroll)
             }
         }
         .background(Color.theme.background)

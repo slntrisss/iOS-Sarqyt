@@ -20,6 +20,7 @@ class RestaurantDetailViewModel: ObservableObject{
     @Published var showAllReviews = false
     let detailComments: [Comment]
     
+    @Published var animateRestaurantTitleScroll = false
     init(){
         let restaurant = DeveloperPreview.instance.restaurant
         self._restaurant = Published(initialValue: restaurant)
@@ -69,5 +70,16 @@ class RestaurantDetailViewModel: ObservableObject{
         case 1:return restaurant.details.commentRatingStatus[4]
         default:return 0
         }
+    }
+    
+    var restaurantTitleLeftOffsetAnimation: CGFloat{
+        let width = restaurant.name.widthOfString(usingFont: UIFont.preferedFont(from: .title.weight(.semibold)))
+        print(restaurant.name)
+        return width > 100 ? width * CGFloat(-4) : 0
+    }
+    
+    var restaurantTitleRightOffsetAnimation: CGFloat{
+        let width = restaurant.name.widthOfString(usingFont: UIFont.preferedFont(from: .title.weight(.semibold)))
+        return width > 100 ? width * CGFloat(4) : 0
     }
 }
