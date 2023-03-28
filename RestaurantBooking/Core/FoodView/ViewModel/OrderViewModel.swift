@@ -9,9 +9,10 @@ import Foundation
 
 class OrderViewModel: ObservableObject{
     @Published var orderedFoods: [OrderedFood]
-    @Published var bookedRestaurant: Restaurant
-    init(orderedFoods: [OrderedFood], bookedRestaurant: Restaurant){
+    @Published var bookingRestaurant: BookingRestaurant
+    @Published var showAllPaymentsMethodLists = false
+    init(orderedFoods: [OrderedFood], bookingRestaurant: BookingRestaurant){
         self.orderedFoods = orderedFoods
-        self.bookedRestaurant = bookedRestaurant
+        self.bookingRestaurant = bookingRestaurant
     }
 }

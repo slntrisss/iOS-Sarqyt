@@ -16,4 +16,7 @@ extension View{
     func profileImageViewModifier() -> some View{
         modifier(ProfileImageViewModifier())
     }
+    func customConfirmDialog<A: View>(isPresented: Binding<Bool>, @ViewBuilder actions: @escaping () -> A) -> some View {
+        return self.modifier(ConfirmationDialogModifier(isPresented: isPresented, actions: actions))
+    }
 }
