@@ -30,9 +30,9 @@ struct OrderView: View {
                 foodTitleView
                 ForEach(orderVM.orderedFoods) { orderedFood in
                     constructOrderedFoodView(orderedFood: orderedFood)
-                    Divider()
                 }
                 .padding(.horizontal)
+                changeOrderedFoodsButton
                 Spacer()
                     .frame(height: 30)
                 paymentMethodView
@@ -109,6 +109,25 @@ extension OrderView{
                 .background(RoundedRectangle(cornerRadius: 10).fill(Color.theme.secondaryText.opacity(0.2)))
             }
         }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 15).fill(Color.theme.field))
+    }
+    private var changeOrderedFoodsButton: some View{
+        HStack{
+            Spacer()
+            Button{
+                
+            }label: {
+                Text("Change")
+                    .padding(.vertical, 7)
+                    .padding(.horizontal, 12)
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.theme.green))
+            }
+        }
+        .padding(.horizontal)
     }
     //MARK: - Restaurant View
     private var restaurantBookingTitle: some View{
