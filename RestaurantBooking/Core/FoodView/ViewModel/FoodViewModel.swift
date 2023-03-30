@@ -15,6 +15,7 @@ class FoodViewModel: ObservableObject{
     @Published var showOrderButton = false
     @Published private(set) var orderButtonTapped = false
     @Published var showRestaurantBookingAlertView = false
+    @Published var showOrderView = false
     @Published var navigateToRestaurantBookingView = false
     var tabBars: [String] = []
     
@@ -78,11 +79,11 @@ class FoodViewModel: ObservableObject{
     
     //MARK: - Restaurant Booking Alert View
     func navigateToOrderView(){
-        if bookVM.bookingRestaurant == nil || bookVM.selectedTimeIntervalIndex == -1{
-            showRestaurantBookingAlertView = true
+        if bookVM.bookedRestaurant == nil{
+            navigateToRestaurantBookingView = true
             return
         }
-        navigateToRestaurantBookingView = true
+        showOrderView = true
     }
     
     func openRestaurantBookingViewButtonTapped(){

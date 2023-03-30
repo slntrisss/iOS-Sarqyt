@@ -20,6 +20,8 @@ class BookViewModel: ObservableObject{
     @Published var specialWishes = ""
     @Published var showOrderFoodAlertView = false
     @Published var showRequiredFieldsMissedAlertView = false
+    @Published var navigateToFoodView = false
+    @Published var navigateToOrderView = false
     var totalPriceForBooking = 0.0
     private(set) var selectedTimeIntervalIndex = -1
     
@@ -33,6 +35,8 @@ class BookViewModel: ObservableObject{
     
     //Food ordering
     @Published var orderedFoods: [String : OrderedFood] = [:]
+    
+    var bookedRestaurant: BookedRestaurant? = nil
     
     func setupBookingRestaurant(){
         self.bookingRestaurant = bookingService.getBookingRestaurant()
@@ -108,15 +112,61 @@ class BookViewModel: ObservableObject{
     }
     
     func bookButtonTapped(){
-        
-        if selectedTimeIntervalIndex == -1{
+        if(!isBookedRestaurantValid()){
             showRequiredFieldsMissedAlertView = true
+        }else if orderedFoods.isEmpty{
+            showOrderFoodAlertView = true
+        }else{
+            navigateToOrderView = true
+            createRestaurantBooking()
+        }
+    }
+    
+    func navigateToOrderViewTapped(){
+        createRestaurantBooking()
+        navigateToOrderView = true
+    }
+    
+    func navigateToFoodViewTapped(){
+        createRestaurantBooking()
+        navigateToFoodView = true
+    }
+    
+    private func createRestaurantBooking(){
+        guard let restaurant = restaurant,
+              let selectedTimeInterval = selectedTimeInterval else{
+            print("Restaurant and/or selectedTimeInterval are not valid or nil.")
             return
         }
         
-        if orderedFoods.isEmpty{
-            showOrderFoodAlertView = true
-            return
+        bookedRestaurant = BookedRestaurant(id: UUID().uuidString, restaurant: restaurant, numberOfGuests: numberOfGuests, selectedDate: selectedDate, selectedTime: selectedTimeInterval, specialWishes: specialWishes)
+    }
+    
+    private func isBookedRestaurantValid() -> Bool{
+        if(selectedTimeInterval == nil && selectedTimeIntervalIndex == -1){
+            return false
         }
+        return true
+    }
+    
+    //MARK: - Order View Dependencies
+    //TODO: Optimize BookedRestaurant for Views
+    var wrappedBookedRestaurant: BookedRestaurant{
+        if let bookedRestaurant = bookedRestaurant{
+            return bookedRestaurant
+        }
+        return DeveloperPreview.instance.bookedRestaurant
+    }
+    
+    var wrappedOrderedFoods: [OrderedFood]{
+        return orderedFoods.map({$0.value})
+    }
+    
+    //MARK: - FoodView dependecies
+    var restaurantNameTitle: String{
+        if let title = restaurant?.name{
+            return title
+        }
+        return ""
     }
 }

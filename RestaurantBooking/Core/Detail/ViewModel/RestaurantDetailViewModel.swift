@@ -74,7 +74,7 @@ class RestaurantDetailViewModel: ObservableObject{
     
     var restaurantTitleLeftOffsetAnimation: CGFloat{
         let width = restaurant.name.widthOfString(usingFont: UIFont.preferedFont(from: .title.weight(.semibold)))
-        print(restaurant.name)
+//        print(restaurant.name)
         return width > 100 ? width * CGFloat(-4) : 0
     }
     

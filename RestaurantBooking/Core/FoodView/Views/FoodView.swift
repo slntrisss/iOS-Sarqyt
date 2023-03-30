@@ -38,7 +38,9 @@ struct FoodView: View {
             .overlay(titleBackground, alignment: .top)
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $foodVM.navigateToRestaurantBookingView) {RestaurantBookingView(bookVM: bookVM)}
-            restaurantBookingAlertView
+            .navigationDestination(isPresented: $foodVM.showOrderView) {
+                OrderView(orderedFoods: bookVM.wrappedOrderedFoods, bookedRestaurant: bookVM.wrappedBookedRestaurant)
+            }
         }
     }
 }

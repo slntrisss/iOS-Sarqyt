@@ -253,6 +253,27 @@ class DeveloperPreview{
         
         return BookingRestaurant(id: UUID().uuidString, maxGuestNumber: 10, availableBookingTimeInterval: availableTimeInterval, prices: prices, pricePerGuest: 1200.0)
     }
+    
+    var bookedRestaurant: BookedRestaurant{
+        return BookedRestaurant(id: UUID().uuidString, restaurant: Restaurant(id: UUID().uuidString,
+                                                                              name: "Palazzo Hotel",
+                                                                              address: Address(city: "Almaty",
+                                                                                               location: "9613 Bellevue St.Athens, GA 30605",
+                                                                                               latitude: 41.8902,
+                                                                                               longitude: 12.4922),
+                                                                              details: RestaurantDetails(
+                                                                                  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor lacus ac lobortis vulputate. Sed eu sodales nunc, vitae tincidunt ligula. Donec sit amet maximus libero. Mauris dignissim elit tellus, sit amet vehicula arcu aliquet ac. Ut vestibulum lacus magna, nec vulputate elit efficitur sit amet. Nunc non vestibulum ipsum. Duis metus nisl, ornare at mauris non, posuere dapibus ante. Ut lobortis suscipit quam, vel tristique augue scelerisque id. Quisque fringilla velit eget magna pulvinar, at commodo nunc finibus. Integer ac sem eu ipsum finibus rhoncus ac et elit.Quisque id mauris eu eros euismod hendrerit. Nam at rhoncus elit. Pellentesque consequat, sapien sit amet faucibus gravida, ex est scelerisque tellus, quis imperdiet ligula metus at metus. Donec maximus tortor urna, eu luctus leo sodales eget. Nam in laoreet eros, at porta nisi. Quisque vitae leo nibh. Aliquam volutpat feugiat tellus, ut luctus nisl sodales et. Quisque placerat massa quis enim lobortis convallis. Nunc aliquam odio sed dictum tincidunt. Maecenas turpis augue, vehicula id condimentum at, condimentum vitae mauris. Nam finibus arcu sed ex consectetur, nec tincidunt libero commodo. Duis ligula magna, posuere sit amet ultrices et, egestas posuere lacus. Aenean dapibus rhoncus tortor nec varius. Vivamus vel enim eu lorem mattis dapibus sit amet non lectus. Aliquam non euismod ligula. Maecenas ullamcorper, enim nec elementum consequat, mauris nisi tempus nisl, fermentum dictum justo quam quis leo.",
+                                                                                  phoneNumber: "7-(747)-469-02-94",
+                                                                                  instragramLink: "https://google.com",
+                                                                                  metaLink: "https://google.com",
+                                                                                  commentRatingStatus: [1,0,0,0,0]),
+                                                                              image: "restaurant1",
+                                                                              rating: 4.8,
+                                                                              reviewAmount: 4563,
+                                                                              reserveAmount: 15000,
+                                                                              bookmarked: false,
+                                                                              bookingStatus: .cancelled), numberOfGuests: 5, selectedDate: Date(), selectedTime: Date(), specialWishes: "under A/C")
+    }
 }
 
 extension DeveloperPreview{

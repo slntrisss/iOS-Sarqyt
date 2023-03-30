@@ -32,9 +32,15 @@ struct RestaurantBookingView: View {
             }
             .navigationTitle("Book")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $bookVM.navigateToOrderView, destination: {
+                OrderView(orderedFoods: bookVM.wrappedOrderedFoods, bookedRestaurant: bookVM.wrappedBookedRestaurant)
+            })
+            .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
+                FoodView(title: bookVM.restaurantNameTitle, bookVM: bookVM)
+            })
             .onAppear{self.bookVM.setupBookingRestaurant()}
             orderFoodAlertView
-            requiredFiledNotFilledAlertView
+            requiredFieldNotFilledAlertView
         }
     }
 }
@@ -179,7 +185,7 @@ extension RestaurantBookingView{
                 HStack{
                     Button{
                         withAnimation {
-                            
+                            bookVM.navigateToFoodView = true
                         }
                     }label: {
                         Text("OK")
@@ -192,6 +198,7 @@ extension RestaurantBookingView{
                     Button{
                         withAnimation {
                             bookVM.showOrderFoodAlertView = false
+                            bookVM.navigateToOrderView = true
                         }
                     }label: {
                         Text("Cancel")
@@ -207,7 +214,7 @@ extension RestaurantBookingView{
         }
     }
     
-    private var requiredFiledNotFilledAlertView: some View{
+    private var requiredFieldNotFilledAlertView: some View{
         AlertBuilder(showAlert: $bookVM.showRequiredFieldsMissedAlertView) {
             VStack{
                 Text("Please, choose an appropriate time for booking.")

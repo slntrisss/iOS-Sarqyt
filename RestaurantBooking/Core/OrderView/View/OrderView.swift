@@ -10,9 +10,9 @@ import SwiftUI
 struct OrderView: View {
     @StateObject private var orderVM: OrderViewModel
     let restaurant: Restaurant
-    init(orderedFoods: [OrderedFood], restaurant: Restaurant, bookingRestaurant: BookingRestaurant){
-        self.restaurant = restaurant
-        self._orderVM = StateObject(wrappedValue: OrderViewModel(orderedFoods: orderedFoods, bookingRestaurant: bookingRestaurant))
+    init(orderedFoods: [OrderedFood], bookedRestaurant: BookedRestaurant){
+        self.restaurant = bookedRestaurant.restaurant
+        self._orderVM = StateObject(wrappedValue: OrderViewModel(orderedFoods: orderedFoods, bookedRestaurant: bookedRestaurant))
     }
     var body: some View {
         ScrollView{
@@ -46,16 +46,16 @@ struct OrderView: View {
         })
         .navigationTitle("Order")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {cancelBookingButton}
-        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {ToolbarItem(placement: .navigationBarLeading) {cancelBookingButton}}
+        .safeAreaInset(edge: .bottom) {confirmButton}
     }
 }
 
 struct OrderedFoodsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            OrderView(orderedFoods: dev.orderedFoods, restaurant: dev.restaurant, bookingRestaurant: dev.bookingRestaurant)
+            OrderView(orderedFoods: dev.orderedFoods, bookedRestaurant: dev.bookedRestaurant)
         }
     }
 }
@@ -182,7 +182,7 @@ extension OrderView{
                     Image(systemName: "minus")
                         .foregroundColor(Color.theme.accent)
                 }
-                Text("1")
+                Text("\(orderVM.bookedRestaurant.numberOfGuests)")
                 Button{
                     
                 }label: {
@@ -203,7 +203,8 @@ extension OrderView{
                 .foregroundColor(Color.theme.accent.opacity(0.8))
             Spacer()
             VStack{
-                Text(Date().formatted(date: .abbreviated, time: .shortened))
+                Text(orderVM.bookingTimeInterval)
+                    .multilineTextAlignment(.center)
                     .font(.callout.weight(.semibold))
                     .foregroundColor(Color.theme.accent.opacity(0.8))
             }
@@ -303,5 +304,20 @@ extension OrderView{
             .padding([.horizontal, .vertical])
         }
         .background(Color.theme.secondaryButton)
+    }
+    //MARK: - confirmButton
+    private var confirmButton: some View{
+        Button{
+//            foodVM.navigateToOrderView()
+        }label: {
+            Text("Confirm order")
+                .font(.headline)
+                .foregroundColor(Color.theme.accent)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Capsule().fill(Color.theme.yellowColor))
+                .cornerRadius(10)
+        }
+        .padding(.horizontal)
     }
 }
