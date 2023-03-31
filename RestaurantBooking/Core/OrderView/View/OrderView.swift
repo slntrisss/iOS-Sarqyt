@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OrderView: View {
     @StateObject private var orderVM: OrderViewModel
+    @Environment(\.dismiss) private var dismiss
     let restaurant: Restaurant
     init(orderedFoods: [OrderedFood], bookedRestaurant: BookedRestaurant){
         self.restaurant = bookedRestaurant.restaurant
@@ -63,7 +64,7 @@ struct OrderedFoodsView_Previews: PreviewProvider {
 extension OrderView{
     private var cancelBookingButton: some View{
         Button{
-            
+            dismiss()
         }label: {
             Image(systemName: "xmark")
                 .font(.headline)
