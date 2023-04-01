@@ -14,6 +14,22 @@ class DeveloperPreview{
     
     private init(){}
     
+    let cards = [
+        PaymentCard(id: UUID().uuidString, cardNumber: "8794_6574_1239_0475_1239", expirationMonth: "03", expirationYear: "24", cvv: "584", inUse: false),
+        PaymentCard(id: UUID().uuidString, cardNumber: "8794_6574_1239_0475_6067", expirationMonth: "02", expirationYear: "25", cvv: "564", inUse: true),
+        PaymentCard(id: UUID().uuidString, cardNumber: "8794_6574_1239_0475_8794", expirationMonth: "11", expirationYear: "23", cvv: "184", inUse: false),
+    ]
+    
+    let user = User(
+        id: UUID().uuidString,
+        profileImage: "john-wick",
+        firstName: "Adilzhan",
+        lastName: "Rymbayev",
+        email: "ruslan.zhakiyanov@mail.ru",
+        birthDate: Calendar.current.date(from: DateComponents(calendar: Calendar.current, year: 2001, month: 8, day: 2))!,
+        phoneNumber: "7-(747)-469-02-94",
+        gender: "Male")
+    
     let restaurant = Restaurant(id: UUID().uuidString,
                                 name: "Palazzo Hotel",
                                 address: Address(city: "Almaty",
@@ -174,6 +190,7 @@ class DeveloperPreview{
             date: Date(),
             user: User(
                 id: UUID().uuidString,
+                profileImage: "john-wick",
                 firstName: "Ruslan",
                 lastName: "Zhakiyanov",
                 email: "ruslan.zhakiyanov@mail.ru",
@@ -187,6 +204,7 @@ class DeveloperPreview{
             date: Date(),
             user: User(
                 id: UUID().uuidString,
+                profileImage: "john-wick",
                 firstName: "Azamat",
                 lastName: "Bektursyn",
                 email: "ruslan.zhakiyanov@mail.ru",
@@ -200,6 +218,7 @@ class DeveloperPreview{
             date: Date(),
             user: User(
                 id: UUID().uuidString,
+                profileImage: "",
                 firstName: "Adilzhan",
                 lastName: "Rymbayev",
                 email: "ruslan.zhakiyanov@mail.ru",

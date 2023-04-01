@@ -9,6 +9,7 @@ import Foundation
 
 struct User: Identifiable, Codable{
     let id: String
+    let profileImage: String
     let firstName: String
     let lastName: String
     let email: String

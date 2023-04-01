@@ -18,6 +18,7 @@ struct Book: Identifiable, Codable{
     init(){
         self.id = UUID().uuidString
         self.user = User(id: UUID().uuidString,
+                         profileImage: "john-wick",
                          firstName: "",
                          lastName: "",
                          email: "",

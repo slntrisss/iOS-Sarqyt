@@ -11,6 +11,7 @@ import Combine
 struct AddPaymentMethodView: View {
     @StateObject private var addPaymentVM = AddPaymentViewModel()
     @FocusState private var inFocus: AddPaymentViewModel.CardFieldsFocus?
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ScrollView{
             Image("logo")
@@ -37,15 +38,24 @@ struct AddPaymentMethodView: View {
                     .multilineTextAlignment(.center)
                 }
             }
-            .navigationTitle("Payment Method")
-            .navigationBarTitleDisplayMode(.inline)
             .foregroundColor(.white)
             .padding(.horizontal)
             .frame(maxWidth: .infinity)
             .frame(height: 200)
             .background(RoundedRectangle(cornerRadius: 15).fill(Color.theme.green))
         }
-        .toolbar{ToolbarItem(placement: .keyboard) {doneButton}}
+        .navigationTitle("Add Payment Method")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .keyboard) {doneButton}
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button{
+                    dismiss()
+                }label: {
+                    Text("Cancel").foregroundColor(.blue)
+                }
+            }
+        }
         .padding(.horizontal)
     }
 }

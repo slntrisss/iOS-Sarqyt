@@ -27,7 +27,7 @@ struct MainView: View {
                 }
             ProfileView()
                 .tabItem {
-                    Image(systemName: "house.fill")
+                    Image(systemName: "person")
                     Text("Profile")
                 }
         }

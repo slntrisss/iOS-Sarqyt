@@ -13,6 +13,7 @@ struct ProfileImageView: View {
         if let image = image {
             Image(uiImage: image)
                 .resizable()
+                .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
                 .shadow(color: .black, radius: 1, x: 3, y: 0)
