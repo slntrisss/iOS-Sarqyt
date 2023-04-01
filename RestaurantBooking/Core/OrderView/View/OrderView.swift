@@ -40,6 +40,7 @@ struct OrderView: View {
                 Spacer()
                     .frame(height: 30)
             }
+            .background(Color.theme.background)
             summaryView
         }
         .customConfirmDialog(isPresented: $orderVM.showAllPaymentsMethodLists, actions: {

@@ -9,14 +9,13 @@ import SwiftUI
 
 struct BookingCardView: View {
     let restaurant: Restaurant
-    
+    @EnvironmentObject private var bookingVM : BookingViewModel
     @State private var cancelBookingTapped = false
     @State private var viewTicketTapped = false
     
     @State private var dismissCancelBookingDialogTapped = false
     @State private var cancelBooking = false
     
-    @State private var showDetail = false
     var body: some View {
         VStack(alignment: .leading){
             HStack(spacing: 15){
@@ -50,16 +49,18 @@ struct BookingCardView: View {
                     .padding(.vertical, 5)
                 ongoingActionButtons
                     .onChange(of: dismissCancelBookingDialogTapped, perform: {_ in cancelBookingTapped.toggle()})
+                    .onChange(of: viewTicketTapped) { _ in
+                        bookingVM.viewTicketButtonTapped(restaurantId: restaurant.id)
+                    }
             }
-        }
-        .onTapGesture {
-            showDetail = true
         }
         .sheet(isPresented: $cancelBookingTapped, content: {
             CancelBookingView(dismissButtonTapped: $dismissCancelBookingDialogTapped,
                               cancelButtonTapped: $cancelBooking)})
-        .navigationDestination(isPresented: $showDetail) {
-            DetailView(restaurant: restaurant)
+        .sheet(isPresented: $viewTicketTapped) {
+            NavigationStack{
+                ReserveInfoView(detail: DeveloperPreview.instance.reservedRestaurantDetail)
+            }
         }
     }
 }

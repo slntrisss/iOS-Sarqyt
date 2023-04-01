@@ -14,6 +14,7 @@ struct BookingListView: View {
         ScrollView(.vertical, showsIndicators: false){
             ForEach(bookingList) { list in
                 BookingCardView(restaurant: list)
+                    .environmentObject(bookingVM)
                     .padding(.bottom, 40)
             }
         }

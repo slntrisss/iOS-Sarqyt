@@ -274,6 +274,14 @@ class DeveloperPreview{
                                                                               bookmarked: false,
                                                                               bookingStatus: .cancelled), numberOfGuests: 5, selectedDate: Date(), selectedTime: Date(), specialWishes: "under A/C")
     }
+    
+    let reservedRestaurantDetail = ReservedRestaurantDetail(id: UUID().uuidString, restaurantName: "Eldora", restaurantImage: "restaurant1", city: "Almaty", location: "Momushuly, 83", tableNumber: 55, reservedDate: "Mar 31", reservedTime: "18:00", numberOfGuests: 3, specialWishes: "Lit the fire on cake", orderedFoods: [
+        OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 1, price: 2890, specialWishes: ""),
+        OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 2, price: 2890, specialWishes: ""),
+        OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 5, price: 2890, specialWishes: ""),
+        OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 2, price: 2890, specialWishes: ""),
+        OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: .salad, price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 3, price: 2890, specialWishes: ""),
+    ], restaurantBookingPrice: 1700.0, orderedFoodsPrice: 6700.0, servicePrice: 514.0, totalPrice: 8445.0)
 }
 
 extension DeveloperPreview{
