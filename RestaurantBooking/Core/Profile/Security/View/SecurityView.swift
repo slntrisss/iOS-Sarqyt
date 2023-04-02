@@ -12,16 +12,21 @@ struct SecurityView: View {
     var body: some View {
         VStack(spacing: 20){
             createNavLinkField(text: "Change password")
-            HStack{
-                Text("Face ID")
-                Toggle("", isOn: $securityVM.faceIdEnbaled)
+            Divider()
+            if securityVM.supportsFaceID{
+                HStack{
+                    Text("Face ID")
+                    Toggle("", isOn: $securityVM.faceIdEnbaled)
+                }
+                Divider()
             }
-            .opacity(securityVM.supportsFaceID ? 1.0 : 0.0)
-            HStack{
-                Text("Touch ID")
-                Toggle("", isOn: $securityVM.touchIdEnabled)
+            if securityVM.supportsTouchID{
+                HStack{
+                    Text("Touch ID")
+                    Toggle("", isOn: $securityVM.touchIdEnabled)
+                }
+                Divider()
             }
-            .opacity(securityVM.supportsTouchID ? 1.0 : 0.0)
             Spacer()
         }
         .font(.headline)
@@ -49,6 +54,7 @@ extension SecurityView{
             Spacer()
             Image(systemName: "chevron.right")
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             securityVM.changePassword = true
         }
