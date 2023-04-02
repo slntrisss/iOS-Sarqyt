@@ -45,6 +45,9 @@ struct DetailView: View {
             detailVM.animateRestaurantTitleScroll.toggle()
 //            bookVM.setupBookingRestaurant()
         }
+        .sheet(isPresented: $detailVM.showRateView, content: {
+            RateRestaurantView(restaurant: restaurant, selectedStars: $detailVM.selectedStars, comment: $detailVM.comment, rate: $detailVM.rate, cancelRating: $detailVM.showRateView)
+        })
     }
 }
 
@@ -80,7 +83,7 @@ extension DetailView{
                 Spacer()
                 HStack(spacing: 0){
                     Button{
-                        
+                        detailVM.showRateView = true
                     }label: {
                         Image(systemName: "hand.thumbsup")
                             .resizable()

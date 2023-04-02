@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RateRestaurantView: View {
     let restaurant: Restaurant
-    @State private var selectedStars = -1
+    @Binding var selectedStars: Int
     @Binding var comment: String
     @Binding var rate: Bool
     @Binding var cancelRating: Bool
@@ -18,6 +18,7 @@ struct RateRestaurantView: View {
             VStack{
                 Capsule().fill(Color.theme.secondaryText.opacity(0.5))
                     .frame(width: 40, height: 5)
+                    .padding(.vertical)
                 Text("Rate the Restaurant")
                     .font(.title3.weight(.semibold))
                 Divider()
@@ -40,6 +41,7 @@ struct RateRestaurantView: View {
 struct RateRestaurantView_Previews: PreviewProvider {
     static var previews: some View {
         RateRestaurantView(restaurant: dev.restaurant,
+                           selectedStars: .constant(-1),
                            comment: .constant(""),
                            rate: .constant(false),
                            cancelRating: .constant(false))
@@ -67,7 +69,6 @@ extension RateRestaurantView{
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.theme.sheetBackground.ignoresSafeArea(.all))
-        .presentationDetents([.height(350)])
     }
     private var ratingView: some View{
         HStack(spacing: 2){

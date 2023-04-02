@@ -21,6 +21,11 @@ class RestaurantDetailViewModel: ObservableObject{
     let detailComments: [Comment]
     
     @Published var animateRestaurantTitleScroll = false
+    
+    @Published var showRateView = false
+    @Published var comment = ""
+    @Published var selectedStars = -1
+    @Published var rate = false
     init(){
         let restaurant = DeveloperPreview.instance.restaurant
         self._restaurant = Published(initialValue: restaurant)
