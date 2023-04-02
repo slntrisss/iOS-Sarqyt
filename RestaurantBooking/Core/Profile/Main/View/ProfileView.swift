@@ -30,7 +30,7 @@ struct ProfileView: View {
                     }
                 createNavLinkField(iconName: "bell", text: "Notifications", fontColor: Color.theme.accent)
                     .onTapGesture {
-                        profileVM.navigateToNotificationView = true
+                        profileVM.openSettings()
                     }
                 createNavLinkField(iconName: "lock.shield", text: "Security", fontColor: Color.theme.accent)
                     .onTapGesture {
@@ -44,9 +44,6 @@ struct ProfileView: View {
         })
         .navigationDestination(isPresented: $profileVM.navigateToPaymentView, destination: {
             PaymentView()
-        })
-        .navigationDestination(isPresented: $profileVM.navigateToEditProfileView, destination: {
-            EditProfileView()
         })
         .navigationDestination(isPresented: $profileVM.navigateToSecurityView, destination: {
             SecurityView()
