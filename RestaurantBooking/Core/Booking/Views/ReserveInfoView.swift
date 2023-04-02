@@ -11,6 +11,7 @@ struct ReserveInfoView: View {
     let detail: ReservedRestaurantDetail
     let maxHeight: CGFloat = UIScreen.main.bounds.height * 0.35
     @State private var show = false
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ScrollView(.vertical){
             VStack(alignment: .leading){
@@ -40,6 +41,9 @@ struct ReserveInfoView: View {
         .navigationTitle("Reserve Info")
         .navigationBarTitleDisplayMode(.inline)
         .ignoresSafeArea(.all, edges: .bottom)
+        .toolbar{
+            ToolbarItem(placement: .navigationBarTrailing) { dismissButton }
+        }
     }
 }
 
@@ -200,5 +204,13 @@ extension ReserveInfoView{
             Color.theme.background.gradient
                 .shadow(.inner(color: .white, radius: -1, x: 0, y: 1))
         )
+    }
+    private var dismissButton: some View{
+        Button{
+            dismiss()
+        }label: {
+            Image(systemName: "xmark")
+                .font(.headline.weight(.heavy))
+        }
     }
 }
