@@ -8,17 +8,7 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var confirmPassword = ""
-    @State private var rememberMe = false
-    @State private var signUpButtonClicked = false
-    
-    @State private var signInWithGoogleTapped = false
-    @State private var signInWithMetaTapped = false
-    @State private var signInWithAppleTapped = false
-    
-    @State private var showPassword: Bool = false
+    @StateObject private var signUpVM = SignUpViewModel()
     
     var body: some View {
         ScrollView{
@@ -28,17 +18,17 @@ struct SignUpView: View {
                 .padding(.vertical)
             
             HStack{
-                RemembeMeToggle(isOn: $rememberMe)
+                RemembeMeToggle(isOn: $signUpVM.rememberMe)
                 Spacer()
             }
             
-            PrimaryButton(buttonLabel: "Sign Up", buttonClicked: $signUpButtonClicked)
+            PrimaryButton(buttonLabel: "Sign Up", buttonClicked: $signUpVM.signUpButtonClicked)
                 .padding(.vertical)
             
             DividerWithText(text: "or continue with")
                 .padding(.vertical)
             
-            SignInWithView(signInWithGoogleTapped: $signInWithGoogleTapped, signInWithMetaTapped: $signInWithMetaTapped, signInWithAppleTapped: $signInWithAppleTapped)
+            SignInWithView(signInWithGoogleTapped: $signUpVM.signInWithGoogleTapped, signInWithMetaTapped: $signUpVM.signInWithMetaTapped, signInWithAppleTapped: $signUpVM.signInWithAppleTapped)
             
             
         }
@@ -67,9 +57,9 @@ extension SignUpView{
     
     private var fields: some View{
         VStack(spacing: 20){
-            EmailField(email: $email)
-            PasswordField(password: $password, showPassword: $showPassword)
-            PasswordConfirmField(password: $confirmPassword, showPassword: $showPassword)
+            EmailField(email: $signUpVM.email)
+            PasswordField(password: $signUpVM.password, showPassword: $signUpVM.showPassword)
+            PasswordConfirmField(password: $signUpVM.confirmPassword, showPassword: $signUpVM.showPassword)
         }
     }
 }

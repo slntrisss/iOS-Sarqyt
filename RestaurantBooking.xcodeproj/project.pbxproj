@@ -82,6 +82,7 @@
 		FF737E8029D3471700E5F602 /* ConfirmationDialogModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF737E7F29D3471700E5F602 /* ConfirmationDialogModifier.swift */; };
 		FF83D1E229D9723100081B94 /* LogoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83D1E129D9723100081B94 /* LogoutView.swift */; };
 		FF83D1E529D9777300081B94 /* RateRestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83D1E429D9777300081B94 /* RateRestaurantView.swift */; };
+		FF83D1E729D98C3900081B94 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83D1E629D98C3900081B94 /* SignUpViewModel.swift */; };
 		FF841F1E29CA37DA00CA7593 /* OrderedFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */; };
 		FF874ED229D1EA2900C42306 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF874ED129D1EA2900C42306 /* UIFont.swift */; };
 		FF8BA8B729B864DB00D71861 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8BA8B629B864DB00D71861 /* DetailView.swift */; };
@@ -204,6 +205,7 @@
 		FF737E7F29D3471700E5F602 /* ConfirmationDialogModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialogModifier.swift; sourceTree = "<group>"; };
 		FF83D1E129D9723100081B94 /* LogoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
 		FF83D1E429D9777300081B94 /* RateRestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateRestaurantView.swift; sourceTree = "<group>"; };
+		FF83D1E629D98C3900081B94 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedFood.swift; sourceTree = "<group>"; };
 		FF874ED129D1EA2900C42306 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		FF8BA8B629B864DB00D71861 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -514,6 +516,7 @@
 		FF41F219299CBAA1003B1745 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				FF83D1E829D98C3D00081B94 /* ViewModel */,
 				FF41F21A299CBAA9003B1745 /* View */,
 			);
 			path = SignUp;
@@ -806,6 +809,14 @@
 				FF83D1E429D9777300081B94 /* RateRestaurantView.swift */,
 			);
 			path = Restaurant;
+			sourceTree = "<group>";
+		};
+		FF83D1E829D98C3D00081B94 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FF83D1E629D98C3900081B94 /* SignUpViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		FF8BA8B329B85EA500D71861 /* Detail */ = {
@@ -1152,6 +1163,7 @@
 				FFAFDFAD29A8CA40002A000B /* StarRatingCollectionView.swift in Sources */,
 				FF1E1A3F29B0FAB000449C89 /* TabBarView.swift in Sources */,
 				FF518F5629CB92CA00A285CD /* OrderView.swift in Sources */,
+				FF83D1E729D98C3900081B94 /* SignUpViewModel.swift in Sources */,
 				FF68D24629D8A16D0064ECF9 /* EditProfileViewModel.swift in Sources */,
 				FF470E7829A13D7600314934 /* ProcessingView.swift in Sources */,
 				FF68D25F29D8B3B30064ECF9 /* PaymentViewModel.swift in Sources */,
