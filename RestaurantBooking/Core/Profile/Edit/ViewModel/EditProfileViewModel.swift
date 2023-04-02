@@ -23,4 +23,18 @@ class EditProfileViewModel: ObservableObject{
     @Published var takeAPhoto = false
     @Published var showErrorAlert = false
     let genders = ["Male", "Female"]
+    @Published var user: User?
+    
+    init(user: User? = nil){
+        self.user = user
+        if let user = user{
+            self.firstName = user.firstName
+            self.lastName = user.lastName
+            self.dateOfBirth = user.birthDate
+            self.email = user.email
+            self.phoneNumber = user.phoneNumber
+            self.selectedGender = user.gender
+            self.selectedImage = UIImage(named: user.profileImage)
+        }
+    }
 }

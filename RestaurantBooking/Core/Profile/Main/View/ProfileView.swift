@@ -41,7 +41,7 @@ struct ProfileView: View {
                 .padding([.horizontal, .vertical])
             }
             .navigationDestination(isPresented: $profileVM.navigateToEditProfileView, destination: {
-                EditProfileView()
+                EditProfileView(user: profileVM.user)
             })
             .navigationDestination(isPresented: $profileVM.navigateToPaymentView, destination: {
                 PaymentView()

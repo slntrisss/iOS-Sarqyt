@@ -9,7 +9,10 @@ import SwiftUI
 
 struct EditProfileView: View {
     @FocusState private var inFocus: Field?
-    @StateObject private var profileVM = EditProfileViewModel()
+    @StateObject private var profileVM: EditProfileViewModel
+    init(user: User?){
+        self._profileVM = StateObject(wrappedValue: EditProfileViewModel(user: user))
+    }
     var body: some View {
         ZStack{
             ScrollView(.vertical, showsIndicators: false) {
@@ -46,8 +49,8 @@ struct EditProfileView: View {
 
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView{
-            ProfileSetupView()
+        NavigationStack{
+            EditProfileView(user: dev.user)
         }
     }
 }
