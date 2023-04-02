@@ -14,6 +14,9 @@ class ProfileViewModel: ObservableObject{
     @Published var navigateToSecurityView = false
     @Published var navigateToNotificationView = false
     
+    @Published var showLogoutView: Bool = false
+    @Published var logout: Bool = false
+    
     var user: User? = nil
     
     init(){

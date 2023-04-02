@@ -49,6 +49,9 @@ struct ProfileView: View {
             .navigationDestination(isPresented: $profileVM.navigateToSecurityView, destination: {
                 SecurityView()
             })
+            .sheet(isPresented: $profileVM.showLogoutView, content: {
+                LogoutView(logout: $profileVM.logout, cancel: $profileVM.showLogoutView)
+            })
             .safeAreaInset(edge: .bottom) { logoutButton }
         }
     }
@@ -76,7 +79,7 @@ extension ProfileView{
     }
     private var logoutButton: some View{
         Button{
-            
+            profileVM.showLogoutView = true
         }label: {
             HStack{
                 Image(systemName: "rectangle.portrait.and.arrow.right")
