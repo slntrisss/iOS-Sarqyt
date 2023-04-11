@@ -10,6 +10,8 @@ import Foundation
 struct RestaurantFilter{
     var city: String
     var category: String
+    var fromPrice: Double
+    var toPrice: Double
     var rating: Double
     var facility: String
     var accomodationType: String

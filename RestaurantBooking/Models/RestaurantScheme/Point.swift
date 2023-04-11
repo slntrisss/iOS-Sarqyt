@@ -7,21 +7,43 @@
 
 import Foundation
 
+struct RestaurantScheme: Codable{
+    let id: String
+    let numberOfRows: Int
+    let numberOfColumns: Int
+    let floors: [Floor]
+}
+
+struct Floor: Codable{
+    let id: String
+    let groups: [MapItemGroup]
+    let walls: [Point]
+    let map: [[String]]
+}
+
+struct MapItemGroup: Codable, Identifiable{
+    let id: String
+    let reserved: Bool
+    let tableItem: [MapItem]
+    let chairItems: [MapItem]
+    let sofaItems: [MapItem]
+}
+
+struct MapItem: Codable, Identifiable{
+    var id: String
+    var type: MapItemType
+    let items: [Point]
+}
+
 struct Point: Codable{
     let x: Int
     let y: Int
 }
 
-struct ItemGroup: Codable{
-    let id: String
-    let numberOfRows: Int
-    let numberOfColumns: Int
-    let tables: [Point]
-    let chairs: [Point]
-    let sofas: [Point]
-}
-
-struct RestaurantScheme: Codable{
-    let itemGroups: [ItemGroup]
-    let walls: [Point]
+enum MapItemType: Character, Codable{
+    case TABLE = "t"
+    case CHAIR = "c"
+    case SOFA = "s"
+    case WALL = "w"
+    case empty = "*"
 }

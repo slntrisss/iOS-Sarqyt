@@ -21,10 +21,25 @@ class HomeViewModel: ObservableObject{
     
     @Published var restaurants: [Restaurant] = []
     
+    let restaurantDataService = RestaurantDataService.shared
+    @Published var isLoading = true
     var cancellables = Set<AnyCancellable>()
     
     init(){
         recentSearchHistory = DeveloperPreview.instance.restaurants
+        allRestaurants = DeveloperPreview.instance.restaurants
+//        addSubscribers()
+    }
+    
+    private func addSubscribers(){
+        restaurantDataService.getAllRestaurants()
+        restaurantDataService.$allRestaurants
+            .sink { [weak self] restaurants in
+                self?.allRestaurants = restaurants
+                self?.isLoading = false
+            }
+            .store(in: &cancellables)
+
     }
     
     func deleteSearchHistory(at offsets: IndexSet){
