@@ -393,6 +393,71 @@ class DeveloperPreview{
                     ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"], // 8
                     ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"]  // 9
                 ]
+            ),
+            Floor(
+                id: "2",
+                groups:
+                    [MapItemGroup(
+                        id: "7",
+                        reserved: false,
+                        tableItem: [MapItem(id: UUID().uuidString, type: .TABLE, items: [Point(x: 1, y: 1)])],
+                        chairItems: [MapItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 1, y: 2)]), MapItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 2, y: 1)])],
+                        sofaItems: [MapItem(id: UUID().uuidString, type: .SOFA, items: [Point(x: 0, y: 1), Point(x: 0, y: 0), Point(x: 1, y: 0)])]),
+                     MapItemGroup(id: "8",
+                                  reserved: true,
+                                   tableItem: [
+                                     MapItem(id: UUID().uuidString,
+                                                       type: .TABLE,
+                                                       items: [
+                                                         Point(x: 3, y: 4),
+                                                         Point(x: 4, y: 4),
+                                                         Point(x: 5, y: 4),
+                                                         Point(x: 6, y: 4),
+                                                       ])
+                                   ],
+                                   chairItems: [
+                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 3)]),
+                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 3)]),
+                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 7, y: 4)]),
+                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 2, y: 4)]),
+                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 5)]),
+                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 5)])
+                                   ],
+                                   sofaItems: []),
+                     MapItemGroup(id: "9",
+                                  reserved: false,
+                                   tableItem: [
+                                     MapItem(id: UUID().uuidString,
+                                                       type: .TABLE,
+                                                       items: [
+                                                         Point(x: 8, y: 1),
+                                                         Point(x: 9, y: 1),
+                                                         Point(x: 10, y: 1),
+                                                         Point(x: 11, y: 1),
+                                                         Point(x: 11, y: 2),
+                                                         Point(x: 11, y: 3),
+                                                         Point(x: 10, y: 3),
+                                                         Point(x: 9, y: 3),
+                                                         Point(x: 8, y: 3),
+                                                         Point(x: 8, y: 2),
+                                                       ])
+                                   ],
+                                   chairItems: [],
+                                   sofaItems: [])],
+                walls: [],
+                map: [
+//                    0    1    2    3    4    5    6    7    8    9   10    11
+                    ["s", "s", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w"], // 0
+                    ["s", "t", "c", "*", "*", "*", "*", "*", "t", "t", "t", "t"], // 1
+                    ["w", "c", "*", "*", "*", "*", "*", "*", "t", "*", "*", "t"], // 2
+                    ["w", "*", "*", "*", "c", "c", "*", "*", "t", "t", "t", "t"], // 3
+                    ["w", "*", "c", "t", "t", "t", "t", "c", "*", "*", "*", "w"], // 4
+                    ["w", "*", "*", "*", "c", "c", "*", "*", "*", "*", "*", "w"], // 5
+                    ["w", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "w"], // 6
+                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"], // 7
+                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"], // 8
+                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"]  // 9
+                ]
             )
         ]
     )

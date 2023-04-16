@@ -15,6 +15,24 @@ struct SchemeView: View {
     @State private var lastOffset: CGSize = .zero
     var body: some View {
         VStack{
+            ScrollView(.horizontal){
+                HStack{
+                    ForEach(schemeVM.scheme.floors.indices, id: \.self){ index in
+                        Button{
+                            schemeVM.floorNumberTapped(at: index)
+                        }label: {
+                            Text(schemeVM.floorNumberFor(index: index))
+                                .font(.headline)
+                                .foregroundColor(schemeVM.forgroundColorForButton(at: index))
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 12)
+                                .background(RoundedRectangle(cornerRadius: 10)
+                                    .fill(schemeVM.backgroundColorForButton(at: index)))
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
             ZStack{
                 ZStack{ scheme }
                 .offset(currentOffset)
