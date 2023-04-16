@@ -36,8 +36,10 @@ class SchemeViewModel: ObservableObject{
         }
     }
     
-    func getTablePhotos(with id: String){
+    func getTablePhotos(with id: String, index: Int){
         self.tableInfo = DeveloperPreview.instance.tableInfo
+        showTableInfoSheet = true
+        groupItemTapped(at: index)
     }
     
     func floorNumberTapped(at index: Int){

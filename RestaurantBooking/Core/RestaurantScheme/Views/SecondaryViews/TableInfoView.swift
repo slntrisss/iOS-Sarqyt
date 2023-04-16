@@ -11,7 +11,6 @@ struct TableInfoView: View {
     @ObservedObject var schemeVM: SchemeViewModel
     init(schemeVM: SchemeViewModel) {
         self.schemeVM = schemeVM
-        schemeVM.getTablePhotos(with: UUID().uuidString)
     }
     var body: some View {
         if let tableInfo = schemeVM.tableInfo{

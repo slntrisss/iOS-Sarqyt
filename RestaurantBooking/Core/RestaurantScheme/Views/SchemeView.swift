@@ -76,8 +76,7 @@ extension SchemeView{
                 print("Tapped \(schemeVM.selectedIndex)")
             }
             .onLongPressGesture {
-                schemeVM.groupItemTapped(at: index)
-                schemeVM.showTableInfoSheet = true
+                schemeVM.getTablePhotos(with: schemeVM.scheme.floors[schemeVM.selectedFloor].groups[index].id, index: index)
             }
         }
     }
