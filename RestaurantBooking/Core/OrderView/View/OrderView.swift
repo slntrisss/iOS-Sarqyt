@@ -42,6 +42,7 @@ struct OrderView: View {
             }
             .background(Color.theme.background)
             summaryView
+                .ignoresSafeArea(.all, edges: .bottom)
         }
         .customConfirmDialog(isPresented: $orderVM.showAllPaymentsMethodLists, actions: {
             allPaymentMethodsList
@@ -266,6 +267,7 @@ extension OrderView{
     //MARK: - Summary
     private var summaryView: some View{
         VStack{
+            summarySeparatorView()
             VStack(spacing: 10){
                 HStack{
                     Text("Summary")
@@ -306,6 +308,29 @@ extension OrderView{
             .padding([.horizontal, .vertical])
         }
         .background(Color.theme.secondaryButton)
+    }
+    
+    private func summarySeparatorView() -> some View{
+        let bounds = UIScreen.main.bounds.width
+        
+        var x:CGFloat = 0
+        var y: CGFloat = 0
+        
+        let factor: CGFloat = 18
+        var d: CGFloat = -1
+        return Path{ path in
+            path.move(to: CGPoint(x: x, y: y))
+            while(x < bounds){
+                x += 17.0
+                d *= -1
+                y += (factor * d)
+                path.addLine(to: CGPoint(x: x, y: y))
+            }
+        }
+        .foregroundStyle(
+            Color.theme.background.gradient
+                .shadow(.inner(color: .white, radius: -1, x: 0, y: 1))
+        )
     }
     //MARK: - confirmButton
     private var confirmButton: some View{
