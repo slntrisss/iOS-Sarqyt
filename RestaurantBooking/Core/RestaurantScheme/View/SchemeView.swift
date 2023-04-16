@@ -29,19 +29,7 @@ struct SchemeView: View {
         .offset(currentOffset)
         .scaleEffect(1 + currentAmount + lastAmount)
         .contentShape(Rectangle())
-        .gesture(
-            DragGesture()
-                .onChanged{ value in
-                    withAnimation(.easeInOut(duration: 0.5)){
-                        currentOffset = value.translation
-                    }
-                }
-                .onEnded{ value  in
-                    withAnimation(.easeInOut(duration: 0.5)){
-                        currentOffset = value.translation
-                    }
-                }
-        )
+        .gesture(dragGesture)
         .gesture(magnificationGesture)
     }
 }
@@ -61,6 +49,20 @@ extension SchemeView{
             .onEnded{ value in
                 lastAmount += currentAmount
                 currentAmount = 0
+            }
+    }
+    
+    private var dragGesture: some Gesture{
+        DragGesture()
+            .onChanged{ value in
+                withAnimation(.easeInOut(duration: 0.5)){
+                    currentOffset = value.translation
+                }
+            }
+            .onEnded{ value  in
+                withAnimation(.easeInOut(duration: 0.5)){
+                    currentOffset = value.translation
+                }
             }
     }
 }
