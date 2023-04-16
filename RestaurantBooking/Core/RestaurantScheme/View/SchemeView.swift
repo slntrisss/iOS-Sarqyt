@@ -14,23 +14,24 @@ struct SchemeView: View {
     @State private var currentOffset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
     var body: some View {
-        ZStack{
-            ForEach(0..<schemeVM.scheme.floors[schemeVM.selectedFloor].groups.count, id: \.self) { index in
-                GroupView(
-                    mapItemGroup:schemeVM.scheme.floors[schemeVM.selectedFloor].groups[index],
-                    isSelected: $schemeVM.mapItemGroupSelectOptions[index]
-                )
-                .onTapGesture {
-                    schemeVM.groupItemTapped(at: index)
-                    print("Tapped \(schemeVM.selectedIndex)")
-                }
+        VStack{
+            ZStack{
+                ZStack{ scheme }
+                .offset(currentOffset)
+                .scaleEffect(1 + currentAmount + lastAmount)
+                .contentShape(Rectangle())
+                .gesture(dragGesture)
+                .gesture(magnificationGesture)
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 380)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .strokeBorder(Color.theme.secondaryText.opacity(0.5), lineWidth: 3)
+            )
+            .padding(.horizontal)
         }
-        .offset(currentOffset)
-        .scaleEffect(1 + currentAmount + lastAmount)
-        .contentShape(Rectangle())
-        .gesture(dragGesture)
-        .gesture(magnificationGesture)
     }
 }
 
@@ -41,6 +42,20 @@ struct SchemeView_Previews: PreviewProvider {
 }
 
 extension SchemeView{
+    
+    private var scheme: some View{
+        ForEach(0..<schemeVM.scheme.floors[schemeVM.selectedFloor].groups.count, id: \.self) { index in
+            GroupView(
+                mapItemGroup:schemeVM.scheme.floors[schemeVM.selectedFloor].groups[index],
+                isSelected: $schemeVM.mapItemGroupSelectOptions[index]
+            )
+            .onTapGesture {
+                schemeVM.groupItemTapped(at: index)
+                print("Tapped \(schemeVM.selectedIndex)")
+            }
+        }
+    }
+    
     private var magnificationGesture: some Gesture{
         MagnificationGesture()
             .onChanged{ value in
