@@ -399,7 +399,6 @@
 				FF41F1E8299C939B003B1745 /* ContentView.swift */,
 				FF43292129A2539000AEA0EA /* RestaurantBooking.entitlements */,
 				FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */,
-				FFB2350229E14C460053FD59 /* RestaurantScheme */,
 				FFBB2FED299F83FF0061771C /* Services */,
 				FF470E6A29A129C200314934 /* Models */,
 				FF41F1F4299C9780003B1745 /* Core */,
@@ -421,6 +420,7 @@
 		FF41F1F4299C9780003B1745 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				FFB2350229E14C460053FD59 /* RestaurantScheme */,
 				FF94C75629D5CA5400BF3072 /* OrderView */,
 				FF9F903E29C5F64D00386B19 /* FoodView */,
 				FFEE49D729BDA7D0003E8466 /* RestaurantBooking */,

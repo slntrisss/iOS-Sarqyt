@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SchemeView: View {
     @StateObject private var schemeVM = SchemeViewModel()
-    
+    @State private var currentAmount: CGFloat = 0
+    @State private var lastAmount: CGFloat = 0
     var body: some View {
         ZStack{
             ForEach(0..<schemeVM.scheme.floors[schemeVM.selectedFloor].groups.count, id: \.self) { index in
@@ -23,6 +24,18 @@ struct SchemeView: View {
                 }
             }
         }
+        .scaleEffect(1 + currentAmount + lastAmount)
+        .contentShape(Rectangle())
+        .gesture(
+            MagnificationGesture()
+                .onChanged{ value in
+                    currentAmount = value - 1
+                }
+                .onEnded{ value in
+                    lastAmount += currentAmount
+                    currentAmount = 0
+                }
+        )
         .offset(x: 10)
     }
 }

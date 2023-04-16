@@ -34,9 +34,6 @@ struct SchemeMapView: View {
                         path.addLine(to: CGPoint(x: CGFloat(point.x) * sizePerCell,
                                                  y: CGFloat(point.y) * sizePerCell))
                         
-                        print("\(joinPoint.point.x) \(joinPoint.point.y)")
-                        print("\(point.x) \(point.y)\n")
-                        
                     }
                     
                     points.append(point)
