@@ -614,6 +614,7 @@
 		FF470E6A29A129C200314934 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FF90C25829EC6104005FAF4C /* Restaurant */,
 				FF59750529D75406009E15D0 /* RestaurantScheme */,
 				FF470E7429A1322200314934 /* Auth */,
 				FFB2350929E163430053FD59 /* Others */,
@@ -861,6 +862,14 @@
 			path = SecondaryViews;
 			sourceTree = "<group>";
 		};
+		FF90C25829EC6104005FAF4C /* Restaurant */ = {
+			isa = PBXGroup;
+			children = (
+				FF2CAB6829A38EA400E062E1 /* Restaurant.swift */,
+			);
+			path = Restaurant;
+			sourceTree = "<group>";
+		};
 		FF94C75629D5CA5400BF3072 /* OrderView */ = {
 			isa = PBXGroup;
 			children = (
@@ -975,7 +984,6 @@
 			isa = PBXGroup;
 			children = (
 				FF2CAB6029A3820100E062E1 /* Category.swift */,
-				FF2CAB6829A38EA400E062E1 /* Restaurant.swift */,
 				FFAFDFA429A8B120002A000B /* RestaurantFilter.swift */,
 				FFDF071129B3972F00AB0173 /* BookingStatus.swift */,
 				FF5391BD29BCAB7F004AF07D /* Comment.swift */,

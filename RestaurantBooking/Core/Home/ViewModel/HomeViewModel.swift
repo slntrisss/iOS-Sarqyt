@@ -28,7 +28,6 @@ class HomeViewModel: ObservableObject{
     init(){
         recentSearchHistory = DeveloperPreview.instance.restaurants
         allRestaurants = DeveloperPreview.instance.restaurants
-//        addSubscribers()
     }
     
     private func addSubscribers(){
