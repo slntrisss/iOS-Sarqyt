@@ -19,7 +19,7 @@ struct DetailView: View {
     @State private var totalHeightForCategoriesList = CGFloat.zero
     init(restaurant: Restaurant){
         self.restaurant = restaurant
-        details = restaurant.details
+        details = DeveloperPreview.instance.details
     }
     var body: some View {
         VStack{

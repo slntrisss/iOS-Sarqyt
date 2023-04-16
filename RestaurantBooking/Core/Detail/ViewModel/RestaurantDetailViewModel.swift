@@ -11,6 +11,7 @@ import SwiftUI
 @MainActor
 class RestaurantDetailViewModel: ObservableObject{
     @Published var restaurant: Restaurant
+    @Published var details: RestaurantDetails
     @Published var comments: [Comment]
     @Published var mapRegion: MKCoordinateRegion
     @Published var bookNow = false
@@ -28,7 +29,9 @@ class RestaurantDetailViewModel: ObservableObject{
     @Published var rate = false
     init(){
         let restaurant = DeveloperPreview.instance.restaurant
+        let details = DeveloperPreview.instance.details
         self._restaurant = Published(initialValue: restaurant)
+        self._details = Published(initialValue: details)
         let coordinates = restaurant.address.coordinates
         mapRegion = MKCoordinateRegion(center: coordinates, span: mapSpan)
         
@@ -68,11 +71,11 @@ class RestaurantDetailViewModel: ObservableObject{
     
     func getStatus(for rating: Int) -> Double{
         switch rating{
-        case 5:return restaurant.details.commentRatingStatus[0]
-        case 4:return restaurant.details.commentRatingStatus[1]
-        case 3:return restaurant.details.commentRatingStatus[2]
-        case 2:return restaurant.details.commentRatingStatus[3]
-        case 1:return restaurant.details.commentRatingStatus[4]
+        case 5:return details.commentRatingStatus[0]
+        case 4:return details.commentRatingStatus[1]
+        case 3:return details.commentRatingStatus[2]
+        case 2:return details.commentRatingStatus[3]
+        case 1:return details.commentRatingStatus[4]
         default:return 0
         }
     }

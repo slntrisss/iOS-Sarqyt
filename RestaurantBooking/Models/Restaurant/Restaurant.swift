@@ -12,7 +12,6 @@ struct Restaurant: Codable, Identifiable, Equatable, Hashable{
     let id: String
     let name: String
     let address: Address
-    let details: RestaurantDetails
     let image: String
     let rating: Double
     let reviewAmount: Int
@@ -36,7 +35,8 @@ struct Address: Codable, Hashable{
     }
 }
 
-struct RestaurantDetails: Codable, Hashable{
+struct RestaurantDetails: Codable, Hashable, Identifiable{
+    let id: String
     let description: String
     static let categories:[String] = ["Italian's kitchen", "China's kitchen", "Children room", "pizza", "Vegetarian"]
     let phoneNumber: String
