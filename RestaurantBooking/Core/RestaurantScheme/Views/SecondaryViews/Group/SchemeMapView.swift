@@ -51,12 +51,12 @@ struct SchemeMapView: View {
     
     private var colorForItem: Color{
         if disabled{
-            return Color.theme.secondaryText.opacity(0.3)
+            return .red.opacity(0.8)
         }
         else if isSelected{
-            return Color.blue.opacity(0.4)
+            return Color.theme.blueColor
         }
-        return Color.theme.green.opacity(0.4)
+        return Color.theme.secondaryText.opacity(0.3)
     }
     
     private var sizePerItem: CGFloat{

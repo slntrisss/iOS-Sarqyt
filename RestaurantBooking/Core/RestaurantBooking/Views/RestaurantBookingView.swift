@@ -25,6 +25,7 @@ struct RestaurantBookingView: View {
                     timePickerView
                     numberOfGuestsLabel
                     numberOfGuestsView
+                    reserveTableView
                     specialWishLabel
                     specialWishesView
                     footerView
@@ -96,6 +97,11 @@ extension RestaurantBookingView{
             }
             .padding(.vertical)
         }
+    }
+    
+    private var reserveTableView: some View{
+        SchemeView()
+            .padding(.top, 20)
     }
     
     private var numberOfGuestsLabel: some View{

@@ -11,7 +11,10 @@ class SchemeViewModel: ObservableObject{
     let scheme: RestaurantScheme
     @Published var selectedFloor = 0
     @Published var mapItemGroupSelectOptions: [Bool]
+    @Published var showTableInfoSheet = false
     var selectedIndex = -1
+    
+    @Published var tableInfo: TableInfo? = nil
     init(){
         scheme = DeveloperPreview.instance.scheme
         mapItemGroupSelectOptions = Array(repeating: false, count: scheme.floors[0].groups.count)
@@ -33,10 +36,12 @@ class SchemeViewModel: ObservableObject{
         }
     }
     
+    func getTablePhotos(with id: String){
+        self.tableInfo = DeveloperPreview.instance.tableInfo
+    }
+    
     func floorNumberTapped(at index: Int){
-//        withAnimation(.spring()){
-            selectedFloor = index
-//        }
+        selectedFloor = index
     }
     
     

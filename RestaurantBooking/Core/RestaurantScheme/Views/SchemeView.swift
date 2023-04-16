@@ -49,6 +49,10 @@ struct SchemeView: View {
                     .strokeBorder(Color.theme.secondaryText.opacity(0.5), lineWidth: 3)
             )
             .padding(.horizontal)
+            .sheet(isPresented: $schemeVM.showTableInfoSheet) {
+                TableInfoView(schemeVM: schemeVM)
+                    .presentationDetents([.fraction(0.8)])
+            }
         }
     }
 }
@@ -70,6 +74,10 @@ extension SchemeView{
             .onTapGesture {
                 schemeVM.groupItemTapped(at: index)
                 print("Tapped \(schemeVM.selectedIndex)")
+            }
+            .onLongPressGesture {
+                schemeVM.groupItemTapped(at: index)
+                schemeVM.showTableInfoSheet = true
             }
         }
     }
