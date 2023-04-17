@@ -116,6 +116,9 @@
 		FFB2350829E14F7F0053FD59 /* SchemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2350729E14F7F0053FD59 /* SchemeViewModel.swift */; };
 		FFB2350C29E16FCE0053FD59 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2350B29E16FCE0053FD59 /* GroupView.swift */; };
 		FFB2351629E19D810053FD59 /* SchemeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2351529E19D810053FD59 /* SchemeMapView.swift */; };
+		FFB2596B29ED3CD4005B679B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2596A29ED3CD4005B679B /* Constants.swift */; };
+		FFB2596E29ED464B005B679B /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2596D29ED464B005B679B /* ImageService.swift */; };
+		FFB2597029ED4CE2005B679B /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2596F29ED4CE2005B679B /* NetworkingManager.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -247,6 +250,9 @@
 		FFB2350729E14F7F0053FD59 /* SchemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemeViewModel.swift; sourceTree = "<group>"; };
 		FFB2350B29E16FCE0053FD59 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		FFB2351529E19D810053FD59 /* SchemeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemeMapView.swift; sourceTree = "<group>"; };
+		FFB2596A29ED3CD4005B679B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FFB2596D29ED464B005B679B /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		FFB2596F29ED4CE2005B679B /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -403,6 +409,7 @@
 				FF41F1E8299C939B003B1745 /* ContentView.swift */,
 				FF43292129A2539000AEA0EA /* RestaurantBooking.entitlements */,
 				FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */,
+				FFB2596929ED3CC2005B679B /* Utilities */,
 				FFBB2FED299F83FF0061771C /* Services */,
 				FF470E6A29A129C200314934 /* Models */,
 				FF41F1F4299C9780003B1745 /* Core */,
@@ -1011,9 +1018,27 @@
 			path = Group;
 			sourceTree = "<group>";
 		};
+		FFB2596929ED3CC2005B679B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				FFB2596A29ED3CD4005B679B /* Constants.swift */,
+				FFB2596F29ED4CE2005B679B /* NetworkingManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		FFB2596C29ED4639005B679B /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				FFB2596D29ED464B005B679B /* ImageService.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
 		FFBB2FED299F83FF0061771C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				FFB2596C29ED4639005B679B /* Tools */,
 				FFB22A8629DB1D8C00EDFEB0 /* Networking */,
 				FF68D25629D8B0000064ECF9 /* Security */,
 				FF6E671829CF12D500B3FE7D /* Booking */,
@@ -1177,12 +1202,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFB2596B29ED3CD4005B679B /* Constants.swift in Sources */,
 				FF2CAB6929A38EA400E062E1 /* Restaurant.swift in Sources */,
 				FF8BA8B729B864DB00D71861 /* DetailView.swift in Sources */,
 				FF470E6929A0DE1E00314934 /* NewPasswordView.swift in Sources */,
 				FF41F203299C9E92003B1745 /* PrimaryButton.swift in Sources */,
 				FF737E8029D3471700E5F602 /* ConfirmationDialogModifier.swift in Sources */,
 				FF936D4829CAF46D00302F3E /* FoodCardViewModel.swift in Sources */,
+				FFB2597029ED4CE2005B679B /* NetworkingManager.swift in Sources */,
 				FFDF071729B3C1D100AB0173 /* CancelBookingView.swift in Sources */,
 				FF41F20B299CAA99003B1745 /* EmailField.swift in Sources */,
 				FFDF071229B3972F00AB0173 /* BookingStatus.swift in Sources */,
@@ -1259,6 +1286,7 @@
 				FF83D1E729D98C3900081B94 /* SignUpViewModel.swift in Sources */,
 				FF68D24629D8A16D0064ECF9 /* EditProfileViewModel.swift in Sources */,
 				FF470E7829A13D7600314934 /* ProcessingView.swift in Sources */,
+				FFB2596E29ED464B005B679B /* ImageService.swift in Sources */,
 				FF68D25F29D8B3B30064ECF9 /* PaymentViewModel.swift in Sources */,
 				FFB2350829E14F7F0053FD59 /* SchemeViewModel.swift in Sources */,
 				FFF823B929B4A9170092BB73 /* MapViewModel.swift in Sources */,

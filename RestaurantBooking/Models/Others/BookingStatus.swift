@@ -11,4 +11,5 @@ enum BookingStatus: String, Codable{
     case ongoing = "Paid"
     case completed = "Completed"
     case cancelled = "Cancelled & Refunded"
+    case none = ""
 }

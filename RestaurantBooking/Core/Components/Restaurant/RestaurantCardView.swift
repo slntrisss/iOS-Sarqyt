@@ -52,7 +52,7 @@ struct RestaurantCardView_Previews: PreviewProvider {
 extension RestaurantCardView{
     
     private var cardImage: some View{
-        Image(restaurant.image)
+        Image(uiImage: restaurant.wrappedImage)
             .resizable()
             .frame(width: 100, height: 100)
             .clipShape(RoundedRectangle(cornerRadius: 20))

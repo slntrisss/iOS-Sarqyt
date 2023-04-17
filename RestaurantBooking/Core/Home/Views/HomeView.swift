@@ -28,6 +28,9 @@ struct HomeView: View {
                     }
                 }
             }
+            .refreshable {
+                homeVM.refreshHomeViewData()
+            }
             .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Hello, Raim 👋")
             .toolbar {
@@ -142,7 +145,7 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.allRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
+            Carousel(list: homeVM.recommendedRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
                 RestaurantBannerView(restaurant: restaurant)
             }
             .frame(height: UIScreen.main.bounds.height * 0.51)
@@ -167,7 +170,7 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.allRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
+            Carousel(list: homeVM.promotedRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
                 RestaurantPromotionsView(restaurant: restaurant)
             }
             .frame(height: 200)

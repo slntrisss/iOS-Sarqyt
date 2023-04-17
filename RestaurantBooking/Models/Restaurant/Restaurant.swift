@@ -22,6 +22,10 @@ struct Restaurant: Codable, Identifiable, Equatable, Hashable{
     static func == (lhs: Restaurant, rhs: Restaurant) -> Bool {
         return lhs.id == rhs.id
     }
+    
+    var wrappedImage: UIImage{
+        return ImageService.convertBase64ToImage(base64: image)
+    }
 }
 
 struct Address: Codable, Hashable{

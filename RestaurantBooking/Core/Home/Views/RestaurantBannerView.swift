@@ -10,7 +10,7 @@ import SwiftUI
 struct RestaurantBannerView: View {
     let restaurant: Restaurant
     var body: some View {
-        Image(restaurant.image)
+        Image(uiImage: restaurant.wrappedImage)
             .resizable()
             .scaledToFill()
             .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.height * 0.5)

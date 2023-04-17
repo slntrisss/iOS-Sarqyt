@@ -12,7 +12,11 @@ class HomeViewModel: ObservableObject{
     @Published var filterVM = FilterViewModel()
     
     @Published var searchQuery = ""
-    @Published var allRestaurants: [Restaurant] = DeveloperPreview.instance.restaurants
+    
+    @Published var allRestaurants: [Restaurant] = []
+    @Published var promotedRestaurants: [Restaurant] = []
+    @Published var recommendedRestaurants: [Restaurant] = []
+    
     @Published var recentSearchHistory: [Restaurant] = []
     
     @Published var showRecommended = false
@@ -21,24 +25,13 @@ class HomeViewModel: ObservableObject{
     
     @Published var restaurants: [Restaurant] = []
     
-    let restaurantDataService = RestaurantDataService.shared
+    let restaurantDataService = RestaurantDataService.instance
     @Published var isLoading = true
     var cancellables = Set<AnyCancellable>()
     
     init(){
         recentSearchHistory = DeveloperPreview.instance.restaurants
-        allRestaurants = DeveloperPreview.instance.restaurants
-    }
-    
-    private func addSubscribers(){
-        restaurantDataService.getAllRestaurants()
-        restaurantDataService.$allRestaurants
-            .sink { [weak self] restaurants in
-                self?.allRestaurants = restaurants
-                self?.isLoading = false
-            }
-            .store(in: &cancellables)
-
+        addSubscribers()
     }
     
     func deleteSearchHistory(at offsets: IndexSet){
@@ -70,5 +63,32 @@ class HomeViewModel: ObservableObject{
         if let index = restaurants.firstIndex(where: {$0.id == restaurant.id}){
             allRestaurants[index].bookmarked.toggle()
         }
+    }
+    
+    //MARK: - Networking
+    private func addSubscribers(){
+        restaurantDataService.getAllRestaurants()
+        
+        restaurantDataService.$recommendedRestaurants
+            .sink { [weak self] restaurants in
+                self?.recommendedRestaurants = restaurants
+            }
+            .store(in: &cancellables)
+        
+        restaurantDataService.$promotedRestaurants
+            .sink { [weak self] restaurants in
+                self?.promotedRestaurants = restaurants
+            }
+            .store(in: &cancellables)
+        
+        restaurantDataService.$restaurantList
+            .sink { [weak self] restaurants in
+                self?.allRestaurants = restaurants
+            }
+            .store(in: &cancellables)
+    }
+    
+    func refreshHomeViewData(){
+        restaurantDataService.getAllRestaurants()
     }
 }

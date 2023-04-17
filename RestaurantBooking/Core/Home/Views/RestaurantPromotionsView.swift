@@ -11,7 +11,7 @@ struct RestaurantPromotionsView: View {
     let restaurant: Restaurant
     var body: some View {
         VStack{
-            Image(restaurant.image)
+            Image(uiImage: restaurant.wrappedImage)
                 .resizable()
                 .frame(maxWidth: .infinity, maxHeight: 200)
                 .overlay(

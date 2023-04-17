@@ -15,9 +15,7 @@ struct RestaurantBookingApp: App {
             ZStack{
                 Color.theme.background
                     .ignoresSafeArea()
-                NavigationStack{
-                    DetailView(restaurant: DeveloperPreview.instance.restaurant)
-                }
+                MainView()
             }
         }
     }

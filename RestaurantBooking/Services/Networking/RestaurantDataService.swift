@@ -10,36 +10,61 @@ import Foundation
 
 class RestaurantDataService{
     
-    @Published var allRestaurants: [Restaurant] = []
+    @Published var recommendedRestaurants: [Restaurant] = []
+    @Published var promotedRestaurants: [Restaurant] = []
+    @Published var restaurantList: [Restaurant] = []
+    var cancellables = Set<AnyCancellable>()
     
-    static let shared = RestaurantDataService()
-    var cancellabels = Set<AnyCancellable>()
+    static let instance = RestaurantDataService()
     
     private init(){ }
     
     func getAllRestaurants(){
-        guard let url = URL(string: "http://localhost:3000/allRestaurants") else {return}
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-            URLSession.shared.dataTaskPublisher(for: url)
-                .subscribe(on: DispatchQueue.global(qos: .background))
-                .receive(on: DispatchQueue.main)
-                .tryMap { (data, response) -> Data in
-                    guard
-                        let response = response as? HTTPURLResponse,
-                        response.statusCode >= 200 && response.statusCode < 300 else{
-                        throw URLError(.badServerResponse)
-                    }
-                    return data
-                }
-                .decode(type: [Restaurant].self, decoder: JSONDecoder())
-                .sink { (completion) in
-                    print("Completion: \(completion)")
-                } receiveValue: { [weak self] restaurants in
-                    self?.allRestaurants = restaurants
-                    print(restaurants.count)
-                }
-                .store(in: &self.cancellabels)
+        getRecommendedPreviewRestaurants()
+        getPromotedRestaurants()
+        getRestaurants()
+    }
+    
+    private func getRecommendedPreviewRestaurants(){
+        guard let url = URL(string: Constants.BASE_URL + Constants.RECOMMENDATIONS_PREVIEW) else {
+            print("BAD URL: \(Constants.BASE_URL)\(Constants.RECOMMENDATIONS_PREVIEW)")
+            return
         }
+        
+        NetworkingManager.download(url: url)
+            .decode(type: [Restaurant].self, decoder: JSONDecoder())
+            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
+                self?.recommendedRestaurants = restaurants
+            })
+            .store(in: &cancellables)
+
+    }
+    
+    private func getPromotedRestaurants(){
+        guard let url = URL(string: Constants.BASE_URL + Constants.PROMOTIONS_PREVIEW) else {
+            print("BAD URL: \(Constants.BASE_URL)\(Constants.PROMOTIONS_PREVIEW)")
+            return
+        }
+        
+        NetworkingManager.download(url: url)
+            .decode(type: [Restaurant].self, decoder: JSONDecoder())
+            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
+                self?.promotedRestaurants = restaurants
+            })
+            .store(in: &cancellables)
+    }
+    
+    private func getRestaurants(){
+        guard let url = URL(string: Constants.BASE_URL + Constants.ALL_RESTAURANTS) else {
+            print("BAD URL: \(Constants.BASE_URL)\(Constants.ALL_RESTAURANTS)")
+            return
+        }
+        
+        NetworkingManager.download(url: url)
+            .decode(type: [Restaurant].self, decoder: JSONDecoder())
+            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
+                self?.restaurantList = restaurants
+            })
+            .store(in: &cancellables)
     }
 }
