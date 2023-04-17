@@ -24,7 +24,7 @@ class RestaurantDataService{
     func getAllRestaurants(){
         getRecommendedPreviewRestaurants()
         getPromotedRestaurants()
-        getRestaurantList(offset: 1, limit: 5)
+        getRestaurantList(offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
     }
     
     private func getRecommendedPreviewRestaurants(){

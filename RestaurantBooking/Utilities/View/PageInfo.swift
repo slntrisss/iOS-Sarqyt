@@ -11,11 +11,11 @@ class PageInfo{
     
     var itemsFromEndTreshold: Int
     var itemsLoaded: Int
-    var page: Int
+    var offset: Int
     
-    init(itemsLoaded: Int, itemsFromEndTreshold: Int = 5, page: Int = 1) {
+    init(itemsLoaded: Int, itemsFromEndTreshold: Int = 5, offset: Int = 1) {
         self.itemsFromEndTreshold = itemsFromEndTreshold
         self.itemsLoaded = itemsLoaded
-        self.page = page
+        self.offset = offset
     }
 }

@@ -18,6 +18,6 @@ class Constants{
     static let PROMOTED_RESTAURANTS = "/Home/PromotedRestaurants"
     static let BOOKMARK_RESTAURANT = "/Home/Restaurants/Bookmark"
     
-    static let DEFAULT_OFFSET = 1
+    static let DEFAULT_OFFSET = 0
     static let DEFAULT_LIMIT = 5
 }

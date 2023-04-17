@@ -32,7 +32,6 @@ struct HomeView: View {
                 homeVM.refreshHomeViewData()
             }
             .scrollDismissesKeyboard(.immediately)
-            .navigationTitle("Hello, Raim 👋")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {navLeadingItems}
                 ToolbarItem(placement: .navigationBarTrailing) {navTrailingItems}
