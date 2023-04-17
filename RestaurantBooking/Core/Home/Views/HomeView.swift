@@ -38,15 +38,15 @@ struct HomeView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {navTrailingItems}
             }
             .navigationDestination(isPresented: $homeVM.showRecommended) {
-                RestaurantListView(title: "Recommended")
+                RestaurantListView(title: "Recommended", listType: .recommended)
                     .environmentObject(homeVM)
             }
             .navigationDestination(isPresented: $homeVM.showPromoted) {
-                RestaurantListView(title: "Promoted")
+                RestaurantListView(title: "Promoted", listType: .promoted)
                     .environmentObject(homeVM)
             }
             .navigationDestination(isPresented: $homeVM.showBookmarked) {
-                RestaurantListView(title: "Bookmarked")
+                RestaurantListView(title: "Bookmarked", listType: .bookmarked)
                     .environmentObject(homeVM)
             }
             .sheet(isPresented: $showFilterView) {

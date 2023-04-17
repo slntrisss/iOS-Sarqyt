@@ -42,4 +42,20 @@ class NetworkingManager{
             print(error.localizedDescription)
         }
     }
+    
+    static func constructURLWith(parameters: [URLQueryItem], url: URL) throws -> URL{
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+            print("Failed to create components from URL: \(url)")
+            throw URLError(.badURL)
+        }
+        
+        components.queryItems = parameters
+        
+        guard let urlWithParameters = components.url else{
+            print("Failed to create url with parameters: \(parameters.description)")
+            throw NetworkingError.unkown
+        }
+        
+        return urlWithParameters
+    }
 }

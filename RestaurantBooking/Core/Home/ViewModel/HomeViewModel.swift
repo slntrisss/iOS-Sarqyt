@@ -71,13 +71,13 @@ class HomeViewModel: ObservableObject{
     private func addSubscribers(){
         restaurantDataService.getAllRestaurants()
         
-        restaurantDataService.$recommendedRestaurants
+        restaurantDataService.$recommendedRestaurantsPreviewList
             .sink { [weak self] restaurants in
                 self?.recommendedRestaurants = restaurants
             }
             .store(in: &cancellables)
         
-        restaurantDataService.$promotedRestaurants
+        restaurantDataService.$promotedRestaurantsPreviewList
             .sink { [weak self] restaurants in
                 self?.promotedRestaurants = restaurants
             }
@@ -93,6 +93,9 @@ class HomeViewModel: ObservableObject{
     }
     
     func refreshHomeViewData(){
+        allRestaurants.removeAll()
+        recommendedRestaurants.removeAll()
+        promotedRestaurants.removeAll()
         restaurantDataService.getAllRestaurants()
     }
     
@@ -104,6 +107,14 @@ class HomeViewModel: ObservableObject{
                 offset: pageInfo.page,
                 limit: pageInfo.itemsFromEndTreshold
             )
+        }
+    }
+    
+    func bookmarkkRestaurant(restaurant: Restaurant){
+        if let restaurant = restaurantDataService.bookmarkRestaurant(id: restaurant.id, bookmarked: restaurant.bookmarked){
+            if let index = restaurants.firstIndex(where: {$0.id == restaurant.id}){
+                allRestaurants[index].bookmarked.toggle()
+            }
         }
     }
 }

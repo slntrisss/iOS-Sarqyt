@@ -106,7 +106,7 @@ extension RestaurantCardView{
                 showRemoveBookmarkView = true
             }else{
                 restaurant.bookmarked.toggle()
-                homeVM.bookmarkRestaurant(restaurant: restaurant)
+                homeVM.bookmarkkRestaurant(restaurant: restaurant)
             }
         }label: {
             Image(systemName: restaurant.bookmarked ? "bookmark.fill" : "bookmark")
@@ -139,6 +139,7 @@ extension RestaurantCardView{
         .presentationDetents([.height(350)])
         .onChange(of: cancelButtonTapped) { _ in showRemoveBookmarkView = false}
         .onChange(of: removeButtonTapped) { _ in
+            homeVM.bookmarkkRestaurant(restaurant: restaurant)
             homeVM.removeFromBookmarked(restaurant: restaurant)
             showRemoveBookmarkView = false
         }

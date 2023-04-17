@@ -10,9 +10,11 @@ import Foundation
 
 class RestaurantDataService{
     
+    @Published var recommendedRestaurantsPreviewList: [Restaurant] = []
+    @Published var promotedRestaurantsPreviewList: [Restaurant] = []
+    @Published var restaurantList: [Restaurant] = []
     @Published var recommendedRestaurants: [Restaurant] = []
     @Published var promotedRestaurants: [Restaurant] = []
-    @Published var restaurantList: [Restaurant] = []
     var cancellables = Set<AnyCancellable>()
     
     static let instance = RestaurantDataService()
@@ -34,7 +36,7 @@ class RestaurantDataService{
         NetworkingManager.download(url: url)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                self?.recommendedRestaurants = restaurants
+                self?.recommendedRestaurantsPreviewList = restaurants
             })
             .store(in: &cancellables)
 
@@ -49,7 +51,7 @@ class RestaurantDataService{
         NetworkingManager.download(url: url)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                self?.promotedRestaurants = restaurants
+                self?.promotedRestaurantsPreviewList = restaurants
             })
             .store(in: &cancellables)
     }
@@ -79,26 +81,108 @@ class RestaurantDataService{
             URLQueryItem(name: "limit", value: "\(limit)")
         ]
         
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-            print("Failed to create components from URL: \(url)")
-            return
+        do{
+            let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
+            var request = URLRequest(url: urlWithParameters)
+            request.httpMethod = "GET"
+            NetworkingManager.download(request: request)
+                .decode(type: [Restaurant].self, decoder: JSONDecoder())
+                .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
+                    self?.restaurantList = restaurants
+                })
+                .store(in: &cancellables)
+        }catch let error{
+            print(error.localizedDescription)
         }
-        
-        components.queryItems = parameters
-        
-        guard let urlWithParameters = components.url else{
-            print("Failed to create url with parameters: \(parameters.description)")
-            return
-        }
-        
-        var request = URLRequest(url: urlWithParameters)
-        request.httpMethod = "GET"
-        NetworkingManager.download(request: request)
-            .decode(type: [Restaurant].self, decoder: JSONDecoder())
-            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                self?.restaurantList = restaurants
-            })
-            .store(in: &cancellables)
 
+    }
+    
+    func getRecommendedRestaurants(offset: Int, limit: Int){
+        guard let url = URL(string: Constants.BASE_URL + Constants.RECOMMENDED_RESTAURANTS) else {
+            print("BAD URL: \(Constants.BASE_URL)\(Constants.RECOMMENDED_RESTAURANTS)")
+            return
+        }
+        
+        let parameters = [
+            URLQueryItem(name: "offset", value: "\(offset)"),
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ]
+        
+        do{
+            let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
+            var request = URLRequest(url: urlWithParameters)
+            request.httpMethod = "GET"
+            
+            NetworkingManager.download(request: request)
+                .decode(type: [Restaurant].self, decoder: JSONDecoder())
+                .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] restaurants in
+                    self?.recommendedRestaurants = restaurants
+                }
+                .store(in: &cancellables)
+        }catch let error{
+            print("Error occured: \(error.localizedDescription)")
+        }
+    }
+    
+    func getPromotedRestaurants(offset: Int, limit: Int){
+        guard let url = URL(string: Constants.BASE_URL + Constants.PROMOTED_RESTAURANTS) else {
+            print("BAD URL: \(Constants.BASE_URL)\(Constants.PROMOTED_RESTAURANTS)")
+            return
+        }
+        
+        let parameters = [
+            URLQueryItem(name: "offset", value: "\(offset)"),
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ]
+        
+        do{
+            let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
+            var request = URLRequest(url: urlWithParameters)
+            request.httpMethod = "GET"
+            
+            NetworkingManager.download(request: request)
+                .decode(type: [Restaurant].self, decoder: JSONDecoder())
+                .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] restaurants in
+                    self?.promotedRestaurants = restaurants
+                }
+                .store(in: &cancellables)
+        }catch let error{
+            print("Error occured: \(error.localizedDescription)")
+        }
+    }
+    
+    func bookmarkRestaurant(id: String, bookmarked: Bool) -> Restaurant?{
+        guard let url = URL(string: Constants.BASE_URL + Constants.BOOKMARK_RESTAURANT + "/\(id)") else {
+            print("BAD URL: \(Constants.BASE_URL)\(Constants.BOOKMARK_RESTAURANT)/\(id)")
+            return nil
+        }
+        var restaurant: Restaurant? = nil
+        let json = ["bookmarked": bookmarked]
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        do{
+            let jsonData = try JSONSerialization.data(withJSONObject: json)
+            request.httpBody = jsonData
+            print("jsonData: ", String(data: request.httpBody!, encoding: .utf8) ?? "no body data")
+            print(request.description)
+            URLSession.shared.dataTaskPublisher(for: request)
+                .map{ $0.data}
+                .decode(type: Restaurant.self, decoder: JSONDecoder())
+                .sink { completion in
+                    switch completion{
+                    case .finished:
+                        print("Bookmarking completed successfully!")
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                } receiveValue: {  updatedRestaurant in
+                    restaurant = updatedRestaurant
+                }
+                .store(in: &cancellables)
+
+        }catch let error{
+            print("Error occured: \(error.localizedDescription)")
+        }
+        return restaurant
     }
 }

@@ -120,6 +120,8 @@
 		FFB2596E29ED464B005B679B /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2596D29ED464B005B679B /* ImageService.swift */; };
 		FFB2597029ED4CE2005B679B /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2596F29ED4CE2005B679B /* NetworkingManager.swift */; };
 		FFB2597429ED6030005B679B /* PageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2597329ED6030005B679B /* PageInfo.swift */; };
+		FFB2597629ED7ACE005B679B /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2597529ED7ACE005B679B /* NetworkingError.swift */; };
+		FFB2597829EDB01A005B679B /* RestaurantListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2597729EDB01A005B679B /* RestaurantListViewModel.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -255,6 +257,8 @@
 		FFB2596D29ED464B005B679B /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		FFB2596F29ED4CE2005B679B /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		FFB2597329ED6030005B679B /* PageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageInfo.swift; sourceTree = "<group>"; };
+		FFB2597529ED7ACE005B679B /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
+		FFB2597729EDB01A005B679B /* RestaurantListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantListViewModel.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -384,6 +388,7 @@
 			isa = PBXGroup;
 			children = (
 				FF2CAB6229A382B400E062E1 /* HomeViewModel.swift */,
+				FFB2597729EDB01A005B679B /* RestaurantListViewModel.swift */,
 				FFAFDFA229A8B09E002A000B /* FilterViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1026,6 +1031,7 @@
 				FFB2597229ED601C005B679B /* View */,
 				FFB2596A29ED3CD4005B679B /* Constants.swift */,
 				FFB2596F29ED4CE2005B679B /* NetworkingManager.swift */,
+				FFB2597529ED7ACE005B679B /* NetworkingError.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1298,6 +1304,7 @@
 				FF68D24629D8A16D0064ECF9 /* EditProfileViewModel.swift in Sources */,
 				FF470E7829A13D7600314934 /* ProcessingView.swift in Sources */,
 				FFB2596E29ED464B005B679B /* ImageService.swift in Sources */,
+				FFB2597629ED7ACE005B679B /* NetworkingError.swift in Sources */,
 				FF68D25F29D8B3B30064ECF9 /* PaymentViewModel.swift in Sources */,
 				FFB2350829E14F7F0053FD59 /* SchemeViewModel.swift in Sources */,
 				FFF823B929B4A9170092BB73 /* MapViewModel.swift in Sources */,
@@ -1323,6 +1330,7 @@
 				FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */,
 				FF2CAB5829A3744500E062E1 /* BookingView.swift in Sources */,
 				FF41F220299CBF2C003B1745 /* SignInWithView.swift in Sources */,
+				FFB2597829EDB01A005B679B /* RestaurantListViewModel.swift in Sources */,
 				FF470E7229A12FCA00314934 /* AuthService.swift in Sources */,
 				FFB2351629E19D810053FD59 /* SchemeMapView.swift in Sources */,
 				FF68D24129D83FF00064ECF9 /* ReservedRestaurant.swift in Sources */,
