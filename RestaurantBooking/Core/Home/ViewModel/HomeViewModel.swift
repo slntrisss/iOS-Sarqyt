@@ -26,6 +26,8 @@ class HomeViewModel: ObservableObject{
     @Published var restaurants: [Restaurant] = []
     
     let restaurantDataService = RestaurantDataService.instance
+    
+    let pageInfo = PageInfo(itemsLoaded: 0)
     @Published var isLoading = true
     var cancellables = Set<AnyCancellable>()
     
@@ -81,14 +83,27 @@ class HomeViewModel: ObservableObject{
             }
             .store(in: &cancellables)
         
+        
         restaurantDataService.$restaurantList
             .sink { [weak self] restaurants in
-                self?.allRestaurants = restaurants
+                self?.allRestaurants.append(contentsOf: restaurants)
+                self?.pageInfo.itemsLoaded = self?.allRestaurants.count ?? 0
             }
             .store(in: &cancellables)
     }
     
     func refreshHomeViewData(){
         restaurantDataService.getAllRestaurants()
+    }
+    
+    func requestMoreItems(index: Int) {
+        if index == allRestaurants.count - 1{
+            print("More items...")
+            pageInfo.page += 1
+            restaurantDataService.getRestaurantList(
+                offset: pageInfo.page,
+                limit: pageInfo.itemsFromEndTreshold
+            )
+        }
     }
 }

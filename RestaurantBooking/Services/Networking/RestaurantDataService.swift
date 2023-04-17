@@ -22,7 +22,7 @@ class RestaurantDataService{
     func getAllRestaurants(){
         getRecommendedPreviewRestaurants()
         getPromotedRestaurants()
-        getRestaurants()
+        getRestaurantList(offset: 1, limit: 5)
     }
     
     private func getRecommendedPreviewRestaurants(){
@@ -66,5 +66,39 @@ class RestaurantDataService{
                 self?.restaurantList = restaurants
             })
             .store(in: &cancellables)
+    }
+    
+    func getRestaurantList(offset: Int, limit: Int){
+        guard let url = URL(string: Constants.BASE_URL + Constants.ALL_RESTAURANTS) else {
+            print("BAD URL: \(Constants.BASE_URL)\(Constants.ALL_RESTAURANTS)")
+            return
+        }
+        
+        let parameters = [
+            URLQueryItem(name: "offset", value: "\(offset)"),
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ]
+        
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+            print("Failed to create components from URL: \(url)")
+            return
+        }
+        
+        components.queryItems = parameters
+        
+        guard let urlWithParameters = components.url else{
+            print("Failed to create url with parameters: \(parameters.description)")
+            return
+        }
+        
+        var request = URLRequest(url: urlWithParameters)
+        request.httpMethod = "GET"
+        NetworkingManager.download(request: request)
+            .decode(type: [Restaurant].self, decoder: JSONDecoder())
+            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
+                self?.restaurantList = restaurants
+            })
+            .store(in: &cancellables)
+
     }
 }

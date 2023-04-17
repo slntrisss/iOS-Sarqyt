@@ -13,14 +13,14 @@ struct HomeView: View {
     @State private var showFilterView = false
     var body: some View {
         NavigationStack{
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical, showsIndicators: true) {
                 SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus, showFilterView: $showFilterView)
                     .padding()
                 ZStack{
                     if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
                         seacrhResultView
                     }else{
-                        VStack{
+                        LazyVStack{
                             recommendedRestaurantsView
                             promotedRestaurantsView
                             listOfRestaurants
@@ -183,6 +183,9 @@ extension HomeView{
             RestaurantCardView(restaurant: $homeVM.allRestaurants[index])
                 .environmentObject(homeVM)
                 .padding(.vertical, 5)
+                .onAppear{
+                    homeVM.requestMoreItems(index: index)
+                }
         }
         .padding(.horizontal)
     }
