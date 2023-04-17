@@ -21,6 +21,7 @@ class RestaurantListViewModel: ObservableObject{
     
     func refreshList(){
         restaurants.removeAll()
+        pageInfo.page = 1
         switch listType{
         case .recommended: restaurantDataService.getRecommendedRestaurants(offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
         case .promoted : restaurantDataService.getPromotedRestaurants(offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
@@ -31,7 +32,7 @@ class RestaurantListViewModel: ObservableObject{
     
     func requestMoreItems(index: Int){
         if index == restaurants.count - 1{
-            print("More items...")
+            print("More items in \(listType)...")
             pageInfo.page += 1
             switch listType{
             case .recommended: restaurantDataService.getRecommendedRestaurants(offset: pageInfo.page, limit: Constants.DEFAULT_LIMIT)

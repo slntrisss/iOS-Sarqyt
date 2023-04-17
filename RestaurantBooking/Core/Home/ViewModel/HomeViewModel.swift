@@ -96,12 +96,13 @@ class HomeViewModel: ObservableObject{
         allRestaurants.removeAll()
         recommendedRestaurants.removeAll()
         promotedRestaurants.removeAll()
+        pageInfo.page = 1
         restaurantDataService.getAllRestaurants()
     }
     
     func requestMoreItems(index: Int) {
         if index == allRestaurants.count - 1{
-            print("More items...")
+            print("More items in home_view...")
             pageInfo.page += 1
             restaurantDataService.getRestaurantList(
                 offset: pageInfo.page,

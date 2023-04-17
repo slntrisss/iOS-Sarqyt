@@ -13,7 +13,7 @@ struct HomeView: View {
     @State private var showFilterView = false
     var body: some View {
         NavigationStack{
-            ScrollView(.vertical, showsIndicators: true) {
+            ScrollView(.vertical, showsIndicators: false) {
                 SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus, showFilterView: $showFilterView)
                     .padding()
                 ZStack{
