@@ -17,6 +17,10 @@ class RestaurantDataService{
     @Published var promotedRestaurants: [Restaurant] = []
     var cancellables = Set<AnyCancellable>()
     
+    var restaurantListSubscription: AnyCancellable?
+    var recommendedRestaurantsSubscription: AnyCancellable?
+    var promotedRestaurantsSubscription: AnyCancellable?
+    
     static let instance = RestaurantDataService()
     
     private init(){ }
@@ -85,12 +89,14 @@ class RestaurantDataService{
             let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
-            NetworkingManager.download(request: request)
+            restaurantListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
                     self?.restaurantList = restaurants
+                    if restaurants.count == 0{
+                        self?.restaurantListSubscription?.cancel()
+                    }
                 })
-                .store(in: &cancellables)
         }catch let error{
             print(error.localizedDescription)
         }
@@ -113,12 +119,14 @@ class RestaurantDataService{
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
             
-            NetworkingManager.download(request: request)
+            recommendedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] restaurants in
                     self?.recommendedRestaurants = restaurants
+                    if restaurants.count == 0{
+                        self?.recommendedRestaurantsSubscription?.cancel()
+                    }
                 }
-                .store(in: &cancellables)
         }catch let error{
             print("Error occured: \(error.localizedDescription)")
         }
@@ -140,12 +148,14 @@ class RestaurantDataService{
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
             
-            NetworkingManager.download(request: request)
+            promotedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] restaurants in
                     self?.promotedRestaurants = restaurants
+                    if restaurants.count == 0{
+                        self?.promotedRestaurantsSubscription?.cancel()
+                    }
                 }
-                .store(in: &cancellables)
         }catch let error{
             print("Error occured: \(error.localizedDescription)")
         }

@@ -16,6 +16,7 @@ class RestaurantDetailDataService{
     static let instance = RestaurantDetailDataService()
     private init(){ }
     
+    var commentsSubscription: AnyCancellable?
     var cancellables = Set<AnyCancellable>()
     
     func fetchDetail(for id: String){
@@ -77,12 +78,14 @@ class RestaurantDetailDataService{
             let urlStringWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlStringWithParameters)
             request.httpMethod = "GET"
-            NetworkingManager.download(request: request)
+            commentsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Comment].self, decoder: JSONDecoder.defaultDecoder)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedComments in
                     self?.comments = fetchedComments
+                    if fetchedComments.count == 0{
+                        self?.commentsSubscription?.cancel()
+                    }
                 }
-                .store(in: &cancellables)
             
         }catch let error{
             print("Error occured: \(error.localizedDescription)")
