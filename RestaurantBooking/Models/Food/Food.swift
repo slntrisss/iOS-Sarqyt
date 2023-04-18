@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Food: Codable, Identifiable{
     let id: String
@@ -14,4 +15,8 @@ struct Food: Codable, Identifiable{
     let type: FoodType
     let price: Double
     let description: String
+    
+    var wrappedImage: UIImage{
+        return ImageService.convertBase64ToImage(base64: image)
+    }
 }

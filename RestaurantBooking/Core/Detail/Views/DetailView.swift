@@ -35,7 +35,7 @@ struct DetailView: View {
         .ignoresSafeArea(.all, edges: .bottom)
         .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView(restaurant: restaurant, commentRatingStatus: detailVM.details?.commentRatingStatus ?? Array(repeating: 0, count: 5)).environmentObject(detailVM)}
         .navigationDestination(isPresented: $showMenu)
-        {FoodView(title: restaurant.name, bookVM: bookVM)}
+        {FoodView(title: "Food & Dishes", bookVM: bookVM)}
             .navigationDestination(isPresented: $detailVM.bookNow){RestaurantBookingView(bookVM: bookVM)}
         .background(Color.theme.background)
         .toolbar(.hidden, for: .tabBar)

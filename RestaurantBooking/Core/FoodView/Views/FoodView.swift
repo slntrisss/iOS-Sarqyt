@@ -22,8 +22,7 @@ struct FoodView: View {
     init(title: String, bookVM: BookViewModel){
         self.title = title
         self.bookVM = bookVM
-        let foodVM = FoodViewModel(bookVM: bookVM)
-        self._foodVM = StateObject(wrappedValue: foodVM)
+        self._foodVM = StateObject(wrappedValue: FoodViewModel(bookVM: bookVM))
     }
     
     var body: some View {
@@ -32,6 +31,9 @@ struct FoodView: View {
                 LazyVStack(pinnedViews: [.sectionHeaders]){
                     contentView
                 }
+            }
+            .refreshable {
+                foodVM.refreshFoods()
             }
             .onChange(of: bookVM.orderedFoods, perform: { _ in foodVM.displayOrderButton()})
             .safeAreaInset(edge: .bottom, content: {orderButtonView})
@@ -47,7 +49,7 @@ struct FoodView: View {
 
 struct FoodView_Previews: PreviewProvider {
     static var previews: some View {
-        FoodView(title: "Restaurant", bookVM: BookViewModel(restaurant: dev.restaurant))
+        FoodView(title: "Food & Dishes", bookVM: BookViewModel(restaurant: dev.restaurant))
             .environmentObject(BookViewModel(restaurant: dev.restaurant))
     }
 }
@@ -57,10 +59,10 @@ extension FoodView{
         ScrollViewReader { scrollView in
             navBar
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 0){
+                LazyHStack(spacing: 0){
                     ForEach(foodVM.tabBars.indices, id: \.self){ index in
-                        VStack{
-                            Text(foodVM.tabBars[index])
+                        LazyVStack{
+                            Text(foodVM.tabBars[index].type)
                                 .font(foodVM.getSelectedTabBarFont(at: index))
                                 .padding(.horizontal)
                                 .onTapGesture {foodVM.selectTabBar(at: index, scrollView: scrollView)}
@@ -78,9 +80,12 @@ extension FoodView{
     private var contentView: some View{
         Section(header: tabBarView) {
             LazyVGrid(columns: columns) {
-                ForEach(foodVM.foods) { food in
-                    FoodCardView(food: food, bookVM: bookVM)
+                ForEach(foodVM.foods.indices, id: \.self) { index in
+                    FoodCardView(food: foodVM.foods[index], bookVM: bookVM)
                         .padding(10)
+                        .onAppear{
+                            foodVM.requestMoreFoods(index: index)
+                        }
                 }
             }
             .padding()
@@ -93,7 +98,7 @@ extension FoodView{
             .ignoresSafeArea(.all, edges: .top)
     }
     private var navBar: some View{
-        HStack{
+        LazyHStack{
             Group{
                 HStack{
                     Button{

@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import Combine
 
 class FoodViewModel: ObservableObject{
     @Published var foods: [Food] = []
@@ -17,13 +18,19 @@ class FoodViewModel: ObservableObject{
     @Published var showRestaurantBookingAlertView = false
     @Published var showOrderView = false
     @Published var navigateToRestaurantBookingView = false
-    var tabBars: [String] = []
+    var tabBars: [FoodType] = []
+    
+    let foodDataService = FoodDataService.instance
+    
+    let pageInfo = PageInfo(itemsLoaded: 0)
+    
+    var cancellables = Set<AnyCancellable>()
     
     init(bookVM: BookViewModel){
-        tabBars.insert("All", at: 0)
-        tabBars.append(contentsOf: FoodType.allCases.map({String($0.rawValue)}))
-        foods = DeveloperPreview.instance.foods
         self.bookVM = bookVM
+        print("Started downloading...")
+        addSubscribers()
+        fetchInitialData()
     }
     
     
@@ -31,15 +38,14 @@ class FoodViewModel: ObservableObject{
     
     //MARK: TabBar logic
     func selectTabBar(at index: Int, scrollView: ScrollViewProxy){
-        withAnimation {
-            selectedTabIndex = index
-            scrollView.scrollTo(index, anchor: .center)
-        }
-        if selectedTabIndex == 0{
-            foods = DeveloperPreview.instance.foods
-        }else{
-            let type = tabBars[index + 1]
-            foods = foods.filter({$0.type.rawValue == type})
+        if let restaurant = bookVM.restaurant{
+            withAnimation {
+                selectedTabIndex = index
+                scrollView.scrollTo(index, anchor: .center)
+            }
+            
+            let foodType = tabBars[selectedTabIndex]
+            fetchFoods(for: restaurant, of: foodType)
         }
     }
     
@@ -93,5 +99,64 @@ class FoodViewModel: ObservableObject{
     
     func cancelOrderButtonTapped(){
         showRestaurantBookingAlertView = false
+    }
+    
+    //MARK: - Networking
+    private func fetchInitialData(){
+        if let restaurant = bookVM.restaurant{
+            foodDataService.fetchFoodTitles(for: restaurant.id)
+        }
+    }
+    
+    private func addSubscribers(){
+        foodDataService.$types
+            .sink { [weak self] fetchedTypes in
+                self?.tabBars = fetchedTypes
+                if ((self?.foods.isEmpty) != nil){
+                    self?.foodDataService.fetchFoods(for: self?.bookVM.restaurant?.id ?? "",
+                                               of: fetchedTypes.first?.id ?? "",
+                                               offset: Constants.DEFAULT_OFFSET,
+                                               limit: Constants.DEFAULT_LIMIT)
+                }
+            }
+            .store(in: &cancellables)
+        
+        foodDataService.$foods
+            .sink { [weak self] fetchedFoods in
+                self?.foods.append(contentsOf: fetchedFoods)
+            }
+            .store(in: &cancellables)
+    }
+    
+    func requestMoreFoods(index: Int){
+        if let restaurant = bookVM.restaurant,
+           index == foods.count - 1{
+            print("More foods...")
+            pageInfo.offset += Constants.DEFAULT_LIMIT
+            foodDataService.fetchFoods(for: restaurant.id,
+                                       of: tabBars[selectedTabIndex].id,
+                                       offset: pageInfo.offset,
+                                       limit: Constants.DEFAULT_LIMIT)
+        }
+    }
+    
+    func refreshFoods(){
+        if let restaurant = bookVM.restaurant{
+            foods.removeAll()
+            pageInfo.offset = 0
+            foodDataService.fetchFoods(for: restaurant.id,
+                                       of: tabBars[selectedTabIndex].id,
+                                       offset: Constants.DEFAULT_OFFSET,
+                                       limit: Constants.DEFAULT_LIMIT)
+        }
+    }
+    
+    private func fetchFoods(for restaurant: Restaurant, of foodType: FoodType){
+        foods.removeAll()
+        pageInfo.offset = 0
+        foodDataService.fetchFoods(for: restaurant.id,
+                                   of: foodType.id,
+                                   offset: Constants.DEFAULT_OFFSET,
+                                   limit: Constants.DEFAULT_LIMIT)
     }
 }

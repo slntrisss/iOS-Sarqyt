@@ -40,7 +40,7 @@ extension FoodCardView{
     
     private var content: some View{
         VStack{
-            Image(food.image)
+            Image(uiImage: food.wrappedImage)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 100, height: 100)

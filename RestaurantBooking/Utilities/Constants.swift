@@ -21,7 +21,12 @@ class Constants{
     
     //MARK: Detail
     static let DETAILS = "/Detail"
-    static let COMMENTS = "/comments"
+    static let COMMENTS = "/Comments"
+    
+    //MARK: Food
+    static let FOOD_BASE_URL = "/Food"
+    static let FOOD_TYPES = "/Food/FoodTypes"
+    static let FOOD_LIST = "/List"
     
     static let DEFAULT_OFFSET = 0
     static let DEFAULT_LIMIT = 5
