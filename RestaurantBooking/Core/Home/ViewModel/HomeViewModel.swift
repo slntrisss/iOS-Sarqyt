@@ -27,6 +27,9 @@ class HomeViewModel: ObservableObject{
     
     let restaurantDataService = RestaurantDataService.instance
     
+    @Published var showRestaurantDetailView = false
+    var selectedRestaurant: Restaurant? = nil
+    
     let pageInfo = PageInfo(itemsLoaded: 0)
     @Published var isLoading = true
     var cancellables = Set<AnyCancellable>()

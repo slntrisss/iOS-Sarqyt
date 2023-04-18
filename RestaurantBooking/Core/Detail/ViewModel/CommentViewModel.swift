@@ -44,6 +44,7 @@ class CommentViewModel: ObservableObject{
     func fetchMoreComments(index: Int){
         if index == comments.count - 1{
             pageInfo.offset += Constants.DEFAULT_LIMIT
+            print(pageInfo.offset)
             detailDataService.fetchComments(for: restaurant.id, offset: pageInfo.offset, limit: Constants.DEFAULT_LIMIT)
             print("More comments...")
         }

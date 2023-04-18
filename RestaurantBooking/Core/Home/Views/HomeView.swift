@@ -48,6 +48,11 @@ struct HomeView: View {
                 RestaurantListView(title: "Bookmarked", listType: .bookmarked)
                     .environmentObject(homeVM)
             }
+            .navigationDestination(isPresented: $homeVM.showRestaurantDetailView, destination: {
+                if let restaurant = homeVM.selectedRestaurant{
+                    DetailView(restaurant: restaurant)
+                }
+            })
             .sheet(isPresented: $showFilterView) {
                 FilterView()
                     .environmentObject(homeVM.filterVM)
@@ -146,6 +151,10 @@ extension HomeView{
             .padding(.horizontal)
             Carousel(list: homeVM.recommendedRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
                 RestaurantBannerView(restaurant: restaurant)
+                    .onTapGesture {
+                        homeVM.showRestaurantDetailView = true
+                        homeVM.selectedRestaurant = restaurant
+                    }
             }
             .frame(height: UIScreen.main.bounds.height * 0.51)
         }
@@ -171,6 +180,10 @@ extension HomeView{
             .padding(.horizontal)
             Carousel(list: homeVM.promotedRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
                 RestaurantPromotionsView(restaurant: restaurant)
+                    .onTapGesture {
+                        homeVM.showRestaurantDetailView = true
+                        homeVM.selectedRestaurant = restaurant
+                    }
             }
             .frame(height: 200)
             .padding(.bottom)
