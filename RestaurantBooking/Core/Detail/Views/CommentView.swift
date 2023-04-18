@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct CommentView: View {
-    @EnvironmentObject private var detailVM: RestaurantDetailViewModel
+    @StateObject private var commentVM: CommentViewModel
+    let restaurant: Restaurant
+    init(restaurant: Restaurant, commentRatingStatus: [Double]) {
+        self.restaurant = restaurant
+        self._commentVM = StateObject(wrappedValue: CommentViewModel(restaurant: restaurant, commentRatingStatus: commentRatingStatus))
+        
+    }
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 12){
+        ScrollView(.vertical, showsIndicators: true) {
+            LazyVStack(alignment: .leading, spacing: 12){
                 Text("Overall Rating")
                     .font(.headline)
                 ratingStatusView
@@ -19,6 +25,9 @@ struct CommentView: View {
             }
             .padding(.bottom)
             comments
+        }
+        .refreshable {
+            commentVM.refreshComments()
         }
         .padding()
         .navigationTitle("Comments")
@@ -29,8 +38,7 @@ struct CommentView: View {
 struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            CommentView()
-                .environmentObject(RestaurantDetailViewModel(restaurant: dev.restaurant))
+            CommentView(restaurant: dev.restaurant, commentRatingStatus: [])
         }
     }
 }
@@ -39,8 +47,11 @@ extension CommentView{
     
     private var comments: some View{
         LazyVStack {
-            ForEach(detailVM.comments){ comment in
-                CommentBoxView(comment: comment)
+            ForEach(commentVM.comments.indices, id: \.self){ index in
+                CommentBoxView(comment: commentVM.comments[index])
+                    .onAppear{
+                        commentVM.fetchMoreComments(index: index)
+                    }
             }
         }
     }
@@ -48,12 +59,12 @@ extension CommentView{
     private var ratingStatusView: some View{
         HStack{
             VStack{
-                Text(detailVM.restaurant.rating.asNumberStringWithOneDigit())
+                Text(restaurant.rating.asNumberStringWithOneDigit())
                     .font(.largeTitle.bold())
             }
             VStack(alignment: .leading){
-                RestaurantRatingStarView(rating: detailVM.restaurant.rating)
-                Text(detailVM.reviews)
+                RestaurantRatingStarView(rating: restaurant.rating)
+                Text(commentVM.reviews)
                     .font(.caption)
                     .foregroundColor(Color.theme.secondaryText)
             }
@@ -61,35 +72,35 @@ extension CommentView{
     }
     
     private var progressViews: some View{
-        VStack{
+        LazyVStack{
             HStack{
                 Text("Excellent")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                ProgressView(value: detailVM.getStatus(for: 5))
+                ProgressView(value: commentVM.getStatus(for: 5))
                     .tint(Color(#colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1)))
             }
             HStack{
                 Text("Very Good")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                ProgressView(value: detailVM.getStatus(for: 4))
+                ProgressView(value: commentVM.getStatus(for: 4))
                     .tint(.green)
             }
             HStack{
                 Text("Good")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                ProgressView(value: detailVM.getStatus(for: 3))
+                ProgressView(value: commentVM.getStatus(for: 3))
                     .tint(Color(#colorLiteral(red: 1, green: 0.8182049394, blue: 0.3374888301, alpha: 1)))
             }
             HStack{
                 Text("Unsatisfactory")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                ProgressView(value: detailVM.getStatus(for: 2))
+                ProgressView(value: commentVM.getStatus(for: 2))
                     .tint(Color(#colorLiteral(red: 1, green: 0.5463681817, blue: 0.2389869392, alpha: 1)))
             }
             HStack{
                 Text("Poor")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                ProgressView(value: detailVM.getStatus(for: 1))
+                ProgressView(value: commentVM.getStatus(for: 1))
                     .tint(.red)
             }
         }

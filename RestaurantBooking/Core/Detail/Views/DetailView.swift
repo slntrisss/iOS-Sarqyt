@@ -12,14 +12,12 @@ struct DetailView: View {
     @State var animate = false
     @StateObject private var detailVM: RestaurantDetailViewModel
     @StateObject private var bookVM = BookViewModel()
-    let details: RestaurantDetails
     let restaurant: Restaurant
     @State private var showFullDescription = false
     @State private var showMenu = false
     @State private var totalHeightForCategoriesList = CGFloat.zero
     init(restaurant: Restaurant){
         self.restaurant = restaurant
-        details = DeveloperPreview.instance.details
         self._detailVM = StateObject(wrappedValue: RestaurantDetailViewModel(restaurant: restaurant))
     }
     var body: some View {
@@ -34,7 +32,7 @@ struct DetailView: View {
             bottomBar
         }
         .ignoresSafeArea(.all, edges: .bottom)
-        .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView().environmentObject(detailVM)}
+        .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView(restaurant: restaurant, commentRatingStatus: detailVM.details?.commentRatingStatus ?? Array(repeating: 0, count: 5)).environmentObject(detailVM)}
         .navigationDestination(isPresented: $showMenu)
         {FoodView(title: restaurant.name, bookVM: bookVM)}
             .navigationDestination(isPresented: $detailVM.bookNow){RestaurantBookingView(bookVM: bookVM)}
