@@ -30,7 +30,7 @@ struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             CommentView()
-                .environmentObject(RestaurantDetailViewModel())
+                .environmentObject(RestaurantDetailViewModel(restaurant: dev.restaurant))
         }
     }
 }

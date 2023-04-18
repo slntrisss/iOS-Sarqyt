@@ -14,7 +14,7 @@ struct RestaurantCardView: View {
     @State private var showRemoveBookmarkView = false
     @State private var cancelButtonTapped = false
     @State private var removeButtonTapped = false
-    
+    @State private var showRestaurantDetailView = false
     var body: some View {
         HStack{
             cardImage
@@ -29,6 +29,8 @@ struct RestaurantCardView: View {
         .sheet(isPresented: $showRemoveBookmarkView, content: {bottomSheetView})
         .background(Color.theme.background)
         .clipShape(RoundedRectangle(cornerRadius: 20))
+        .onTapGesture { showRestaurantDetailView.toggle() }
+        .navigationDestination(isPresented: $showRestaurantDetailView) { DetailView(restaurant: restaurant) }
     }
 }
 

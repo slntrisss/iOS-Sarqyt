@@ -11,12 +11,17 @@ class Constants{
     
     static let BASE_URL = "http://localhost:3000"
     
+    //MARK: Home
     static let ALL_RESTAURANTS = "/Home/Restaurants"
     static let RECOMMENDATIONS_PREVIEW = "/Home/RecommendationPreview"
     static let PROMOTIONS_PREVIEW = "/Home/PromotionPreview"
     static let RECOMMENDED_RESTAURANTS = "/Home/RecommendedRestaurants"
     static let PROMOTED_RESTAURANTS = "/Home/PromotedRestaurants"
     static let BOOKMARK_RESTAURANT = "/Home/Restaurants/Bookmark"
+    
+    //MARK: Detail
+    static let DETAILS = "/Detail"
+    static let COMMENTS = "/comments"
     
     static let DEFAULT_OFFSET = 0
     static let DEFAULT_LIMIT = 5

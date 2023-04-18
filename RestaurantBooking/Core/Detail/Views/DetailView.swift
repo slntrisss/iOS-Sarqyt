@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State var animate = false
-    @StateObject private var detailVM = RestaurantDetailViewModel()
+    @StateObject private var detailVM: RestaurantDetailViewModel
     @StateObject private var bookVM = BookViewModel()
     let details: RestaurantDetails
     let restaurant: Restaurant
@@ -20,6 +20,7 @@ struct DetailView: View {
     init(restaurant: Restaurant){
         self.restaurant = restaurant
         details = DeveloperPreview.instance.details
+        self._detailVM = StateObject(wrappedValue: RestaurantDetailViewModel(restaurant: restaurant))
     }
     var body: some View {
         VStack{
@@ -63,7 +64,7 @@ extension DetailView{
     
     private var mainImage: some View{
         ZStack(alignment: .top){
-            Image(restaurant.image)
+            Image(uiImage: restaurant.wrappedImage)
                 .resizable()
                 .scaledToFill()
                 .overlay(Color.black.opacity(0.25))
@@ -216,7 +217,7 @@ extension DetailView{
                     }
                 }
             }
-            Text(details.description)
+            Text(detailVM.details?.description ?? "N/A")
                 .lineLimit(showFullDescription ? nil : 3)
                 .font(.callout)
             .foregroundColor(Color.theme.secondaryText)
@@ -248,21 +249,21 @@ extension DetailView{
                 HStack{
                     Image(systemName: "phone.circle")
                         .font(.caption)
-                    Text(details.phoneNumber)
+                    Text(detailVM.details?.phoneNumber ?? "N/A")
                         .font(.caption2)
                 }
                 .foregroundColor(Color.theme.green)
                 .padding(.leading)
                 Spacer()
                 HStack(spacing: 10){
-                    if let instaLink = details.instragramLink{
+                    if let instaLink = detailVM.details?.instragramLink{
                         Image("insta-icon")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
                             .overlay(Link("", destination: URL(string: instaLink)!))
                     }
-                    if let metaLink = details.metaLink{
+                    if let metaLink = detailVM.details?.metaLink{
                         Image("meta-icon")
                             .resizable()
                             .scaledToFit()
@@ -320,7 +321,7 @@ extension DetailView{
         var height = CGFloat.zero
         
         return ZStack(alignment: .topLeading) {
-            ForEach(RestaurantDetails.categories, id: \.self) { platform in
+            ForEach(detailVM.details?.categories ?? [], id: \.self) { platform in
                 self.item(for: platform)
                     .padding([.horizontal, .vertical], 4)
                     .alignmentGuide(.leading, computeValue: { d in
@@ -329,7 +330,7 @@ extension DetailView{
                             height -= d.height
                         }
                         let result = width
-                        if let category = RestaurantDetails.categories.last, platform == category {
+                        if let category = detailVM.details?.categories.last, platform == category {
                             width = 0 //last item
                         } else {
                             width -= d.width
@@ -338,7 +339,7 @@ extension DetailView{
                     })
                     .alignmentGuide(.top, computeValue: {d in
                         let result = height
-                        if let category = RestaurantDetails.categories.last, platform == category {
+                        if let category = detailVM.details?.categories.last, platform == category {
                             height = 0 // last item
                         }
                         return result

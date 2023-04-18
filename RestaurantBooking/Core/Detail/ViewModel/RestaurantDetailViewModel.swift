@@ -7,19 +7,19 @@
 
 import MapKit
 import SwiftUI
+import Combine
 
 @MainActor
 class RestaurantDetailViewModel: ObservableObject{
     @Published var restaurant: Restaurant
-    @Published var details: RestaurantDetails
-    @Published var comments: [Comment]
+    @Published var details: RestaurantDetails?
+    @Published var comments: [Comment] = []
     @Published var mapRegion: MKCoordinateRegion
     @Published var bookNow = false
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     
     @Published var mainImageOffset: CGFloat = 0
     @Published var showAllReviews = false
-    let detailComments: [Comment]
     
     @Published var animateRestaurantTitleScroll = false
     
@@ -27,22 +27,17 @@ class RestaurantDetailViewModel: ObservableObject{
     @Published var comment = ""
     @Published var selectedStars = -1
     @Published var rate = false
-    init(){
-        let restaurant = DeveloperPreview.instance.restaurant
-        let details = DeveloperPreview.instance.details
+    
+    let detailsDataService = RestaurantDetailDataService.instance
+    
+    var cancellables = Set<AnyCancellable>()
+    init(restaurant: Restaurant){
+        
         self._restaurant = Published(initialValue: restaurant)
-        self._details = Published(initialValue: details)
         let coordinates = restaurant.address.coordinates
         mapRegion = MKCoordinateRegion(center: coordinates, span: mapSpan)
         
-        let comments = DeveloperPreview.instance.comments
-        self.comments = comments
-        
-        if comments.count > 3 {
-            detailComments = Array(comments.prefix(3))
-        }else{
-            detailComments = comments
-        }
+        getRestaurantDetails(for: restaurant.id)
     }
     
     var topSafeAreaInset: CGFloat? {
@@ -71,23 +66,41 @@ class RestaurantDetailViewModel: ObservableObject{
     
     func getStatus(for rating: Int) -> Double{
         switch rating{
-        case 5:return details.commentRatingStatus[0]
-        case 4:return details.commentRatingStatus[1]
-        case 3:return details.commentRatingStatus[2]
-        case 2:return details.commentRatingStatus[3]
-        case 1:return details.commentRatingStatus[4]
+        case 5:return details?.commentRatingStatus[0] ?? 0
+        case 4:return details?.commentRatingStatus[1] ?? 0
+        case 3:return details?.commentRatingStatus[2] ?? 0
+        case 2:return details?.commentRatingStatus[3] ?? 0
+        case 1:return details?.commentRatingStatus[4] ?? 0
         default:return 0
         }
     }
     
     var restaurantTitleLeftOffsetAnimation: CGFloat{
         let width = restaurant.name.widthOfString(usingFont: UIFont.preferedFont(from: .title.weight(.semibold)))
-//        print(restaurant.name)
         return width > 100 ? width * CGFloat(-4) : 0
     }
     
     var restaurantTitleRightOffsetAnimation: CGFloat{
         let width = restaurant.name.widthOfString(usingFont: UIFont.preferedFont(from: .title.weight(.semibold)))
         return width > 100 ? width * CGFloat(4) : 0
+    }
+    
+    //MARK: - Networking
+    private func getRestaurantDetails(for id: String){
+        print("Getting detail data...")
+        detailsDataService.fetchDetail(for: id)
+        detailsDataService.fetchPreviewComments(for: id, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+        
+        detailsDataService.$details
+            .sink { [weak self] fetchedDetails in
+                self?.details = fetchedDetails
+            }
+            .store(in: &cancellables)
+        
+        detailsDataService.$previewComments
+            .sink { [weak self] fetchedPreviewComments in
+                self?.comments = fetchedPreviewComments
+            }
+            .store(in: &cancellables)
     }
 }

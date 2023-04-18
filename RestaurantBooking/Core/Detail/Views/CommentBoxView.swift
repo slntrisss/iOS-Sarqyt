@@ -17,7 +17,7 @@ struct CommentBoxView: View {
                 VStack(alignment: .leading, spacing: 5){
                     Text(comment.user.firstName + " " + comment.user.lastName)
                         .font(.headline)
-                    Text(comment.date.formatted(date: .abbreviated, time: .omitted))
+                    Text(comment.date)
                         .font(.callout)
                         .foregroundColor(Color.theme.secondaryText)
                 }
@@ -51,7 +51,7 @@ struct CommentBoxView: View {
 struct CommentBoxView_Previews: PreviewProvider {
     static var previews: some View {
         CommentBoxView(comment: DeveloperPreview.instance.comments.first!)
-            .environmentObject(RestaurantDetailViewModel())
+            .environmentObject(RestaurantDetailViewModel(restaurant: dev.restaurant))
             .padding()
     }
 }

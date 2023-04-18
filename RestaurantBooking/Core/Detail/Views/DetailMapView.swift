@@ -37,7 +37,7 @@ struct DetailMapView: View {
 struct DetailMapView_Previews: PreviewProvider {
     static var previews: some View {
         DetailMapView()
-            .environmentObject(RestaurantDetailViewModel())
+            .environmentObject(RestaurantDetailViewModel(restaurant: dev.restaurant))
             .padding()
     }
 }
