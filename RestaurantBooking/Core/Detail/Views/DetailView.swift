@@ -11,7 +11,7 @@ struct DetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State var animate = false
     @StateObject private var detailVM: RestaurantDetailViewModel
-    @StateObject private var bookVM = BookViewModel()
+    @StateObject private var bookVM : BookViewModel
     let restaurant: Restaurant
     @State private var showFullDescription = false
     @State private var showMenu = false
@@ -19,6 +19,7 @@ struct DetailView: View {
     init(restaurant: Restaurant){
         self.restaurant = restaurant
         self._detailVM = StateObject(wrappedValue: RestaurantDetailViewModel(restaurant: restaurant))
+        self._bookVM = StateObject(wrappedValue: BookViewModel(restaurant: restaurant))
     }
     var body: some View {
         VStack{
@@ -42,7 +43,6 @@ struct DetailView: View {
         .onAppear{
             bookVM.setupRestaurant(restaurant: restaurant)
             detailVM.animateRestaurantTitleScroll.toggle()
-//            bookVM.setupBookingRestaurant()
         }
         .sheet(isPresented: $detailVM.showRateView, content: {
             RateRestaurantView(restaurant: restaurant, selectedStars: $detailVM.selectedStars, comment: $detailVM.comment, rate: $detailVM.rate, cancelRating: $detailVM.showRateView)

@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct RestaurantBookingApp: App {
-    @StateObject private var vm = BookViewModel()
     var body: some Scene {
         WindowGroup {
             ZStack{

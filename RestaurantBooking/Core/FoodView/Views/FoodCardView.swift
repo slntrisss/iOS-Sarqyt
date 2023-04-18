@@ -30,8 +30,8 @@ struct FoodCardView: View {
 
 struct FoodCard_Previews: PreviewProvider {
     static var previews: some View {
-        FoodCardView(food: DeveloperPreview.instance.food, bookVM: BookViewModel())
-            .environmentObject(BookViewModel())
+        FoodCardView(food: DeveloperPreview.instance.food, bookVM: BookViewModel(restaurant: dev.restaurant))
+            .environmentObject(BookViewModel(restaurant: dev.restaurant))
             .previewLayout(.sizeThatFits)
     }
 }

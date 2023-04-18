@@ -47,8 +47,8 @@ struct FoodView: View {
 
 struct FoodView_Previews: PreviewProvider {
     static var previews: some View {
-        FoodView(title: "Restaurant", bookVM: BookViewModel())
-            .environmentObject(BookViewModel())
+        FoodView(title: "Restaurant", bookVM: BookViewModel(restaurant: dev.restaurant))
+            .environmentObject(BookViewModel(restaurant: dev.restaurant))
     }
 }
 

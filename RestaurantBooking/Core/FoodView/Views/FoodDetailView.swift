@@ -27,7 +27,7 @@ struct FoodDetailView: View {
 
 struct FoodDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        FoodDetailView(food: DeveloperPreview.instance.food, foodCardVM: FoodCardViewModel(food: DeveloperPreview.instance.food, bookVM: BookViewModel()))
+        FoodDetailView(food: DeveloperPreview.instance.food, foodCardVM: FoodCardViewModel(food: DeveloperPreview.instance.food, bookVM: BookViewModel(restaurant: dev.restaurant)))
     }
 }
 

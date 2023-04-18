@@ -38,6 +38,10 @@ class BookViewModel: ObservableObject{
     
     var bookedRestaurant: BookedRestaurant? = nil
     
+    init(restaurant: Restaurant){
+        self.restaurant = restaurant
+    }
+    
     func setupBookingRestaurant(){
         self.bookingRestaurant = bookingService.getBookingRestaurant()
         setupAvailableTimeIntervals()

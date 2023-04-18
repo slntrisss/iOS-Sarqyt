@@ -49,7 +49,7 @@ struct RestaurantBookingView: View {
 struct RestaurantBookingView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            RestaurantBookingView(bookVM: BookViewModel())
+            RestaurantBookingView(bookVM: BookViewModel(restaurant: dev.restaurant))
         }
     }
 }
