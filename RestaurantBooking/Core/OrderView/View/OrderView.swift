@@ -81,7 +81,7 @@ extension OrderView{
     }
     private func constructOrderedFoodView(orderedFood: OrderedFood) -> some View{
         HStack{
-            Image(orderedFood.food.image)
+            Image(uiImage: orderedFood.food.wrappedImage)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 80)
@@ -167,7 +167,7 @@ extension OrderView{
         }
     }
     private var cardImage: some View{
-        Image(restaurant.image)
+        Image(uiImage: restaurant.wrappedImage)
             .resizable()
             .frame(width: 80, height: 80)
             .clipShape(RoundedRectangle(cornerRadius: 20))

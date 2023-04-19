@@ -246,7 +246,7 @@ class DeveloperPreview{
                                                                               reviewAmount: 4563,
                                                                               reserveAmount: 15000,
                                                                               bookmarked: false,
-                                                                              bookingStatus: .cancelled), numberOfGuests: 5, selectedDate: Date(), selectedTime: Date().formatted(date: .omitted, time: .shortened), specialWishes: "under A/C")
+                                                                              bookingStatus: .cancelled), numberOfGuests: 5, selectedDate: Date(), selectedTime: Date().formatted(date: .omitted, time: .shortened), specialWishes: "under A/C", selectedTableId: "123")
     }
     
     let reservedRestaurantDetail = ReservedRestaurantDetail(id: UUID().uuidString, restaurantName: "Eldora", restaurantImage: "restaurant1", city: "Almaty", location: "Momushuly, 83", tableNumber: 55, reservedDate: "Mar 31", reservedTime: "18:00", numberOfGuests: 3, specialWishes: "Lit the fire on cake", orderedFoods: [

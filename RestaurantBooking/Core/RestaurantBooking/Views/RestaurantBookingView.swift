@@ -118,16 +118,10 @@ extension RestaurantBookingView{
     
     private var footerView: some View{
         VStack{
-            Text("\(bookVM.totalPriceForBooking.toKZTCurrency())")
+            Text("\(bookVM.reservcePrice.toKZTCurrency())")
                 .font(.headline)
             PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
         }
-//        .onChange(of: bookVM.continueButtonTapped, perform: {_ in
-//                //TODO: Book restaurant
-//            print(bookVM.foodPrice)
-//            print(bookVM.reservcePrice)
-//            print(bookVM.foodPrice + bookVM.reservcePrice)
-//        })
         .padding(.horizontal)
         .padding(.top, 50)
     }

@@ -24,6 +24,7 @@ class BookViewModel: ObservableObject{
     @Published var numberOfGuests = 1
     @Published var selectedTime = ""
     @Published var specialWishes = ""
+    @Published var selectedTableId: String? = nil
     
     //Restaurant booking
     let bookingService = BookDataService.instance
@@ -80,10 +81,18 @@ class BookViewModel: ObservableObject{
             showRequiredFieldsMissedAlertView = true
             return
         }
-        
+        if bookedRestaurant == nil {
+            createBookedRestautant()
+        }
         if orderedFoods.values.isEmpty{
             showOrderFoodAlertView = true
             return
+        }
+    }
+    
+    private func createBookedRestautant(){
+        if let restaurant = restaurant, let tableId = selectedTableId{
+            self.bookedRestaurant = BookedRestaurant(id: UUID().uuidString, restaurant: restaurant, numberOfGuests: numberOfGuests, selectedDate: selectedDate, selectedTime: selectedTime, specialWishes: specialWishes, selectedTableId: tableId)
         }
     }
     
@@ -107,6 +116,13 @@ class BookViewModel: ObservableObject{
         schemeVM.$tableInfo
             .sink { [weak self] fetchedInfo in
                 self?.reservcePrice = fetchedInfo?.reservePrice ?? 0.0
+            }
+            .store(in: &cancellables)
+        schemeVM.$selectedGroupItem
+            .sink { [weak self] selectedGroupItem in
+                if let id = selectedGroupItem?.id{
+                    self?.selectedTableId = id
+                }
             }
             .store(in: &cancellables)
         bookingService.$bookingRestaurant

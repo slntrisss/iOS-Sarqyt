@@ -14,5 +14,5 @@ struct BookedRestaurant: Codable, Identifiable{
     let selectedDate: Date
     let selectedTime: String
     let specialWishes: String
-    var selectedTableId: Int? = nil
+    var selectedTableId: String
 }

@@ -12,6 +12,7 @@ class SchemeViewModel: ObservableObject{
     @Published var scheme: RestaurantScheme? = nil
     @Published var selectedFloor = 0
     @Published var mapItemGroupSelectOptions: [Bool] = []
+    @Published var selectedGroupItem: MapItemGroup? = nil
     @Published var showTableInfoSheet = false
     var restaurantId = ""
     var selectedIndex = -1
@@ -36,8 +37,11 @@ class SchemeViewModel: ObservableObject{
     
     func groupItemTapped(at index: Int){
         withAnimation {
-            if let scheme = scheme,
-               scheme.floors[selectedFloor].groups[index].reserved {
+            guard let scheme = scheme else{
+                print("Scheme for restaurant ID: \(restaurantId) does not exist.")
+                return
+            }
+            if scheme.floors[selectedFloor].groups[index].reserved {
                 return
             }
             if selectedIndex >= 0{
@@ -48,6 +52,7 @@ class SchemeViewModel: ObservableObject{
                 selectedIndex = index
                 mapItemGroupSelectOptions[index] = true
             }
+            self.selectedGroupItem = scheme.floors[selectedFloor].groups[index]
         }
     }
     

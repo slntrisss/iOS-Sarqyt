@@ -982,8 +982,9 @@
 		FFAA49B329EED79E00B2561D /* Booking */ = {
 			isa = PBXGroup;
 			children = (
-				FF90C25629EC1A55005FAF4C /* TableInfo.swift */,
 				FF6E671629CF014E00B3FE7D /* BookingRestaurant.swift */,
+				FF90C25629EC1A55005FAF4C /* TableInfo.swift */,
+				FF94C75929D5CAC400BF3072 /* BookedRestaurant.swift */,
 			);
 			path = Booking;
 			sourceTree = "<group>";
@@ -1066,7 +1067,6 @@
 				FF5391BF29BCAC06004AF07D /* User.swift */,
 				FFEE49DC29BDA96A003E8466 /* Book.swift */,
 				FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */,
-				FF94C75929D5CAC400BF3072 /* BookedRestaurant.swift */,
 				FF68D24029D83FF00064ECF9 /* ReservedRestaurant.swift */,
 				FF68D24229D8412E0064ECF9 /* ReservedRestaurantDetail.swift */,
 				FF68D26029D8B3F50064ECF9 /* PaymentCard.swift */,
