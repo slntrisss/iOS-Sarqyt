@@ -43,7 +43,7 @@ struct FoodView: View {
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $foodVM.navigateToRestaurantBookingView) {RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)}
             .navigationDestination(isPresented: $foodVM.showOrderView) {
-                OrderView(orderedFoods: bookVM.wrappedOrderedFoods, bookedRestaurant: bookVM.wrappedBookedRestaurant)
+                OrderView(bookVM: bookVM)
             }
         }
     }

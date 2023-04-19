@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct OrderView: View {
+    @ObservedObject var bookVM: BookViewModel
     @StateObject private var orderVM: OrderViewModel
     @Environment(\.dismiss) private var dismiss
     let restaurant: Restaurant
-    init(orderedFoods: [OrderedFood], bookedRestaurant: BookedRestaurant){
-        self.restaurant = bookedRestaurant.restaurant
-        self._orderVM = StateObject(wrappedValue: OrderViewModel(orderedFoods: orderedFoods, bookedRestaurant: bookedRestaurant))
+    init(bookVM: BookViewModel){
+        self.restaurant = bookVM.wrappedBookedRestaurant.restaurant
+        self._bookVM = ObservedObject(wrappedValue: bookVM)
+        self._orderVM = StateObject(wrappedValue: OrderViewModel(bookVM: bookVM))
     }
     var body: some View {
         ScrollView{
@@ -29,7 +31,7 @@ struct OrderView: View {
                 Spacer()
                     .frame(height: 30)
                 foodTitleView
-                ForEach(orderVM.orderedFoods) { orderedFood in
+                ForEach(orderVM.bookVM.wrappedOrderedFoods) { orderedFood in
                     constructOrderedFoodView(orderedFood: orderedFood)
                 }
                 .padding(.horizontal)
@@ -58,7 +60,7 @@ struct OrderView: View {
 struct OrderedFoodsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            OrderView(orderedFoods: dev.orderedFoods, bookedRestaurant: dev.bookedRestaurant)
+            OrderView(bookVM: BookViewModel(restaurant: dev.restaurant))
         }
     }
 }
@@ -94,14 +96,14 @@ extension OrderView{
                     .font(.caption.weight(.semibold))
                 HStack(spacing: 20){
                     Button{
-                        
+                        orderVM.decreaseFoodQuantity(for: orderedFood)
                     }label: {
                         Image(systemName: "minus")
                             .foregroundColor(Color.theme.accent)
                     }
                     Text("\(orderedFood.count)")
                     Button{
-                        
+                        orderVM.increaseFoodQuantity(for: orderedFood)
                     }label: {
                         Image(systemName: "plus")
                             .foregroundColor(Color.theme.accent)
@@ -180,14 +182,14 @@ extension OrderView{
             Spacer()
             HStack(spacing: 20){
                 Button{
-                    
+                    orderVM.decreaseGuestsAmount()
                 }label: {
                     Image(systemName: "minus")
                         .foregroundColor(Color.theme.accent)
                 }
-                Text("\(orderVM.bookedRestaurant.numberOfGuests)")
+                Text("\(bookVM.bookedRestaurant?.numberOfGuests ?? -1)")
                 Button{
-                    
+                    orderVM.increaseGuestsAmount()
                 }label: {
                     Image(systemName: "plus")
                         .foregroundColor(Color.theme.accent)

@@ -6,14 +6,18 @@
 //
 
 import Foundation
+import SwiftUI
 
 class OrderViewModel: ObservableObject{
-    @Published var orderedFoods: [OrderedFood]
-    @Published var bookedRestaurant: BookedRestaurant
     @Published var showAllPaymentsMethodLists = false
-    init(orderedFoods: [OrderedFood], bookedRestaurant: BookedRestaurant){
-        self.orderedFoods = orderedFoods
-        self.bookedRestaurant = bookedRestaurant
+    
+    @Published var bookVM: BookViewModel{
+        didSet{
+            print("Changing")
+        }
+    }
+    init(bookVM: BookViewModel){
+        self.bookVM = bookVM
     }
     
     var bookingTimeInterval: String{
@@ -21,10 +25,39 @@ class OrderViewModel: ObservableObject{
     }
     
     private var bookedDate: String{
-        return bookedRestaurant.selectedDate.formatted(date: .abbreviated, time: .omitted)
+        return bookVM.wrappedBookedRestaurant.selectedDate.formatted(date: .abbreviated, time: .omitted)
     }
     
     private var bookedTime: String{
-        return bookedRestaurant.selectedTime
+        return bookVM.wrappedBookedRestaurant.selectedTime
+    }
+    
+    func increaseGuestsAmount(){
+        if let maxGuestAmount = bookVM.maxGuestsQuantity,
+           let selectedGuestAmount = bookVM.bookedRestaurant?.numberOfGuests,
+           selectedGuestAmount < maxGuestAmount{
+            bookVM.bookedRestaurant?.numberOfGuests += 1
+        }
+    }
+    
+    func decreaseGuestsAmount(){
+        if let bookedRestaurant = bookVM.bookedRestaurant, bookedRestaurant.numberOfGuests > 1{
+            bookVM.bookedRestaurant?.numberOfGuests -= 1
+        }
+    }
+    
+    func increaseFoodQuantity(for food: OrderedFood){
+        bookVM.orderedFoods[food.id]?.count += 1
+    }
+    
+    func decreaseFoodQuantity(for food: OrderedFood){
+        if var foodToBeUpdated = bookVM.orderedFoods[food.id]{
+            foodToBeUpdated.count -= 1
+            if foodToBeUpdated.count <= 0{
+                bookVM.orderedFoods[food.id] = nil
+                return
+            }
+            bookVM.orderedFoods[food.id]?.count = foodToBeUpdated.count
+        }
     }
 }

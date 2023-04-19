@@ -33,7 +33,7 @@ struct RestaurantBookingView: View {
             .navigationTitle("Book")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $bookVM.navigateToOrderView, destination: {
-                OrderView(orderedFoods: bookVM.wrappedOrderedFoods, bookedRestaurant: bookVM.wrappedBookedRestaurant)
+                OrderView(bookVM: bookVM)
             })
             .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
                 FoodView(bookVM: bookVM, schemeVM: schemeVM)
@@ -118,7 +118,7 @@ extension RestaurantBookingView{
     
     private var footerView: some View{
         VStack{
-            Text("\(bookVM.reservcePrice.toKZTCurrency())")
+            Text("\(bookVM.reservePrice.toKZTCurrency())")
                 .font(.headline)
             PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
         }

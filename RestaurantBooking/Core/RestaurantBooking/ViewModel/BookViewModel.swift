@@ -25,10 +25,11 @@ class BookViewModel: ObservableObject{
     @Published var selectedTime = ""
     @Published var specialWishes = ""
     @Published var selectedTableId: String? = nil
+    @Published var maxGuestsQuantity: Int? = nil
     
     //Restaurant booking
     let bookingService = BookDataService.instance
-    var bookedRestaurant: BookedRestaurant? = nil
+    @Published var bookedRestaurant: BookedRestaurant? = nil
     var restaurant: Restaurant? = nil
     var bookingRestaurant: BookingRestaurant? = nil
     
@@ -37,7 +38,7 @@ class BookViewModel: ObservableObject{
     
     //Price
     var foodPrice = 0.0
-    var reservcePrice = 0.0
+    var reservePrice = 0.0
     var totalPriceForBooking = 0.0
     
     init(restaurant: Restaurant){
@@ -88,12 +89,17 @@ class BookViewModel: ObservableObject{
             showOrderFoodAlertView = true
             return
         }
+        navigateToOrderView = true
     }
     
     private func createBookedRestautant(){
         if let restaurant = restaurant, let tableId = selectedTableId{
             self.bookedRestaurant = BookedRestaurant(id: UUID().uuidString, restaurant: restaurant, numberOfGuests: numberOfGuests, selectedDate: selectedDate, selectedTime: selectedTime, specialWishes: specialWishes, selectedTableId: tableId)
         }
+    }
+    
+    private func computeTotalPriceForOrderView(){
+        self.totalPriceForBooking = reservePrice + foodPrice
     }
     
     //MARK: - Order View Dependencies
@@ -115,7 +121,8 @@ class BookViewModel: ObservableObject{
         bookingService.fetchBookingRestaurant(for: restaurant?.id ?? "")
         schemeVM.$tableInfo
             .sink { [weak self] fetchedInfo in
-                self?.reservcePrice = fetchedInfo?.reservePrice ?? 0.0
+                self?.maxGuestsQuantity = fetchedInfo?.numberOfChairs
+                self?.reservePrice = fetchedInfo?.reservePrice ?? 0.0
             }
             .store(in: &cancellables)
         schemeVM.$selectedGroupItem
