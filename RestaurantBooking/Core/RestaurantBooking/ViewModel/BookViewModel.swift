@@ -9,7 +9,11 @@ import SwiftUI
 import Combine
 
 class BookViewModel: ObservableObject{
-    @Published var continueButtonTapped = false
+    @Published var continueButtonTapped = false{
+        didSet{
+            checkForValidity()
+        }
+    }
     @Published var showOrderFoodAlertView = false
     @Published var showRequiredFieldsMissedAlertView = false
     @Published var navigateToFoodView = false
@@ -68,6 +72,18 @@ class BookViewModel: ObservableObject{
         foodPrice = 0.0
         for food in orderedFoods.values{
             foodPrice += food.price
+        }
+    }
+    
+    private func checkForValidity(){
+        if selectedTime.isEmpty{
+            showRequiredFieldsMissedAlertView = true
+            return
+        }
+        
+        if orderedFoods.values.isEmpty{
+            showOrderFoodAlertView = true
+            return
         }
     }
     

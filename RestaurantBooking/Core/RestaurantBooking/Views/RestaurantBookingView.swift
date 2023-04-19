@@ -38,8 +38,22 @@ struct RestaurantBookingView: View {
             .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
                 FoodView(bookVM: bookVM, schemeVM: schemeVM)
             })
-            orderFoodAlertView
-            requiredFieldNotFilledAlertView
+            .alert("", isPresented: $bookVM.showOrderFoodAlertView) {
+                Button("OK"){
+                    bookVM.navigateToFoodView = true
+                }
+                Button("Cancel"){
+                    bookVM.showOrderFoodAlertView = false
+                    bookVM.navigateToOrderView = true
+                }
+            } message: {
+                Text("You have not ordered a food. Would you like to order a food?")
+            }
+            .alert("", isPresented: $bookVM.showRequiredFieldsMissedAlertView) {
+                Button("Dismiss"){}
+            } message: {
+                Text("Please, choose an appropriate time for booking.")
+            }
         }
         .onAppear{
             self.bookVM.setupBookingRestaurant(schemeVM: schemeVM)
@@ -108,76 +122,14 @@ extension RestaurantBookingView{
                 .font(.headline)
             PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
         }
-        .onChange(of: bookVM.continueButtonTapped, perform: {_ in
-                //TODO: Book restaurant
-            print(bookVM.foodPrice)
-            print(bookVM.reservcePrice)
-            print(bookVM.foodPrice + bookVM.reservcePrice)
-        })
+//        .onChange(of: bookVM.continueButtonTapped, perform: {_ in
+//                //TODO: Book restaurant
+//            print(bookVM.foodPrice)
+//            print(bookVM.reservcePrice)
+//            print(bookVM.foodPrice + bookVM.reservcePrice)
+//        })
         .padding(.horizontal)
         .padding(.top, 50)
     }
     
-    private var orderFoodAlertView: some View{
-        AlertBuilder(showAlert: $bookVM.showOrderFoodAlertView) {
-            VStack{
-                Text("You have not ordered a food. Would you like to order a food?")
-                    .multilineTextAlignment(.center)
-                    .font(.callout.weight(.medium))
-                    .padding(.vertical)
-                HStack{
-                    Button{
-                        withAnimation {
-                            bookVM.navigateToFoodView = true
-                        }
-                    }label: {
-                        Text("OK")
-                            .foregroundColor(Color.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.theme.green)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    }
-                    Button{
-                        withAnimation {
-                            bookVM.showOrderFoodAlertView = false
-                            bookVM.navigateToOrderView = true
-                        }
-                    }label: {
-                        Text("Cancel")
-                            .foregroundColor(Color.theme.accent)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.theme.secondaryButton)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    }
-                }
-            }
-            .frame(width: 250)
-        }
-    }
-    
-    private var requiredFieldNotFilledAlertView: some View{
-        AlertBuilder(showAlert: $bookVM.showRequiredFieldsMissedAlertView) {
-            VStack{
-                Text("Please, choose an appropriate time for booking.")
-                    .multilineTextAlignment(.center)
-                    .font(.callout.weight(.medium))
-                    .padding(.vertical)
-                Button{
-                    withAnimation {
-                        bookVM.showRequiredFieldsMissedAlertView = false
-                    }
-                }label: {
-                    Text("Dismiss")
-                        .foregroundColor(Color.theme.accent)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.theme.secondaryButton)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                }
-            }
-            .frame(width: 250)
-        }
-    }
 }

@@ -18,7 +18,7 @@ struct AlertBuilder<Content: View>: View {
         ZStack(alignment: .center){
             if showAlert{
                 Color.black.opacity(0.7)
-                    .ignoresSafeArea()
+                    .ignoresSafeArea(.all)
                 VStack{
                     content
                 }
