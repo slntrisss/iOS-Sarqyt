@@ -30,12 +30,14 @@ struct OrderView: View {
                 .padding(.horizontal)
                 Spacer()
                     .frame(height: 30)
-                foodTitleView
-                ForEach(orderVM.bookVM.wrappedOrderedFoods) { orderedFood in
-                    constructOrderedFoodView(orderedFood: orderedFood)
+                if !bookVM.orderedFoods.isEmpty{
+                    foodTitleView
+                    ForEach(orderVM.bookVM.wrappedOrderedFoods) { orderedFood in
+                        constructOrderedFoodView(orderedFood: orderedFood)
+                    }
+                    .padding(.horizontal)
+                    changeOrderedFoodsButton
                 }
-                .padding(.horizontal)
-                changeOrderedFoodsButton
                 Spacer()
                     .frame(height: 30)
                 paymentMethodView
