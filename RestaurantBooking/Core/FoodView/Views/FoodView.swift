@@ -10,6 +10,7 @@ import SwiftUI
 struct FoodView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var bookVM: BookViewModel
+    @ObservedObject private var schemeVM: SchemeViewModel
     @StateObject private var foodVM: FoodViewModel
     
     let columns = [
@@ -19,9 +20,10 @@ struct FoodView: View {
     
     let title: String
     
-    init(title: String, bookVM: BookViewModel){
+    init(title: String, bookVM: BookViewModel, schemeVM: SchemeViewModel){
         self.title = title
         self.bookVM = bookVM
+        self.schemeVM = schemeVM
         self._foodVM = StateObject(wrappedValue: FoodViewModel(bookVM: bookVM))
     }
     
@@ -39,7 +41,7 @@ struct FoodView: View {
             .safeAreaInset(edge: .bottom, content: {orderButtonView})
             .overlay(titleBackground, alignment: .top)
             .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $foodVM.navigateToRestaurantBookingView) {RestaurantBookingView(bookVM: bookVM)}
+            .navigationDestination(isPresented: $foodVM.navigateToRestaurantBookingView) {RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)}
             .navigationDestination(isPresented: $foodVM.showOrderView) {
                 OrderView(orderedFoods: bookVM.wrappedOrderedFoods, bookedRestaurant: bookVM.wrappedBookedRestaurant)
             }
@@ -49,7 +51,7 @@ struct FoodView: View {
 
 struct FoodView_Previews: PreviewProvider {
     static var previews: some View {
-        FoodView(title: "Food & Dishes", bookVM: BookViewModel(restaurant: dev.restaurant))
+        FoodView(title: "Food & Dishes", bookVM: BookViewModel(restaurant: dev.restaurant), schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
             .environmentObject(BookViewModel(restaurant: dev.restaurant))
     }
 }

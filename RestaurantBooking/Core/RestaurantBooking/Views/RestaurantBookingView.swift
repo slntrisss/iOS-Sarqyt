@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct RestaurantBookingView: View {
-    @StateObject private var schemeVM: SchemeViewModel
+    @ObservedObject var schemeVM: SchemeViewModel
     @ObservedObject var bookVM: BookViewModel
-    init(bookVM: BookViewModel) {
+    init(bookVM: BookViewModel, schemeVM: SchemeViewModel) {
         self.bookVM = bookVM
-        self._schemeVM = StateObject(wrappedValue: SchemeViewModel(restaurantId: bookVM.restaurant?.id ?? ""))
-        self.bookVM.setupBookingRestaurant()
+        self.schemeVM = schemeVM
     }
     var body: some View {
         ZStack{
@@ -37,10 +36,13 @@ struct RestaurantBookingView: View {
                 OrderView(orderedFoods: bookVM.wrappedOrderedFoods, bookedRestaurant: bookVM.wrappedBookedRestaurant)
             })
             .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
-                FoodView(title: bookVM.restaurantNameTitle, bookVM: bookVM)
+                FoodView(title: bookVM.restaurantNameTitle, bookVM: bookVM, schemeVM: schemeVM)
             })
             orderFoodAlertView
             requiredFieldNotFilledAlertView
+        }
+        .onAppear{
+            self.bookVM.setupBookingRestaurant()
         }
     }
 }
@@ -48,7 +50,7 @@ struct RestaurantBookingView: View {
 struct RestaurantBookingView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            RestaurantBookingView(bookVM: BookViewModel(restaurant: dev.restaurant))
+            RestaurantBookingView(bookVM: BookViewModel(restaurant: dev.restaurant), schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
         }
     }
 }

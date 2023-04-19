@@ -22,7 +22,6 @@ class SchemeDataService{
             print("BAD URL: \(urlString)")
             return
         }
-        print(url.description)
         schemeSubscription = NetworkingManager.download(url: url)
             .decode(type: RestaurantScheme.self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedScheme in

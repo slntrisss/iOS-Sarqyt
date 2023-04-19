@@ -45,7 +45,10 @@ class BookViewModel: ObservableObject{
     //MARK: RestaurantBookingView
     var allowedDatesToChoose:ClosedRange<Date>{
         guard let minDate = bookingRestaurant?.availableBookingTimeInterval.min(),
-              let maxDate = bookingRestaurant?.availableBookingTimeInterval.max() else{return Date()...Date()}
+              let maxDate = bookingRestaurant?.availableBookingTimeInterval.max() else{
+            print("Cannot init date range for datepicker")
+            return Date()...Date().addingTimeInterval(60 * 60)
+        }
         return minDate...maxDate
     }
     

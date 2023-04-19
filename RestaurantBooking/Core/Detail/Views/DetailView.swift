@@ -12,6 +12,7 @@ struct DetailView: View {
     @State var animate = false
     @StateObject private var detailVM: RestaurantDetailViewModel
     @StateObject private var bookVM : BookViewModel
+    @StateObject private var schemeVM: SchemeViewModel
     let restaurant: Restaurant
     @State private var showFullDescription = false
     @State private var showMenu = false
@@ -20,6 +21,7 @@ struct DetailView: View {
         self.restaurant = restaurant
         self._detailVM = StateObject(wrappedValue: RestaurantDetailViewModel(restaurant: restaurant))
         self._bookVM = StateObject(wrappedValue: BookViewModel(restaurant: restaurant))
+        self._schemeVM = StateObject(wrappedValue: SchemeViewModel(restaurantId: restaurant.id))
     }
     var body: some View {
         VStack{
@@ -35,8 +37,8 @@ struct DetailView: View {
         .ignoresSafeArea(.all, edges: .bottom)
         .navigationDestination(isPresented: $detailVM.showAllReviews) {CommentView(restaurant: restaurant, commentRatingStatus: detailVM.details?.commentRatingStatus ?? Array(repeating: 0, count: 5)).environmentObject(detailVM)}
         .navigationDestination(isPresented: $showMenu)
-        {FoodView(title: "Food & Dishes", bookVM: bookVM)}
-            .navigationDestination(isPresented: $detailVM.bookNow){RestaurantBookingView(bookVM: bookVM)}
+        {FoodView(title: "Food & Dishes", bookVM: bookVM, schemeVM: schemeVM)}
+            .navigationDestination(isPresented: $detailVM.bookNow){RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)}
         .background(Color.theme.background)
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
