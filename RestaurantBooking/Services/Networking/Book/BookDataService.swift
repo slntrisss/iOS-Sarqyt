@@ -50,7 +50,6 @@ class BookDataService{
         //TODO: Uncomment for real data from SERVER
 //        request.httpMethod = "POST"
         request.httpMethod = "GET"
-        print(request.description)
         do{
             let jsonData = try JSONSerialization.data(withJSONObject: requestBody)
 //            request.httpBody = jsonData
@@ -59,7 +58,6 @@ class BookDataService{
                 .decode(type: TableInfo.self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedTableInfo in
                     self?.tableInfo = fetchedTableInfo
-                    print(fetchedTableInfo.description)
                     self?.tableInfoSubscription?.cancel()
                 }
         }catch let error{

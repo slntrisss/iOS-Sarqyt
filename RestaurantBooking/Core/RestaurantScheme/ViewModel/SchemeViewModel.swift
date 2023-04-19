@@ -22,9 +22,10 @@ class SchemeViewModel: ObservableObject{
     
     @Published var tableInfo: TableInfo? = nil
     
-    @Published var dateArray: [String] = ["12:00 PM", "1:00 PM", "6:00 PM"]
+    @Published var dateArray: [String] = []
     @Published var selectedTimeIntervalIndex = -1
-    @Published var numberOfGuests = 1
+    @Published var numberOfGuests = -1
+    @Published var selectedTime: String = ""
     @Published var saveChanges = false
     
     var cancellables = Set<AnyCancellable>()
@@ -92,11 +93,14 @@ class SchemeViewModel: ObservableObject{
     //MARK: TimePicker
     
     func setSelectedTimeInterval(index: Int){
-        
+        if let tableInfo = tableInfo{
+            selectedTimeIntervalIndex = index
+            selectedTime = tableInfo.availableTimeInterval[selectedTimeIntervalIndex]
+        }
     }
     
     func isSelectedTimeInterval(index: Int) -> Bool{
-        return false
+        return index == selectedTimeIntervalIndex
     }
     
     //MARK: Guest View
@@ -105,11 +109,16 @@ class SchemeViewModel: ObservableObject{
     }
     
     func increaseNumberOfGuests(){
-        
+        if let tableInfo = tableInfo,
+           tableInfo.numberOfChairs > numberOfGuests{
+            numberOfGuests += 1
+        }
     }
     
     func decreaseNumberOfGuests(){
-        
+        if numberOfGuests > 1{
+            numberOfGuests -= 1
+        }
     }
     
     //MARK: - Networking

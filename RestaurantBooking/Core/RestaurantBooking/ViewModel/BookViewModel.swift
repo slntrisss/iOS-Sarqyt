@@ -17,7 +17,7 @@ class BookViewModel: ObservableObject{
     var cancellables = Set<AnyCancellable>()
     
     @Published var selectedDate = Date()
-    @Published var numberOfGuests = -1
+    @Published var numberOfGuests = 1
     @Published var selectedTime = ""
     @Published var specialWishes = ""
     var totalPriceForBooking = 0.0
@@ -35,8 +35,8 @@ class BookViewModel: ObservableObject{
         self.restaurant = restaurant
     }
     
-    func setupBookingRestaurant(){
-        addSubscribers()
+    func setupBookingRestaurant(schemeVM: SchemeViewModel){
+        addSubscribers(schemeVM: schemeVM)
     }
     
 
@@ -82,8 +82,18 @@ class BookViewModel: ObservableObject{
     }
     
     //MARK: - Networking
-    private func addSubscribers(){
+    private func addSubscribers(schemeVM: SchemeViewModel){
         bookingService.fetchBookingRestaurant(for: restaurant?.id ?? "")
+        schemeVM.$tableInfo
+            .sink { [weak self] fetchedInfo in
+                if self?.totalPriceForBooking != 0{
+                    self?.totalPriceForBooking += fetchedInfo?.reservePrice ?? 0.0
+                }else{
+                    self?.totalPriceForBooking += fetchedInfo?.reservePrice ?? 0.0
+                }
+                print(self?.totalPriceForBooking)
+            }
+            .store(in: &cancellables)
         bookingService.$bookingRestaurant
             .sink { [weak self] fetchedResult in
                 self?.bookingRestaurant = fetchedResult

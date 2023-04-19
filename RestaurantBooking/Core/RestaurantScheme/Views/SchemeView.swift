@@ -14,12 +14,17 @@ struct SchemeView: View {
     @State private var currentOffset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
     
+    @Binding var numberOfGuests: Int
+    @Binding var selectedTimeInterval: String
     let restaurantId: String
     let selectedDate: Date
-    init(schemeVM: SchemeViewModel, restaurantId: String, selectedDate: Date){
+    init(schemeVM: SchemeViewModel, restaurantId: String, selectedDate: Date,
+         numberOfGuests: Binding<Int>, selectedTimeInterval: Binding<String>){
         self.schemeVM = schemeVM
         self.restaurantId = restaurantId
         self.selectedDate = selectedDate
+        self._numberOfGuests = numberOfGuests
+        self._selectedTimeInterval = selectedTimeInterval
     }
     var body: some View {
         LazyVStack{
@@ -58,7 +63,7 @@ struct SchemeView: View {
             )
             .padding(.horizontal)
             .sheet(isPresented: $schemeVM.showTableInfoSheet) {
-                TableInfoView(schemeVM: schemeVM)
+                TableInfoView(schemeVM: schemeVM, selectedTime: $selectedTimeInterval, numberOfGuests: $numberOfGuests)
                     .presentationDetents([.fraction(0.8), .large])
             }
         }
@@ -71,7 +76,7 @@ struct SchemeView: View {
 struct SchemeView_Previews: PreviewProvider {
     static var previews: some View {
         SchemeView(schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id),
-        restaurantId: "", selectedDate: Date())
+                   restaurantId: "", selectedDate: Date(), numberOfGuests: .constant(0), selectedTimeInterval: .constant(""))
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct TableInfo: Codable, Identifiable{
     let id: String
@@ -15,4 +16,8 @@ struct TableInfo: Codable, Identifiable{
     let availableTimeInterval: [String]
     let description: String
     let images: [String]
+    
+    func wrappedImage(for base64String: String) -> UIImage{
+        ImageService.convertBase64ToImage(base64: base64String)
+    }
 }

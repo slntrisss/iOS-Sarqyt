@@ -42,7 +42,7 @@ struct RestaurantBookingView: View {
             requiredFieldNotFilledAlertView
         }
         .onAppear{
-            self.bookVM.setupBookingRestaurant()
+            self.bookVM.setupBookingRestaurant(schemeVM: schemeVM)
         }
     }
 }
@@ -78,7 +78,7 @@ extension RestaurantBookingView{
     }
     
     private var reserveTableView: some View{
-        SchemeView(schemeVM: schemeVM, restaurantId: bookVM.restaurant?.id ?? "", selectedDate: bookVM.selectedDate)
+        SchemeView(schemeVM: schemeVM, restaurantId: bookVM.restaurant?.id ?? "", selectedDate: bookVM.selectedDate, numberOfGuests: $bookVM.numberOfGuests, selectedTimeInterval: $bookVM.selectedTime)
             .padding(.top, 20)
     }
     
@@ -110,6 +110,8 @@ extension RestaurantBookingView{
         }
         .onChange(of: bookVM.continueButtonTapped, perform: {_ in
                 //TODO: Book restaurant
+            print(bookVM.numberOfGuests)
+            print(bookVM.selectedTime)
         })
         .padding(.horizontal)
         .padding(.top, 50)

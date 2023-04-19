@@ -9,8 +9,14 @@ import SwiftUI
 
 struct TableInfoView: View {
     @ObservedObject var schemeVM: SchemeViewModel
-    init(schemeVM: SchemeViewModel) {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var selectedTime: String
+    @Binding var numberOfGuests: Int
+    init(schemeVM: SchemeViewModel, selectedTime: Binding<String>,
+         numberOfGuests: Binding<Int>) {
         self.schemeVM = schemeVM
+        self._selectedTime = selectedTime
+        self._numberOfGuests = numberOfGuests
     }
     var body: some View {
         if let tableInfo = schemeVM.tableInfo{
@@ -28,11 +34,12 @@ struct TableInfoView: View {
                     numberOfGuestsView
                 }
             }
+            .onAppear{
+                schemeVM.selectedTime = selectedTime
+                schemeVM.numberOfGuests = numberOfGuests
+            }
             .safeAreaInset(edge: .bottom) {
                 addButton
-            }
-            .onAppear{
-//                schemeVM.getTablePhotos(with: schemeVM.scheme?.floors[schemeVM.selectedFloor].groups[0].id ?? "", index: 0)
             }
         }
     }
@@ -41,7 +48,7 @@ struct TableInfoView: View {
 struct TableInfoView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            TableInfoView(schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
+            TableInfoView(schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id), selectedTime: .constant(""), numberOfGuests: .constant(1))
         }
     }
 }
@@ -50,7 +57,7 @@ extension TableInfoView{
     private func images(_ tableInfo: TableInfo) -> some View{
         TabView{
             ForEach(0..<tableInfo.images.count, id: \.self){ index in
-                Image(tableInfo.images[index])
+                Image(uiImage: tableInfo.wrappedImage(for: tableInfo.images[index]))
                     .resizable()
                     .scaledToFill()
                     .tag(index)
@@ -118,19 +125,22 @@ extension TableInfoView{
     private var timePickerView: some View{
         ScrollView(.horizontal, showsIndicators: false){
             LazyHStack {
-                ForEach(schemeVM.dateArray.indices, id: \.self) { index in
-                    Button{
-                        schemeVM.setSelectedTimeInterval(index: index)
-                    }label: {
-                        Text(schemeVM.dateArray[index])
-                            .font(.subheadline.weight(.medium))
-                            .padding()
-                            .background(schemeVM.isSelectedTimeInterval(index: index) ? Color.theme.green.opacity(0.6) : Color.theme.secondaryButton)
-                            .foregroundColor(schemeVM.isSelectedTimeInterval(index: index) ? Color.white : Color.theme.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding(.leading, index == 0 ? 20 : 0)
-                            .padding(.trailing, index == schemeVM.dateArray.count - 1 ? 20 : 4)
-                            .shadow(radius: 3)
+                if let tableInfo = schemeVM.tableInfo{
+                    ForEach(tableInfo.availableTimeInterval.indices, id: \.self) { index in
+                        Button{
+                            schemeVM.setSelectedTimeInterval(index: index)
+                            selectedTime = tableInfo.availableTimeInterval[index]
+                        }label: {
+                            Text(tableInfo.availableTimeInterval[index])
+                                .font(.subheadline.weight(.medium))
+                                .padding()
+                                .background(schemeVM.isSelectedTimeInterval(index: index) ? Color.theme.green.opacity(0.6) : Color.theme.secondaryButton)
+                                .foregroundColor(schemeVM.isSelectedTimeInterval(index: index) ? Color.white : Color.theme.accent)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .padding(.leading, index == 0 ? 20 : 0)
+                                .padding(.trailing, index == tableInfo.availableTimeInterval.count - 1 ? 20 : 4)
+                                .shadow(radius: 3)
+                        }
                     }
                 }
             }
@@ -183,11 +193,19 @@ extension TableInfoView{
         .padding(.horizontal)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 3)
+        .onChange(of: schemeVM.numberOfGuests) { _ in
+            numberOfGuests = schemeVM.numberOfGuests
+        }
     }
     
     private var addButton: some View{
         ZStack{
-            PrimaryButton(buttonLabel: "Add", buttonClicked: $schemeVM.saveChanges)
+            PrimaryButton(buttonLabel: "Save changes", buttonClicked: $schemeVM.saveChanges)
+                .onChange(of: schemeVM.saveChanges) { _ in
+                    if schemeVM.saveChanges{
+                        dismiss()
+                    }
+                }
         }
         .padding(.horizontal)
         .padding(.top, 10)
