@@ -12,4 +12,9 @@ extension Date{
     var startOfDay: Date{
         Calendar.current.startOfDay(for: self)
     }
+    
+    var validJSONDateString: String{
+        let formatter = ISO8601DateFormatter()
+        return formatter.string(from: self)
+    }
 }

@@ -421,6 +421,12 @@ class DeveloperPreview{
                               floor: 1,
                               numberOfChairs: 6,
                               reservePrice: 1350.0,
+                              availableTimeInterval: [
+                                "10:30",
+                                "12:30",
+                                "15:00",
+                                "17:00"
+                              ],
                               description: "Table #5 is a cozy, round table located in the corner of the restaurant. It's perfect for intimate dinners or small gatherings with friends. The table is made of polished wood and has comfortable chairs upholstered in a soft, cream-colored fabric. The table is set with crisp white linens, sparkling silverware, and elegant wine glasses. ",
                               images: ["table1", "table2", "table3"])
 }

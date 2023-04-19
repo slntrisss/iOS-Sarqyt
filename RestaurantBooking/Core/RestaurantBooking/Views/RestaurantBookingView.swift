@@ -78,7 +78,7 @@ extension RestaurantBookingView{
     }
     
     private var reserveTableView: some View{
-        SchemeView(schemeVM: schemeVM)
+        SchemeView(schemeVM: schemeVM, restaurantId: bookVM.restaurant?.id ?? "", selectedDate: bookVM.selectedDate)
             .padding(.top, 20)
     }
     

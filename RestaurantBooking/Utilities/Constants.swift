@@ -31,7 +31,7 @@ class Constants{
     //MARK: Book
     static let BOOK_BASE_URL = "/Book"
     static let BOOKING_RESTAURANT = "/Book/BookingRestaurant"
-    static let TABLE_INFO = "Book/TableInfo"
+    static let TABLE_INFO = "/Book/TableInfo"
     
     //MARK: RestaurantScheme
     static let RESTAURANT_SCHEME = "/Scheme"

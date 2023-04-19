@@ -35,7 +35,7 @@ class BookDataService{
     }
     
     func fetchTableInfo(for restaurantId: String, date: Date, groupId: String){
-        let urlString = Constants.BASE_URL + Constants.TABLE_INFO
+        let urlString = Constants.BASE_URL + "/\(restaurantId)" + Constants.TABLE_INFO
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -43,19 +43,23 @@ class BookDataService{
         
         let requestBody: [String: Any] = [
             "restaurantId" : restaurantId,
-            "date" : date,
+            "date" : date.validJSONDateString,
             "groupId" : groupId
         ]
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        //TODO: Uncomment for real data from SERVER
+//        request.httpMethod = "POST"
+        request.httpMethod = "GET"
+        print(request.description)
         do{
             let jsonData = try JSONSerialization.data(withJSONObject: requestBody)
-            request.httpBody = jsonData
+//            request.httpBody = jsonData
             
             tableInfoSubscription = NetworkingManager.download(request: request)
                 .decode(type: TableInfo.self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedTableInfo in
                     self?.tableInfo = fetchedTableInfo
+                    print(fetchedTableInfo.description)
                     self?.tableInfoSubscription?.cancel()
                 }
         }catch let error{

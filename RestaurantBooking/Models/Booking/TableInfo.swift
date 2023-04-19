@@ -12,6 +12,7 @@ struct TableInfo: Codable, Identifiable{
     let floor: Int
     let numberOfChairs: Int
     let reservePrice: Double
+    let availableTimeInterval: [String]
     let description: String
     let images: [String]
 }

@@ -50,10 +50,10 @@ class SchemeViewModel: ObservableObject{
         }
     }
     
-    func getTablePhotos(with id: String, index: Int){
-        self.tableInfo = DeveloperPreview.instance.tableInfo
+    func getTablePhotos(with restaurantId: String, selectedDate: Date, groupId: String, index: Int){
         showTableInfoSheet = true
         groupItemTapped(at: index)
+        getTableInfo(for: restaurantId, date: selectedDate, groupId: groupId)
     }
     
     func floorNumberTapped(at index: Int){
@@ -131,7 +131,7 @@ class SchemeViewModel: ObservableObject{
     }
     
     //MARK: Table info
-    func getTableInfo(for restaurantId: String, date: Date, groupId: String){
+    private func getTableInfo(for restaurantId: String, date: Date, groupId: String){
         bookDataService.fetchTableInfo(for: restaurantId, date: date, groupId: groupId)
     }
 }

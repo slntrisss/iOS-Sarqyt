@@ -13,8 +13,13 @@ struct SchemeView: View {
     @State private var lastAmount: CGFloat = 0
     @State private var currentOffset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
-    init(schemeVM: SchemeViewModel){
+    
+    let restaurantId: String
+    let selectedDate: Date
+    init(schemeVM: SchemeViewModel, restaurantId: String, selectedDate: Date){
         self.schemeVM = schemeVM
+        self.restaurantId = restaurantId
+        self.selectedDate = selectedDate
     }
     var body: some View {
         LazyVStack{
@@ -53,9 +58,8 @@ struct SchemeView: View {
             )
             .padding(.horizontal)
             .sheet(isPresented: $schemeVM.showTableInfoSheet) {
-                TableInfoView()
-                    .environmentObject(SchemeViewModel(restaurantId: DeveloperPreview.instance.restaurant.id))
-                    .presentationDetents([.fraction(0.8)])
+                TableInfoView(schemeVM: schemeVM)
+                    .presentationDetents([.fraction(0.8), .large])
             }
         }
         .onAppear{
@@ -66,7 +70,8 @@ struct SchemeView: View {
 
 struct SchemeView_Previews: PreviewProvider {
     static var previews: some View {
-        SchemeView(schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
+        SchemeView(schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id),
+        restaurantId: "", selectedDate: Date())
     }
 }
 
@@ -81,11 +86,8 @@ extension SchemeView{
                         isSelected: $schemeVM.mapItemGroupSelectOptions[index]
                     )
                     .onTapGesture {
-                        schemeVM.groupItemTapped(at: index)
-                        print("Tapped \(schemeVM.selectedIndex)")
-                    }
-                    .onLongPressGesture {
-                        schemeVM.getTablePhotos(with: scheme.floors[schemeVM.selectedFloor].groups[index].id, index: index)
+                        let groupId = scheme.floors[schemeVM.selectedFloor].groups[index].id
+                        schemeVM.getTablePhotos(with: restaurantId, selectedDate: selectedDate, groupId: groupId, index: index)
                     }
                 }
             }else{

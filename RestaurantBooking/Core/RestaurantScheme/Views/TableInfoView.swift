@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct TableInfoView: View {
-    @EnvironmentObject var schemeVM: SchemeViewModel
-    init() {
-        schemeVM.getTablePhotos(with: schemeVM.scheme?.floors[schemeVM.selectedFloor].groups[0].id ?? "", index: 0)
+    @ObservedObject var schemeVM: SchemeViewModel
+    init(schemeVM: SchemeViewModel) {
+        self.schemeVM = schemeVM
     }
     var body: some View {
         if let tableInfo = schemeVM.tableInfo{
@@ -31,6 +31,9 @@ struct TableInfoView: View {
             .safeAreaInset(edge: .bottom) {
                 addButton
             }
+            .onAppear{
+//                schemeVM.getTablePhotos(with: schemeVM.scheme?.floors[schemeVM.selectedFloor].groups[0].id ?? "", index: 0)
+            }
         }
     }
 }
@@ -38,8 +41,7 @@ struct TableInfoView: View {
 struct TableInfoView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            TableInfoView()
-                .environmentObject(SchemeViewModel(restaurantId: dev.restaurant.id))
+            TableInfoView(schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
         }
     }
 }
