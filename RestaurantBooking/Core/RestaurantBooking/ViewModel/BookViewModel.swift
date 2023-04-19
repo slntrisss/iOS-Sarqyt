@@ -20,7 +20,6 @@ class BookViewModel: ObservableObject{
     @Published var numberOfGuests = 1
     @Published var selectedTime = ""
     @Published var specialWishes = ""
-    var totalPriceForBooking = 0.0
     
     //Restaurant booking
     let bookingService = BookDataService.instance
@@ -30,6 +29,11 @@ class BookViewModel: ObservableObject{
     
     //Food ordering
     @Published var orderedFoods: [String : OrderedFood] = [:]
+    
+    //Price
+    var foodPrice = 0.0
+    var reservcePrice = 0.0
+    var totalPriceForBooking = 0.0
     
     init(restaurant: Restaurant){
         self.restaurant = restaurant
@@ -60,6 +64,13 @@ class BookViewModel: ObservableObject{
         navigateToFoodView = true
     }
     
+    func computeOrderedFoodPrice(){
+        foodPrice = 0.0
+        for food in orderedFoods.values{
+            foodPrice += food.price
+        }
+    }
+    
     //MARK: - Order View Dependencies
     //TODO: Optimize BookedRestaurant for Views
     var wrappedBookedRestaurant: BookedRestaurant{
@@ -79,11 +90,7 @@ class BookViewModel: ObservableObject{
         bookingService.fetchBookingRestaurant(for: restaurant?.id ?? "")
         schemeVM.$tableInfo
             .sink { [weak self] fetchedInfo in
-                if self?.totalPriceForBooking != 0{
-                    self?.totalPriceForBooking += fetchedInfo?.reservePrice ?? 0.0
-                }else{
-                    self?.totalPriceForBooking += fetchedInfo?.reservePrice ?? 0.0
-                }
+                self?.reservcePrice = fetchedInfo?.reservePrice ?? 0.0
             }
             .store(in: &cancellables)
         bookingService.$bookingRestaurant

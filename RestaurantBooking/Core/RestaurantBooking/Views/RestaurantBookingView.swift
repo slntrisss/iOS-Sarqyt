@@ -110,8 +110,9 @@ extension RestaurantBookingView{
         }
         .onChange(of: bookVM.continueButtonTapped, perform: {_ in
                 //TODO: Book restaurant
-            print(bookVM.numberOfGuests)
-            print(bookVM.selectedTime)
+            print(bookVM.foodPrice)
+            print(bookVM.reservcePrice)
+            print(bookVM.foodPrice + bookVM.reservcePrice)
         })
         .padding(.horizontal)
         .padding(.top, 50)
