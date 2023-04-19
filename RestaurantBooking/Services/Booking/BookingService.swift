@@ -11,7 +11,5 @@ class BookingService{
     static let shared = BookingService()
     private init(){}
     
-    func getBookingRestaurant() -> BookingRestaurant{
-        return DeveloperPreview.instance.bookingRestaurant
-    }
+    
 }

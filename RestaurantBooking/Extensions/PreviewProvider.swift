@@ -217,22 +217,22 @@ class DeveloperPreview{
         OrderedFood(id: UUID().uuidString, food: Food(id: UUID().uuidString, name: "Caesar salad with grilled chicken", image: "salad", type: FoodType(id: UUID().uuidString, type: "salad"), price: 2890, description: "lettuce, pieces of chicken meat (usually breast), crackers, grated parmesan, Caesar sauce"), count: 3, price: 2890, specialWishes: ""),
     ]
     
-    var bookingRestaurant: BookingRestaurant{
-        var availableTimeInterval = [Date: [Date]]()
-        let today = Calendar.current.startOfDay(for: Date())
-        let tomorrow = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: Date())!)
-        let theDayAfterTomorrow = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 2, to: Date())!)
-        availableTimeInterval[today] = createTimeInterval(from: createDay(from: Date()))
-        availableTimeInterval[tomorrow] = createTimeInterval(from: tomorrow)
-        availableTimeInterval[theDayAfterTomorrow] = createTimeInterval(from: theDayAfterTomorrow)
-
-        var prices = [Date: [Double]]()
-        for i in availableTimeInterval.keys{
-            createPricesForEachDate(for: &prices, from: availableTimeInterval[i]!, date: i)
-        }
-        
-        return BookingRestaurant(id: UUID().uuidString, maxGuestNumber: 10, availableBookingTimeInterval: availableTimeInterval, prices: prices, pricePerGuest: 1200.0)
-    }
+//    var bookingRestaurant: BookingRestaurant{
+//        var availableTimeInterval = [Date: [Date]]()
+//        let today = Calendar.current.startOfDay(for: Date())
+//        let tomorrow = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: Date())!)
+//        let theDayAfterTomorrow = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 2, to: Date())!)
+//        availableTimeInterval[today] = createTimeInterval(from: createDay(from: Date()))
+//        availableTimeInterval[tomorrow] = createTimeInterval(from: tomorrow)
+//        availableTimeInterval[theDayAfterTomorrow] = createTimeInterval(from: theDayAfterTomorrow)
+//
+//        var prices = [Date: [Double]]()
+//        for i in availableTimeInterval.keys{
+//            createPricesForEachDate(for: &prices, from: availableTimeInterval[i]!, date: i)
+//        }
+//
+//        return BookingRestaurant(id: UUID().uuidString, maxGuestNumber: 10, availableBookingTimeInterval: availableTimeInterval, prices: prices, pricePerGuest: 1200.0)
+//    }
     
     var bookedRestaurant: BookedRestaurant{
         return BookedRestaurant(id: UUID().uuidString, restaurant: Restaurant(id: UUID().uuidString,
@@ -246,7 +246,7 @@ class DeveloperPreview{
                                                                               reviewAmount: 4563,
                                                                               reserveAmount: 15000,
                                                                               bookmarked: false,
-                                                                              bookingStatus: .cancelled), numberOfGuests: 5, selectedDate: Date(), selectedTime: Date(), specialWishes: "under A/C")
+                                                                              bookingStatus: .cancelled), numberOfGuests: 5, selectedDate: Date(), selectedTime: Date().formatted(date: .omitted, time: .shortened), specialWishes: "under A/C")
     }
     
     let reservedRestaurantDetail = ReservedRestaurantDetail(id: UUID().uuidString, restaurantName: "Eldora", restaurantImage: "restaurant1", city: "Almaty", location: "Momushuly, 83", tableNumber: 55, reservedDate: "Mar 31", reservedTime: "18:00", numberOfGuests: 3, specialWishes: "Lit the fire on cake", orderedFoods: [

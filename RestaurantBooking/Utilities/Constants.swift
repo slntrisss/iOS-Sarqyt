@@ -28,6 +28,15 @@ class Constants{
     static let FOOD_TYPES = "/Food/FoodTypes"
     static let FOOD_LIST = "/List"
     
+    //MARK: Book
+    static let BOOK_BASE_URL = "/Book"
+    static let BOOKING_RESTAURANT = "/Book/BookingRestaurant"
+    static let TABLE_INFO = "Book/TableInfo"
+    
+    //MARK: RestaurantScheme
+    static let RESTAURANT_SCHEME = "/Scheme"
+    
+    //MARK: Pagination
     static let DEFAULT_OFFSET = 0
     static let DEFAULT_LIMIT = 5
 }

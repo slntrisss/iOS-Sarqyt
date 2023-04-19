@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct RestaurantBookingView: View {
+    @StateObject private var schemeVM: SchemeViewModel
     @ObservedObject var bookVM: BookViewModel
     init(bookVM: BookViewModel) {
         self.bookVM = bookVM
+        self._schemeVM = StateObject(wrappedValue: SchemeViewModel(restaurantId: bookVM.restaurant?.id ?? ""))
+        self.bookVM.setupBookingRestaurant()
     }
     var body: some View {
         ZStack{
@@ -22,9 +25,6 @@ struct RestaurantBookingView: View {
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 5)
-                    timePickerView
-                    numberOfGuestsLabel
-                    numberOfGuestsView
                     reserveTableView
                     specialWishLabel
                     specialWishesView
@@ -39,7 +39,6 @@ struct RestaurantBookingView: View {
             .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
                 FoodView(title: bookVM.restaurantNameTitle, bookVM: bookVM)
             })
-            .onAppear{self.bookVM.setupBookingRestaurant()}
             orderFoodAlertView
             requiredFieldNotFilledAlertView
         }
@@ -76,78 +75,9 @@ extension RestaurantBookingView{
             .shadow(radius: 5)
     }
     
-    private var timePickerView: some View{
-        ScrollView(.horizontal, showsIndicators: false){
-            LazyHStack {
-                ForEach(0..<bookVM.dateArray.count, id: \.self) { index in
-                    Button{
-                        bookVM.setSelectedTimeInterval(index: index)
-                    }label: {
-                        Text(bookVM.dateArray[index].formatted(date: .omitted, time: .shortened))
-                            .font(.subheadline.weight(.medium))
-                            .padding()
-                            .background(bookVM.isSelectedTimeInterval(index: index) ? Color.theme.green.opacity(0.6) : Color.theme.secondaryButton)
-                            .foregroundColor(bookVM.isSelectedTimeInterval(index: index) ? Color.white : Color.theme.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding(.leading, index == 0 ? 20 : 0)
-                            .padding(.trailing, index == bookVM.dateArray.count - 1 ? 20 : 4)
-                            .shadow(radius: 3)
-                    }
-                }
-            }
-            .padding(.vertical)
-        }
-    }
-    
     private var reserveTableView: some View{
-        SchemeView()
+        SchemeView(schemeVM: schemeVM)
             .padding(.top, 20)
-    }
-    
-    private var numberOfGuestsLabel: some View{
-        HStack{
-            Image(systemName: "person.2")
-            Text("Guest")
-            Spacer()
-        }
-        .font(.headline)
-        .padding(.horizontal)
-    }
-    
-    private var numberOfGuestsView: some View{
-        HStack{
-            Button{
-                bookVM.decreaseNumberOfGuests()
-            }label: {
-                Image(systemName: "minus.square")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(Color.theme.secondaryText)
-            }
-            Spacer()
-            HStack{
-                Text(bookVM.getGuestsLabel())
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundColor(Color.theme.secondaryText)
-            }
-            Spacer()
-            Button{
-                bookVM.increaseNumberOfGuests()
-            }label: {
-                Image(systemName: "plus.square.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(Color.theme.green)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color.theme.secondaryButton)
-        .padding(.horizontal)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .shadow(radius: 3)
     }
     
     private var specialWishLabel: some View{
@@ -176,7 +106,9 @@ extension RestaurantBookingView{
                 .font(.headline)
             PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
         }
-        .onChange(of: bookVM.continueButtonTapped, perform: {_ in bookVM.bookButtonTapped()})
+        .onChange(of: bookVM.continueButtonTapped, perform: {_ in
+                //TODO: Book restaurant
+        })
         .padding(.horizontal)
         .padding(.top, 50)
     }

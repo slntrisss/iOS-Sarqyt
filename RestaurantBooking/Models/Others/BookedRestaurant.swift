@@ -12,7 +12,7 @@ struct BookedRestaurant: Codable, Identifiable{
     let restaurant: Restaurant
     let numberOfGuests: Int
     let selectedDate: Date
-    let selectedTime: Date
+    let selectedTime: String
     let specialWishes: String
     var selectedTableId: Int? = nil
 }

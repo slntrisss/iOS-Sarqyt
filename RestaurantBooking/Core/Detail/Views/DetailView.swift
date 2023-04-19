@@ -41,7 +41,6 @@ struct DetailView: View {
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .onAppear{
-            bookVM.setupRestaurant(restaurant: restaurant)
             detailVM.animateRestaurantTitleScroll.toggle()
         }
         .sheet(isPresented: $detailVM.showRateView, content: {

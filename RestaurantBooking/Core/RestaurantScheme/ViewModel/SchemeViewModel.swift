@@ -6,23 +6,37 @@
 //
 
 import SwiftUI
+import Combine
 
 class SchemeViewModel: ObservableObject{
-    let scheme: RestaurantScheme
+    @Published var scheme: RestaurantScheme? = nil
     @Published var selectedFloor = 0
-    @Published var mapItemGroupSelectOptions: [Bool]
+    @Published var mapItemGroupSelectOptions: [Bool] = []
     @Published var showTableInfoSheet = false
+    var restaurantId = ""
     var selectedIndex = -1
     
+    //Services
+    let schemeDataService = SchemeDataService.instance
+    let bookDataService = BookDataService.instance
+    
     @Published var tableInfo: TableInfo? = nil
-    init(){
-        scheme = DeveloperPreview.instance.scheme
-        mapItemGroupSelectOptions = Array(repeating: false, count: scheme.floors[0].groups.count)
+    
+    @Published var dateArray: [String] = ["12:00 PM", "1:00 PM", "6:00 PM"]
+    @Published var selectedTimeIntervalIndex = -1
+    @Published var numberOfGuests = 1
+    @Published var saveChanges = false
+    
+    var cancellables = Set<AnyCancellable>()
+    
+    init(restaurantId: String){
+        self.restaurantId = restaurantId
     }
     
     func groupItemTapped(at index: Int){
         withAnimation {
-            if(scheme.floors[selectedFloor].groups[index].reserved){
+            if let scheme = scheme,
+               scheme.floors[selectedFloor].groups[index].reserved {
                 return
             }
             if selectedIndex >= 0{
@@ -48,6 +62,7 @@ class SchemeViewModel: ObservableObject{
     
     
     //MARK: - For UI Components
+    //MARK: Floor buttons
     func floorNumberFor(index: Int) -> String{
         var floorNumber = ""
         switch index {
@@ -72,5 +87,51 @@ class SchemeViewModel: ObservableObject{
             return Color.theme.green.opacity(0.7)
         }
         return Color.theme.secondaryText.opacity(0.15)
+    }
+    
+    //MARK: TimePicker
+    
+    func setSelectedTimeInterval(index: Int){
+        
+    }
+    
+    func isSelectedTimeInterval(index: Int) -> Bool{
+        return false
+    }
+    
+    //MARK: Guest View
+    var numberOfGuestsLabel: String{
+        return numberOfGuests == 1 ? "\(numberOfGuests) Guest" : "\(numberOfGuests) Guests"
+    }
+    
+    func increaseNumberOfGuests(){
+        
+    }
+    
+    func decreaseNumberOfGuests(){
+        
+    }
+    
+    //MARK: - Networking
+    //MARK: Scheme
+    func setupRestaurantScheme(){
+        schemeDataService.fetchRestaurantScheme(for: restaurantId)
+        schemeDataService.$scheme
+            .sink { [weak self] fetchedScheme in
+                self?.scheme = fetchedScheme
+                self?.mapItemGroupSelectOptions = Array(repeating: false, count: fetchedScheme?.floors[self?.selectedFloor ?? 0].groups.count ?? 0)
+            }
+            .store(in: &cancellables)
+        
+        bookDataService.$tableInfo
+            .sink { [weak self] fetchedTableInfo in
+                self?.tableInfo = fetchedTableInfo
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: Table info
+    func getTableInfo(for restaurantId: String, date: Date, groupId: String){
+        bookDataService.fetchTableInfo(for: restaurantId, date: date, groupId: groupId)
     }
 }

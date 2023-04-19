@@ -25,6 +25,6 @@ class OrderViewModel: ObservableObject{
     }
     
     private var bookedTime: String{
-        return bookedRestaurant.selectedTime.formatted(date: .omitted, time: .shortened)
+        return bookedRestaurant.selectedTime
     }
 }
