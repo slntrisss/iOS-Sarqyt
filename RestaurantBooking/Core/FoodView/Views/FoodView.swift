@@ -20,8 +20,8 @@ struct FoodView: View {
     
     let title: String
     
-    init(title: String, bookVM: BookViewModel, schemeVM: SchemeViewModel){
-        self.title = title
+    init(bookVM: BookViewModel, schemeVM: SchemeViewModel){
+        self.title = "Food & Dishes"
         self.bookVM = bookVM
         self.schemeVM = schemeVM
         self._foodVM = StateObject(wrappedValue: FoodViewModel(bookVM: bookVM))
@@ -51,7 +51,7 @@ struct FoodView: View {
 
 struct FoodView_Previews: PreviewProvider {
     static var previews: some View {
-        FoodView(title: "Food & Dishes", bookVM: BookViewModel(restaurant: dev.restaurant), schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
+        FoodView(bookVM: BookViewModel(restaurant: dev.restaurant), schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
             .environmentObject(BookViewModel(restaurant: dev.restaurant))
     }
 }

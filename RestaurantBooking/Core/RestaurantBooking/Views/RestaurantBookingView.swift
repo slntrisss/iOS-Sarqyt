@@ -36,7 +36,7 @@ struct RestaurantBookingView: View {
                 OrderView(orderedFoods: bookVM.wrappedOrderedFoods, bookedRestaurant: bookVM.wrappedBookedRestaurant)
             })
             .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
-                FoodView(title: bookVM.restaurantNameTitle, bookVM: bookVM, schemeVM: schemeVM)
+                FoodView(bookVM: bookVM, schemeVM: schemeVM)
             })
             orderFoodAlertView
             requiredFieldNotFilledAlertView

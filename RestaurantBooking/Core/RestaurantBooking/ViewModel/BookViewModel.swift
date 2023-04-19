@@ -73,13 +73,6 @@ class BookViewModel: ObservableObject{
         return orderedFoods.map({$0.value})
     }
     
-    //MARK: - FoodView dependecies
-    var restaurantNameTitle: String{
-        if let title = restaurant?.name{
-            return title
-        }
-        return ""
-    }
     
     //MARK: - Networking
     private func addSubscribers(schemeVM: SchemeViewModel){
@@ -91,7 +84,6 @@ class BookViewModel: ObservableObject{
                 }else{
                     self?.totalPriceForBooking += fetchedInfo?.reservePrice ?? 0.0
                 }
-                print(self?.totalPriceForBooking)
             }
             .store(in: &cancellables)
         bookingService.$bookingRestaurant
