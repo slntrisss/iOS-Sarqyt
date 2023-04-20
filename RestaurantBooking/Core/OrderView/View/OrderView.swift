@@ -12,6 +12,8 @@ struct OrderView: View {
     @StateObject private var orderVM: OrderViewModel
     @Environment(\.dismiss) private var dismiss
     let restaurant: Restaurant
+    
+    @State private var showFoodView = false
     init(bookVM: BookViewModel){
         self.restaurant = bookVM.wrappedBookedRestaurant.restaurant
         self._bookVM = ObservedObject(wrappedValue: bookVM)
@@ -32,7 +34,7 @@ struct OrderView: View {
                     .frame(height: 30)
                 if !bookVM.orderedFoods.isEmpty{
                     foodTitleView
-                    ForEach(orderVM.bookVM.wrappedOrderedFoods) { orderedFood in
+                    ForEach(bookVM.wrappedOrderedFoods) { orderedFood in
                         constructOrderedFoodView(orderedFood: orderedFood)
                     }
                     .padding(.horizontal)
@@ -189,7 +191,7 @@ extension OrderView{
                     Image(systemName: "minus")
                         .foregroundColor(Color.theme.accent)
                 }
-                Text("\(bookVM.bookedRestaurant?.numberOfGuests ?? -1)")
+                Text("\(bookVM.numberOfGuests)")
                 Button{
                     orderVM.increaseGuestsAmount()
                 }label: {

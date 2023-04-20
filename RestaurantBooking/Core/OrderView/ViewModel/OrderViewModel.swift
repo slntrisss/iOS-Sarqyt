@@ -21,28 +21,24 @@ class OrderViewModel: ObservableObject{
     }
     
     var bookingTimeInterval: String{
-        return "\(bookedDate)\n\(bookedTime)"
+        return "\(bookedDate)\n\(bookVM.selectedTime)"
     }
     
     private var bookedDate: String{
-        return bookVM.wrappedBookedRestaurant.selectedDate.formatted(date: .abbreviated, time: .omitted)
-    }
-    
-    private var bookedTime: String{
-        return bookVM.wrappedBookedRestaurant.selectedTime
+        return bookVM.selectedDate.formatted(date: .abbreviated, time: .omitted)
     }
     
     func increaseGuestsAmount(){
         if let maxGuestAmount = bookVM.maxGuestsQuantity,
            let selectedGuestAmount = bookVM.bookedRestaurant?.numberOfGuests,
            selectedGuestAmount < maxGuestAmount{
-            bookVM.bookedRestaurant?.numberOfGuests += 1
+            bookVM.numberOfGuests += 1
         }
     }
     
     func decreaseGuestsAmount(){
         if let bookedRestaurant = bookVM.bookedRestaurant, bookedRestaurant.numberOfGuests > 1{
-            bookVM.bookedRestaurant?.numberOfGuests -= 1
+            bookVM.numberOfGuests -= 1
         }
     }
     
