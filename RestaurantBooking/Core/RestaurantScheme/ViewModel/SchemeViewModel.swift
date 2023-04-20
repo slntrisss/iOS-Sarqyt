@@ -129,11 +129,14 @@ class SchemeViewModel: ObservableObject{
     //MARK: - Networking
     //MARK: Scheme
     func setupRestaurantScheme(){
+        print("mapItemGroupSelectOptions.count: \(mapItemGroupSelectOptions.count)")
         schemeDataService.fetchRestaurantScheme(for: restaurantId)
         schemeDataService.$scheme
             .sink { [weak self] fetchedScheme in
                 self?.scheme = fetchedScheme
-                self?.mapItemGroupSelectOptions = Array(repeating: false, count: fetchedScheme?.floors[self?.selectedFloor ?? 0].groups.count ?? 0)
+                if ((self?.mapItemGroupSelectOptions.count ?? 0 == 0)){
+                    self?.mapItemGroupSelectOptions = Array(repeating: false, count: fetchedScheme?.floors[self?.selectedFloor ?? 0].groups.count ?? 0)
+                }
             }
             .store(in: &cancellables)
         
