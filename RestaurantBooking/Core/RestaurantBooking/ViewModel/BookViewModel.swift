@@ -38,9 +38,8 @@ class BookViewModel: ObservableObject{
     @Published var orderedFoods: [String : OrderedFood] = [:]
     
     //Price
-    var foodPrice = 0.0
-    var reservePrice = 0.0
-    var totalPriceForBooking = 0.0
+    @Published var foodPrice = 0.0
+    @Published var reservePrice = 0.0
     
     init(restaurant: Restaurant){
         self.restaurant = restaurant
@@ -71,13 +70,6 @@ class BookViewModel: ObservableObject{
         navigateToFoodView = true
     }
     
-    func computeOrderedFoodPrice(){
-        foodPrice = 0.0
-        for food in orderedFoods.values{
-            foodPrice += food.price
-        }
-    }
-    
     private func checkForValidity(){
         if selectedTime.isEmpty{
             showRequiredFieldsMissedAlertView = true
@@ -102,9 +94,6 @@ class BookViewModel: ObservableObject{
         }
     }
     
-    private func computeTotalPriceForOrderView(){
-        self.totalPriceForBooking = reservePrice + foodPrice
-    }
     
     //MARK: - Order View Dependencies
     //TODO: Optimize BookedRestaurant for Views
@@ -140,6 +129,14 @@ class BookViewModel: ObservableObject{
             .sink { [weak self] fetchedResult in
                 self?.bookingRestaurant = fetchedResult
                 
+            }
+            .store(in: &cancellables)
+        $orderedFoods
+            .sink { [weak self] publishedOrderedFoods in
+                self?.foodPrice = 0
+                for food in publishedOrderedFoods.values{
+                    self?.foodPrice += (food.price * Double(food.count))
+                }
             }
             .store(in: &cancellables)
     }

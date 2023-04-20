@@ -92,6 +92,10 @@ extension SchemeView{
                     )
                     .onTapGesture {
                         let groupId = scheme.floors[schemeVM.selectedFloor].groups[index].id
+                        if schemeVM.selectedIndex != index{
+                            numberOfGuests = 1
+                            selectedTimeInterval = ""
+                        }
                         schemeVM.getTablePhotos(with: restaurantId, selectedDate: selectedDate, groupId: groupId, index: index)
                     }
                 }

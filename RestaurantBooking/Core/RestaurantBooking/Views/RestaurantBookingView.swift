@@ -124,7 +124,7 @@ extension RestaurantBookingView{
             PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
         }
         .onChange(of: bookVM.continueButtonTapped, perform: { newValue in
-            if bookVM.secondaryCheckView{
+            if bookVM.secondaryCheckView && !bookVM.showRequiredFieldsMissedAlertView{
                 dismiss()
             }
         })

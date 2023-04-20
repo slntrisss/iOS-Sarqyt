@@ -7,10 +7,11 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class OrderViewModel: ObservableObject{
     @Published var showAllPaymentsMethodLists = false
-    
+    @Published var totalPrice = 0.0
     @Published var bookVM: BookViewModel{
         didSet{
             print("Changing")
@@ -18,8 +19,10 @@ class OrderViewModel: ObservableObject{
     }
     @Published var showFoodView = false
     @Published var showRestaurantBookingView = false
+    var cancellables = Set<AnyCancellable>()
     init(bookVM: BookViewModel){
         self.bookVM = bookVM
+        addSubscribers()
     }
     
     var bookingTimeInterval: String{
@@ -32,14 +35,13 @@ class OrderViewModel: ObservableObject{
     
     func increaseGuestsAmount(){
         if let maxGuestAmount = bookVM.maxGuestsQuantity,
-           let selectedGuestAmount = bookVM.bookedRestaurant?.numberOfGuests,
-           selectedGuestAmount < maxGuestAmount{
+           bookVM.numberOfGuests < maxGuestAmount{
             bookVM.numberOfGuests += 1
         }
     }
     
     func decreaseGuestsAmount(){
-        if let bookedRestaurant = bookVM.bookedRestaurant, bookedRestaurant.numberOfGuests > 1{
+        if bookVM.numberOfGuests > 1{
             bookVM.numberOfGuests -= 1
         }
     }
@@ -67,5 +69,14 @@ class OrderViewModel: ObservableObject{
     func changeRestaurantBookingButtonTapped(){
         bookVM.secondaryCheckView = true
         showRestaurantBookingView = true
+    }
+    
+    private func addSubscribers(){
+        bookVM.$reservePrice
+            .combineLatest(bookVM.$foodPrice)
+            .sink { [weak self] (reservePrice, foodPrice) in
+                self?.totalPrice = reservePrice + foodPrice
+            }
+            .store(in: &cancellables)
     }
 }

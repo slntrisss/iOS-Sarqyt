@@ -202,9 +202,7 @@ extension TableInfoView{
         ZStack{
             PrimaryButton(buttonLabel: "Save changes", buttonClicked: $schemeVM.saveChanges)
                 .onChange(of: schemeVM.saveChanges) { _ in
-                    if schemeVM.saveChanges{
-                        dismiss()
-                    }
+                    dismiss()
                 }
         }
         .padding(.horizontal)

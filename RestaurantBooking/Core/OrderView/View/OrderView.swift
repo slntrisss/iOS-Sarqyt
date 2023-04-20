@@ -293,26 +293,26 @@ extension OrderView{
                 HStack{
                     Text("Restaurant")
                     Spacer()
-                    Text(14745.0.toKZTCurrency())
+                    Text(bookVM.reservePrice.toKZTCurrency())
                 }
                 
                 HStack{
                     Text("Food")
                     Spacer()
-                    Text(14745.0.toKZTCurrency())
+                    Text(bookVM.foodPrice.toKZTCurrency())
                 }
                 
-                HStack{
-                    Text("Service")
-                    Spacer()
-                    Text(14745.0.toKZTCurrency())
-                }
+//                HStack{
+//                    Text("Service")
+//                    Spacer()
+//                    Text(14745.0.toKZTCurrency())
+//                }
                 
                 HStack{
                     Text("Total")
                         .font(.title2.weight(.semibold))
                     Spacer()
-                    Text(14745.0.toKZTCurrency())
+                    Text(orderVM.totalPrice.toKZTCurrency())
                 }
                 .padding(.vertical)
                 .font(.title3.weight(.semibold))

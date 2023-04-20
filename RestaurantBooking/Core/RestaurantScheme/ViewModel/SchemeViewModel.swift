@@ -57,6 +57,11 @@ class SchemeViewModel: ObservableObject{
     }
     
     func getTablePhotos(with restaurantId: String, selectedDate: Date, groupId: String, index: Int){
+        if selectedIndex != index {
+            selectedTimeIntervalIndex = -1
+            selectedTime = ""
+            numberOfGuests = 1
+        }
         showTableInfoSheet = true
         groupItemTapped(at: index)
         getTableInfo(for: restaurantId, date: selectedDate, groupId: groupId)
