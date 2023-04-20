@@ -8,18 +8,23 @@
 import SwiftUI
 
 struct ReserveInfoView: View {
-    let detail: ReservedRestaurantDetail
+    @ObservedObject var bookingVM: BookingViewModel
     let maxHeight: CGFloat = UIScreen.main.bounds.height * 0.35
     @State private var show = false
     @Environment(\.dismiss) private var dismiss
+    
+    init(bookingVM: BookingViewModel, restaurantId: String){
+        self._bookingVM = ObservedObject(wrappedValue: bookingVM)
+        bookingVM.getReservedRestaurantDetail(for: restaurantId)
+    }
     var body: some View {
         ScrollView(.vertical){
-            VStack(alignment: .leading){
-                Image(detail.restaurantImage)
+            LazyVStack(alignment: .leading){
+                Image(uiImage: bookingVM.bookingDetail?.wrappedRestaurantImage ?? UIImage(systemName: "photo.fill")!)
                     .resizable()
                     .scaledToFit()
                 
-                VStack{
+                LazyVStack{
                     VStack(alignment: .leading){
                         spacer
                         Group{
@@ -27,7 +32,7 @@ struct ReserveInfoView: View {
                             spacer
                             tableInfoView
                             spacer
-                            if !detail.specialWishes.isEmpty{ specialWishesView }
+                            if !(bookingVM.bookingDetail?.specialWishes.isEmpty ?? true){ specialWishesView }
                             spacer
                             orderedFoods
                         }.padding(.horizontal)
@@ -50,7 +55,7 @@ struct ReserveInfoView: View {
 struct ReserveInfo_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            ReserveInfoView(detail: dev.reservedRestaurantDetail)
+            ReserveInfoView(bookingVM: BookingViewModel(), restaurantId: "")
         }
     }
 }
@@ -61,11 +66,11 @@ extension ReserveInfoView{
     }
     private var restaurantInfoView: some View{
         Group{
-            Text(detail.restaurantName)
+            Text(bookingVM.bookingDetail?.restaurantName ?? "N/A")
                 .font(.title.weight(.semibold))
             HStack{
                 Image(systemName: "mappin")
-                Text("\(detail.city), \(detail.location)")
+                Text("\(bookingVM.bookingDetail?.city ?? "N/A"), \(bookingVM.bookingDetail?.location ?? "")")
                     .foregroundColor(Color.theme.secondaryText)
             }
         }
@@ -75,7 +80,7 @@ extension ReserveInfoView{
             VStack(spacing: 10){
                 Text("№ Table")
                     .foregroundColor(Color.theme.secondaryText)
-                Text("\(detail.tableNumber)")
+                Text("\(bookingVM.bookingDetail?.tableNumber ?? -1)")
                     .font(.headline)
             }
             .frame(maxWidth: .infinity)
@@ -83,7 +88,7 @@ extension ReserveInfoView{
             VStack(spacing: 10){
                 Text("Date")
                     .foregroundColor(Color.theme.secondaryText)
-                Text(detail.reservedDate)
+                Text(bookingVM.bookingDetail?.reservedDate ?? "N/A")
                     .font(.headline)
             }
             .frame(maxWidth: .infinity)
@@ -91,7 +96,7 @@ extension ReserveInfoView{
             VStack(spacing: 10){
                 Text("Time")
                     .foregroundColor(Color.theme.secondaryText)
-                Text(detail.reservedTime)
+                Text(bookingVM.bookingDetail?.reservedTime ?? "N/A")
                     .font(.headline)
             }
             .frame(maxWidth: .infinity)
@@ -99,7 +104,7 @@ extension ReserveInfoView{
             VStack(spacing: 10){
                 Text("Guests")
                     .foregroundColor(Color.theme.secondaryText)
-                Text("\(detail.numberOfGuests)")
+                Text("\(bookingVM.bookingDetail?.numberOfGuests ?? 0)")
                     .font(.headline)
             }
             .frame(maxWidth: .infinity)
@@ -109,7 +114,7 @@ extension ReserveInfoView{
         VStack(alignment: .leading, spacing: 10){
             Text("Special wishes")
                 .foregroundColor(Color.theme.secondaryText)
-            Text(detail.specialWishes)
+            Text(bookingVM.bookingDetail?.specialWishes ?? "")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .background(
@@ -119,12 +124,13 @@ extension ReserveInfoView{
         }
     }
     private var orderedFoods: some View{
-        ForEach(detail.orderedFoods) { orderedFood in
+        ForEach(bookingVM.bookingDetail?.orderedFoods ?? []) { orderedFood in
             HStack{
-                Image(orderedFood.food.image)
+                Image(uiImage: orderedFood.food.wrappedImage)
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 80)
+                    .scaledToFill()
+                    .frame(width: 80, height: 80)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 VStack(alignment: .leading, spacing: 5){
                     Text(orderedFood.food.name)
                         .font(.headline)
@@ -153,26 +159,26 @@ extension ReserveInfoView{
                 HStack{
                     Text("Restaurant")
                     Spacer()
-                    Text(14745.0.toKZTCurrency())
+                    Text(bookingVM.bookingDetail?.restaurantBookingPrice.toKZTCurrency() ?? "N/A")
                 }
                 
                 HStack{
                     Text("Food")
                     Spacer()
-                    Text(14745.0.toKZTCurrency())
-                }.opacity(detail.orderedFoods.isEmpty ? 0.0 : 1.0)
+                    Text(bookingVM.bookingDetail?.orderedFoodsPrice.toKZTCurrency() ?? "N/A")
+                }.opacity(bookingVM.bookingDetail?.orderedFoods.isEmpty ?? true ? 0.0 : 1.0)
                 
-                HStack{
-                    Text("Service")
-                    Spacer()
-                    Text(14745.0.toKZTCurrency())
-                }
+//                HStack{
+//                    Text("Service")
+//                    Spacer()
+//                    Text(14745.0.toKZTCurrency())
+//                }
                 
                 HStack{
                     Text("Total")
                         .font(.title2.weight(.semibold))
                     Spacer()
-                    Text(14745.0.toKZTCurrency())
+                    Text(bookingVM.bookingDetail?.totalPrice.toKZTCurrency() ?? "N/A")
                 }
                 .padding(.vertical)
                 .font(.title3.weight(.semibold))

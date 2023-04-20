@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 struct ReservedRestaurantDetail: Codable{
     let id: String
     let restaurantName: String
@@ -22,4 +23,8 @@ struct ReservedRestaurantDetail: Codable{
     let orderedFoodsPrice: Double
     let servicePrice: Double
     let totalPrice: Double
+    
+    var wrappedRestaurantImage: UIImage{
+        return ImageService.convertBase64ToImage(base64: restaurantImage)
+    }
 }

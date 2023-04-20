@@ -59,7 +59,7 @@ struct BookingCardView: View {
                               cancelButtonTapped: $cancelBooking)})
         .sheet(isPresented: $viewTicketTapped) {
             NavigationStack{
-                ReserveInfoView(detail: DeveloperPreview.instance.reservedRestaurantDetail)
+                ReserveInfoView(bookingVM: bookingVM, restaurantId: restaurant.id)
             }
         }
     }

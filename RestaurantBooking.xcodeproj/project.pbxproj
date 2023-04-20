@@ -647,6 +647,7 @@
 		FF470E6A29A129C200314934 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FFB6C44129F1AC9B005F2346 /* ReservedRestaurant */,
 				FFAA49B329EED79E00B2561D /* Booking */,
 				FFAA49AC29EEA8E800B2561D /* Food */,
 				FF90C25829EC6104005FAF4C /* Restaurant */,
@@ -965,6 +966,7 @@
 			isa = PBXGroup;
 			children = (
 				FF9F903C29C5ED4E00386B19 /* Food.swift */,
+				FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */,
 				FF9F904329C5F91700386B19 /* FoodType.swift */,
 			);
 			path = Food;
@@ -1074,9 +1076,7 @@
 				FFAFDFA429A8B120002A000B /* RestaurantFilter.swift */,
 				FF5391BF29BCAC06004AF07D /* User.swift */,
 				FFEE49DC29BDA96A003E8466 /* Book.swift */,
-				FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */,
 				FF68D24029D83FF00064ECF9 /* ReservedRestaurant.swift */,
-				FF68D24229D8412E0064ECF9 /* ReservedRestaurantDetail.swift */,
 				FF68D26029D8B3F50064ECF9 /* PaymentCard.swift */,
 			);
 			path = Others;
@@ -1123,6 +1123,14 @@
 			isa = PBXGroup;
 			children = (
 				FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */,
+			);
+			path = ReservedRestaurant;
+			sourceTree = "<group>";
+		};
+		FFB6C44129F1AC9B005F2346 /* ReservedRestaurant */ = {
+			isa = PBXGroup;
+			children = (
+				FF68D24229D8412E0064ECF9 /* ReservedRestaurantDetail.swift */,
 			);
 			path = ReservedRestaurant;
 			sourceTree = "<group>";

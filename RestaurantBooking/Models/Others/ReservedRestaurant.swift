@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct ReservedRestaurant: Codable{
-    let id: String
-    let image: String
-    let restaurantName: String
-    let city: String
-    let location: String
-    let bookingStatus: BookingStatus
-}
+//struct ReservedRestaurant: Codable{
+//    let id: String
+//    let image: String
+//    let restaurantName: String
+//    let city: String
+//    let location: String
+//    let bookingStatus: BookingStatus
+//}

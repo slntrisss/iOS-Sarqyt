@@ -13,6 +13,8 @@ class BookingViewModel: ObservableObject{
     @Published var completedBookings: [Restaurant] = []
     @Published var ongoingBookings: [Restaurant] = []
     
+    var bookingDetail: ReservedRestaurantDetail? = nil
+    
     let ongoingPageInfo = PageInfo(itemsLoaded: 0)
     let completedPageInfo = PageInfo(itemsLoaded: 0)
     let cancelledPageInfo = PageInfo(itemsLoaded: 0)
@@ -46,6 +48,12 @@ class BookingViewModel: ObservableObject{
         dataService.$cancelledRestaurants
             .sink { [weak self] fetchedRestaurants in
                 self?.cancelledBookings.append(contentsOf: fetchedRestaurants)
+            }
+            .store(in: &cancellables)
+        
+        dataService.$reservationDetails
+            .sink { [weak self] fetchedDetail in
+                self?.bookingDetail = fetchedDetail
             }
             .store(in: &cancellables)
     }
@@ -85,6 +93,10 @@ extension BookingViewModel{
         restaurants.removeAll()
         pageInfo.offset = 0
         dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+    }
+    
+    func getReservedRestaurantDetail(for restaurantId: String){
+        dataService.fetchReservedRestaurantDetail(for: restaurantId)
     }
 }
 

@@ -14,7 +14,10 @@ class ReservedRestaurantDataService{
     @Published var cancelledRestaurants: [Restaurant] = []
     @Published var completedRestaurants: [Restaurant] = []
     
+    @Published var reservationDetails: ReservedRestaurantDetail? = nil
+    
     var restaurantSubscription: AnyCancellable?
+    var reservationDetailSubscription: AnyCancellable?
     
     static let instance = ReservedRestaurantDataService()
     private init() { }
@@ -56,5 +59,19 @@ class ReservedRestaurantDataService{
             print("Error occured: \(error.localizedDescription)")
         }
         
+    }
+    
+    func fetchReservedRestaurantDetail(for restaurantId: String){
+        let urlString = Constants.BASE_URL + Constants.RESERVED_RESTAURANTS_DETAIL + "/\(restaurantId)"
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
+            return
+        }
+        
+        reservationDetailSubscription = NetworkingManager.download(url: url)
+            .decode(type: ReservedRestaurantDetail.self, decoder: JSONDecoder.defaultDecoder)
+            .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedDetails in
+                self?.reservationDetails = fetchedDetails
+            }
     }
 }
