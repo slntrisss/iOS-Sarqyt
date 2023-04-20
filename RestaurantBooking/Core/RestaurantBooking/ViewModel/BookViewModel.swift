@@ -78,9 +78,6 @@ class BookViewModel: ObservableObject{
         if secondaryCheckView{
             return
         }
-        if bookedRestaurant == nil {
-            createBookedRestautant()
-        }
         if orderedFoods.values.isEmpty{
             showOrderFoodAlertView = true
             return
@@ -88,10 +85,11 @@ class BookViewModel: ObservableObject{
         navigateToOrderView = true
     }
     
-    private func createBookedRestautant(){
+    func createBookedRestautant() -> BookedRestaurant?{
         if let restaurant = restaurant, let tableId = selectedTableId{
-            self.bookedRestaurant = BookedRestaurant(id: UUID().uuidString, restaurant: restaurant, numberOfGuests: numberOfGuests, selectedDate: selectedDate, selectedTime: selectedTime, specialWishes: specialWishes, selectedTableId: tableId)
+            self.bookedRestaurant = BookedRestaurant(id: UUID().uuidString, restaurantId: restaurant.id, numberOfGuests: numberOfGuests, selectedDate: selectedDate, selectedTime: selectedTime, specialWishes: specialWishes, selectedTableId: tableId)
         }
+        return bookedRestaurant
     }
     
     

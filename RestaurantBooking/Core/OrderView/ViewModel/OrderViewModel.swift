@@ -19,7 +19,10 @@ class OrderViewModel: ObservableObject{
     }
     @Published var showFoodView = false
     @Published var showRestaurantBookingView = false
+    @Published var confirmButtonTapped = false
+    @Published var showCheckmark = -60.0
     var cancellables = Set<AnyCancellable>()
+    let bookDataService = BookDataService.instance
     init(bookVM: BookViewModel){
         self.bookVM = bookVM
         addSubscribers()
@@ -76,6 +79,28 @@ class OrderViewModel: ObservableObject{
             .combineLatest(bookVM.$foodPrice)
             .sink { [weak self] (reservePrice, foodPrice) in
                 self?.totalPrice = reservePrice + foodPrice
+            }
+            .store(in: &cancellables)
+    }
+    
+    func confirm(){
+        confirmButtonTapped = true
+        if let bookedRestaurant = bookVM.createBookedRestautant(){
+            let orderedFoods = bookVM.wrappedOrderedFoods
+            bookDataService.bookRestaurant(bookedRestaurant: bookedRestaurant, orderedFoods: orderedFoods)
+        }
+        
+        bookDataService.$restaurantBooked
+            .sink { [weak self] isBooked in
+                if isBooked != nil{
+                    self?.showCheckmark = 0
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                        self?.confirmButtonTapped = false
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                        NavigationUtil.popToRootView()
+                    }
+                }
             }
             .store(in: &cancellables)
     }

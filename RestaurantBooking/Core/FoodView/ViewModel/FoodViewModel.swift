@@ -85,7 +85,7 @@ class FoodViewModel: ObservableObject{
     
     //MARK: - Restaurant Booking Alert View
     func navigateToOrderView(){
-        if bookVM.bookedRestaurant == nil{
+        if bookVM.selectedTime.isEmpty{
             navigateToRestaurantBookingView = true
             return
         }

@@ -9,7 +9,7 @@ import Foundation
 
 struct BookedRestaurant: Codable, Identifiable{
     let id: String
-    let restaurant: Restaurant
+    let restaurantId: String
     var numberOfGuests: Int
     let selectedDate: Date
     let selectedTime: String

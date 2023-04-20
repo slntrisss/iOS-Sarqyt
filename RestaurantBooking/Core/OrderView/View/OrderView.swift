@@ -12,59 +12,70 @@ struct OrderView: View {
     @StateObject private var orderVM: OrderViewModel
     @ObservedObject var schemeVM: SchemeViewModel
     @Environment(\.dismiss) private var dismiss
-    let restaurant: Restaurant
+    let restaurant: Restaurant?
     
     @State private var showFoodView = false
     init(bookVM: BookViewModel, schemeVM: SchemeViewModel){
-        self.restaurant = bookVM.wrappedBookedRestaurant.restaurant
+        self.restaurant = bookVM.restaurant
         self._bookVM = ObservedObject(wrappedValue: bookVM)
         self._orderVM = StateObject(wrappedValue: OrderViewModel(bookVM: bookVM))
         self._schemeVM = ObservedObject(wrappedValue: schemeVM)
     }
     var body: some View {
-        ScrollView{
-            LazyVStack(alignment: .leading){
-                restaurantBookingTitle
-                VStack(spacing: 25){
-                    orderedRestaurantCardView
-                    numberOfGuestsView
-                    bookingTimeView
-                    changeRestaurantBookingButton
-                }
-                .padding(.horizontal)
-                Spacer()
-                    .frame(height: 30)
-                if !bookVM.orderedFoods.isEmpty{
-                    foodTitleView
-                    ForEach(bookVM.wrappedOrderedFoods) { orderedFood in
-                        constructOrderedFoodView(orderedFood: orderedFood)
+        ZStack{
+            ScrollView{
+                LazyVStack(alignment: .leading){
+                    restaurantBookingTitle
+                    VStack(spacing: 25){
+                        orderedRestaurantCardView
+                        numberOfGuestsView
+                        bookingTimeView
+                        changeRestaurantBookingButton
                     }
                     .padding(.horizontal)
-                    changeOrderedFoodsButton
+                    Spacer()
+                        .frame(height: 30)
+                    if !bookVM.orderedFoods.isEmpty{
+                        foodTitleView
+                        ForEach(bookVM.wrappedOrderedFoods) { orderedFood in
+                            constructOrderedFoodView(orderedFood: orderedFood)
+                        }
+                        .padding(.horizontal)
+                        changeOrderedFoodsButton
+                    }
+                    Spacer()
+                        .frame(height: 30)
+                    paymentMethodView
+                    Spacer()
+                        .frame(height: 30)
                 }
-                Spacer()
-                    .frame(height: 30)
-                paymentMethodView
-                Spacer()
-                    .frame(height: 30)
+                .background(Color.theme.background)
+                summaryView
+                    .ignoresSafeArea(.all, edges: .bottom)
             }
-            .background(Color.theme.background)
-            summaryView
-                .ignoresSafeArea(.all, edges: .bottom)
-        }
-        .customConfirmDialog(isPresented: $orderVM.showAllPaymentsMethodLists, actions: {
-            allPaymentMethodsList
-        })
-        .navigationTitle("Order")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {ToolbarItem(placement: .navigationBarLeading) {cancelBookingButton}}
-        .safeAreaInset(edge: .bottom) {confirmButton}
-        .navigationDestination(isPresented: $orderVM.showFoodView) {
-            FoodView(bookVM: bookVM, schemeVM: schemeVM)
-        }
-        .navigationDestination(isPresented: $orderVM.showRestaurantBookingView) {
-            RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)
+            .customConfirmDialog(isPresented: $orderVM.showAllPaymentsMethodLists, actions: {
+                allPaymentMethodsList
+            })
+            .navigationTitle("Order")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {ToolbarItem(placement: .navigationBarLeading) {cancelBookingButton}}
+            .safeAreaInset(edge: .bottom) {confirmButton}
+            .navigationDestination(isPresented: $orderVM.showFoodView) {
+                FoodView(bookVM: bookVM, schemeVM: schemeVM)
+            }
+            .navigationDestination(isPresented: $orderVM.showRestaurantBookingView) {
+                RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)
+            }
+            .toolbarBackground(orderVM.confirmButtonTapped ? .hidden : .visible, for: .navigationBar)
+            if orderVM.confirmButtonTapped{
+                GeometryReader{ proxy in
+                    ConfirmLoadingView(showCheckmark: $orderVM.showCheckmark)
+                        .frame(width: proxy.size.width, height: proxy.size.height)
+                    
+                }
+                .background(Color.black.opacity(0.55).edgesIgnoringSafeArea(.all))
+            }
         }
     }
 }
@@ -80,10 +91,11 @@ struct OrderedFoodsView_Previews: PreviewProvider {
 extension OrderView{
     private var cancelBookingButton: some View{
         Button{
-            dismiss()
+            NavigationUtil.popToRootView()
         }label: {
             Image(systemName: "xmark")
                 .font(.headline)
+                .opacity(orderVM.confirmButtonTapped ? 0.0 : 1.0)
         }
     }
     //MARK: - Food
@@ -157,11 +169,11 @@ extension OrderView{
         HStack{
             cardImage
             VStack(alignment: .leading, spacing: 10){
-                Text(restaurant.name)
+                Text(restaurant?.name ?? "N/A")
                     .font(.headline.bold())
                     .foregroundColor(Color.theme.accent)
                     .lineLimit(1)
-                Text(restaurant.address.city)
+                Text(restaurant?.address.city ?? "N/A")
                     .font(.subheadline)
                     .foregroundColor(Color.theme.secondaryText)
                 ratingView
@@ -175,13 +187,13 @@ extension OrderView{
         HStack(spacing: 2){
             Image(systemName: "star.fill")
                 .foregroundColor(.yellow)
-            Text(restaurant.rating.asNumberStringWithOneDigit())
+            Text(restaurant?.rating.asNumberStringWithOneDigit() ?? "N/A")
                 .font(.subheadline.bold())
                 .foregroundColor(Color.theme.green)
         }
     }
     private var cardImage: some View{
-        Image(uiImage: restaurant.wrappedImage)
+        Image(uiImage: restaurant?.wrappedImage ?? UIImage(systemName: "photo.fill")!)
             .resizable()
             .frame(width: 80, height: 80)
             .clipShape(RoundedRectangle(cornerRadius: 20))
@@ -349,7 +361,7 @@ extension OrderView{
     //MARK: - confirmButton
     private var confirmButton: some View{
         Button{
-//            foodVM.navigateToOrderView()
+            orderVM.confirm()
         }label: {
             Text("Confirm order")
                 .font(.headline)

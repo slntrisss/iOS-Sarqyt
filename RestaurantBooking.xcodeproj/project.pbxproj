@@ -128,6 +128,8 @@
 		FFB2597429ED6030005B679B /* PageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2597329ED6030005B679B /* PageInfo.swift */; };
 		FFB2597629ED7ACE005B679B /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2597529ED7ACE005B679B /* NetworkingError.swift */; };
 		FFB2597829EDB01A005B679B /* RestaurantListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2597729EDB01A005B679B /* RestaurantListViewModel.swift */; };
+		FFB6C43B29F157EE005F2346 /* ConfirmLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43A29F157EE005F2346 /* ConfirmLoadingView.swift */; };
+		FFB6C43D29F16165005F2346 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43C29F16165005F2346 /* NavigationUtil.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -271,6 +273,8 @@
 		FFB2597329ED6030005B679B /* PageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageInfo.swift; sourceTree = "<group>"; };
 		FFB2597529ED7ACE005B679B /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
 		FFB2597729EDB01A005B679B /* RestaurantListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantListViewModel.swift; sourceTree = "<group>"; };
+		FFB6C43A29F157EE005F2346 /* ConfirmLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLoadingView.swift; sourceTree = "<group>"; };
+		FFB6C43C29F16165005F2346 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -913,6 +917,7 @@
 			isa = PBXGroup;
 			children = (
 				FF518F5529CB92CA00A285CD /* OrderView.swift */,
+				FFB6C43A29F157EE005F2346 /* ConfirmLoadingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1098,6 +1103,7 @@
 			isa = PBXGroup;
 			children = (
 				FFB2596D29ED464B005B679B /* ImageService.swift */,
+				FFB6C43C29F16165005F2346 /* NavigationUtil.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1294,6 +1300,7 @@
 				FF43291F29A2289F00AEA0EA /* HomeView.swift in Sources */,
 				FF83D1EA29D99D5900081B94 /* KeychainManager.swift in Sources */,
 				FF9F904429C5F91700386B19 /* FoodType.swift in Sources */,
+				FFB6C43D29F16165005F2346 /* NavigationUtil.swift in Sources */,
 				FF68D25829D8B0100064ECF9 /* Biometrics.swift in Sources */,
 				FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */,
 				FF68D23F29D83F760064ECF9 /* ReserveInfoView.swift in Sources */,
@@ -1392,6 +1399,7 @@
 				FF53992C29C8D2E800CA0F89 /* FoodViewModel.swift in Sources */,
 				FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */,
 				FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */,
+				FFB6C43B29F157EE005F2346 /* ConfirmLoadingView.swift in Sources */,
 				FF2CAB5829A3744500E062E1 /* BookingView.swift in Sources */,
 				FF41F220299CBF2C003B1745 /* SignInWithView.swift in Sources */,
 				FFB2597829EDB01A005B679B /* RestaurantListViewModel.swift in Sources */,

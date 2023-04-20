@@ -235,18 +235,7 @@ class DeveloperPreview{
 //    }
     
     var bookedRestaurant: BookedRestaurant{
-        return BookedRestaurant(id: UUID().uuidString, restaurant: Restaurant(id: UUID().uuidString,
-                                                                              name: "Palazzo Hotel",
-                                                                              address: Address(city: "Almaty",
-                                                                                               location: "9613 Bellevue St.Athens, GA 30605",
-                                                                                               latitude: 41.8902,
-                                                                                               longitude: 12.4922),
-                                                                              image: "restaurant1",
-                                                                              rating: 4.8,
-                                                                              reviewAmount: 4563,
-                                                                              reserveAmount: 15000,
-                                                                              bookmarked: false,
-                                                                              bookingStatus: .cancelled), numberOfGuests: 5, selectedDate: Date(), selectedTime: Date().formatted(date: .omitted, time: .shortened), specialWishes: "under A/C", selectedTableId: "123")
+        return BookedRestaurant(id: UUID().uuidString, restaurantId: "", numberOfGuests: 5, selectedDate: Date(), selectedTime: Date().formatted(date: .omitted, time: .shortened), specialWishes: "under A/C", selectedTableId: "123")
     }
     
     let reservedRestaurantDetail = ReservedRestaurantDetail(id: UUID().uuidString, restaurantName: "Eldora", restaurantImage: "restaurant1", city: "Almaty", location: "Momushuly, 83", tableNumber: 55, reservedDate: "Mar 31", reservedTime: "18:00", numberOfGuests: 3, specialWishes: "Lit the fire on cake", orderedFoods: [
