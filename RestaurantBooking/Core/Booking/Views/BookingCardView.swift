@@ -56,7 +56,15 @@ struct BookingCardView: View {
         }
         .sheet(isPresented: $cancelBookingTapped, content: {
             CancelBookingView(dismissButtonTapped: $dismissCancelBookingDialogTapped,
-                              cancelButtonTapped: $cancelBooking)})
+                              cancelButtonTapped: $cancelBooking)
+            .onChange(of: cancelBooking) { _ in
+                if cancelBooking{
+                    cancelBooking.toggle()
+                    cancelBookingTapped.toggle()
+                    bookingVM.cancelBooking(for: restaurant)
+                }
+            }
+        })
         .sheet(isPresented: $viewTicketTapped) {
             NavigationStack{
                 ReserveInfoView(bookingVM: bookingVM, restaurantId: restaurant.id)

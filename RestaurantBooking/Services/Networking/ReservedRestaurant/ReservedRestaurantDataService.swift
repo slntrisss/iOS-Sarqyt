@@ -18,6 +18,7 @@ class ReservedRestaurantDataService{
     
     var restaurantSubscription: AnyCancellable?
     var reservationDetailSubscription: AnyCancellable?
+    var cancelBookingSubscription: AnyCancellable?
     
     static let instance = ReservedRestaurantDataService()
     private init() { }
@@ -73,5 +74,43 @@ class ReservedRestaurantDataService{
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedDetails in
                 self?.reservationDetails = fetchedDetails
             }
+    }
+    
+    func cancelBookingRestaurant(restaurant: Restaurant){
+        let urlString = Constants.BASE_URL + Constants.CANCEL_RESERVED_RESTAURANT
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body = [
+            "id": "\(restaurant.id)",
+            "name": "\(restaurant.name)",
+            "bookingStatus" : "Canceled & Refunded"
+        ]
+        
+        do{
+            let jsonData = try JSONSerialization.data(withJSONObject: body)
+            request.httpBody = jsonData
+            
+            cancelBookingSubscription = URLSession.shared.dataTaskPublisher(for: request)
+                .sink { completion in
+                    switch completion{
+                    case .finished:
+                        print("POST, Cancel booking Success")
+                    case .failure(let error):
+                        print("Error cancel booking: \(error.localizedDescription)")
+                    }
+                } receiveValue: { response in
+                    print(response)
+                }
+                
+
+        }catch let error{
+            print("Error occured: \(error.localizedDescription)")
+        }
     }
 }

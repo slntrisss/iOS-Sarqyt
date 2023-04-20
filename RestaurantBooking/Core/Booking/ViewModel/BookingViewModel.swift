@@ -98,5 +98,9 @@ extension BookingViewModel{
     func getReservedRestaurantDetail(for restaurantId: String){
         dataService.fetchReservedRestaurantDetail(for: restaurantId)
     }
+    
+    func cancelBooking(for restaurant: Restaurant){
+        dataService.cancelBookingRestaurant(restaurant: restaurant)
+    }
 }
 
