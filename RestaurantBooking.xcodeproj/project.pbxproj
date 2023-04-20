@@ -130,6 +130,7 @@
 		FFB2597829EDB01A005B679B /* RestaurantListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB2597729EDB01A005B679B /* RestaurantListViewModel.swift */; };
 		FFB6C43B29F157EE005F2346 /* ConfirmLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43A29F157EE005F2346 /* ConfirmLoadingView.swift */; };
 		FFB6C43D29F16165005F2346 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43C29F16165005F2346 /* NavigationUtil.swift */; };
+		FFB6C44029F17AA5005F2346 /* ReservedRestaurantDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -275,6 +276,7 @@
 		FFB2597729EDB01A005B679B /* RestaurantListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantListViewModel.swift; sourceTree = "<group>"; };
 		FFB6C43A29F157EE005F2346 /* ConfirmLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLoadingView.swift; sourceTree = "<group>"; };
 		FFB6C43C29F16165005F2346 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
+		FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservedRestaurantDataService.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -899,6 +901,7 @@
 			isa = PBXGroup;
 			children = (
 				FF2CAB6829A38EA400E062E1 /* Restaurant.swift */,
+				FFDF071129B3972F00AB0173 /* BookingStatus.swift */,
 				FF5391BD29BCAB7F004AF07D /* Comment.swift */,
 			);
 			path = Restaurant;
@@ -1028,6 +1031,7 @@
 		FFB22A8629DB1D8C00EDFEB0 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				FFB6C43E29F17A90005F2346 /* ReservedRestaurant */,
 				FF7F6C1029EFEBFC00649819 /* RestaurantScheme */,
 				FFAA49B429EF126600B2561D /* Book */,
 				FFAA49AE29EEAA2100B2561D /* Food */,
@@ -1068,7 +1072,6 @@
 			children = (
 				FF2CAB6029A3820100E062E1 /* Category.swift */,
 				FFAFDFA429A8B120002A000B /* RestaurantFilter.swift */,
-				FFDF071129B3972F00AB0173 /* BookingStatus.swift */,
 				FF5391BF29BCAC06004AF07D /* User.swift */,
 				FFEE49DC29BDA96A003E8466 /* Book.swift */,
 				FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */,
@@ -1114,6 +1117,14 @@
 				FFB2597329ED6030005B679B /* PageInfo.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		FFB6C43E29F17A90005F2346 /* ReservedRestaurant */ = {
+			isa = PBXGroup;
+			children = (
+				FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */,
+			);
+			path = ReservedRestaurant;
 			sourceTree = "<group>";
 		};
 		FFBB2FED299F83FF0061771C /* Services */ = {
@@ -1384,6 +1395,7 @@
 				FF6E671729CF014E00B3FE7D /* BookingRestaurant.swift in Sources */,
 				FF2CAB5529A3743600E062E1 /* MapView.swift in Sources */,
 				FF92B92C29B63D71004981D6 /* RestaurantMapAnnotationView.swift in Sources */,
+				FFB6C44029F17AA5005F2346 /* ReservedRestaurantDataService.swift in Sources */,
 				FF470E6F29A12A1600314934 /* LoginViewModel.swift in Sources */,
 				FF41F209299CA44A003B1745 /* LoginView.swift in Sources */,
 				FF1E49AA29A3EB2F004B6FE1 /* Double.swift in Sources */,

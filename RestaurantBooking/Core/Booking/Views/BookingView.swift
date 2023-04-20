@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BookingView: View {
     @StateObject private var bookingVM = BookingViewModel()
-    @State private var currentTab = 1
+    @State private var currentTab = 0
     var body: some View {
         NavigationStack{
             VStack{
@@ -17,13 +17,13 @@ struct BookingView: View {
                     .padding(.vertical)
                 
                 TabView(selection: $currentTab){
-                    BookingListView(bookingList: $bookingVM.ongoingBookings)
+                    BookingListView(bookingVM: bookingVM, bookingList: $bookingVM.ongoingBookings, status: .ongoing)
                         .environmentObject(bookingVM)
                         .tag(0)
-                    BookingListView(bookingList: $bookingVM.completedBookings)
+                    BookingListView(bookingVM: bookingVM, bookingList: $bookingVM.completedBookings, status: .completed)
                         .environmentObject(bookingVM)
                         .tag(1)
-                    BookingListView(bookingList: $bookingVM.cancelledBookings)
+                    BookingListView(bookingVM: bookingVM, bookingList: $bookingVM.cancelledBookings, status: .cancelled)
                         .environmentObject(bookingVM)
                         .tag(2)
                 }

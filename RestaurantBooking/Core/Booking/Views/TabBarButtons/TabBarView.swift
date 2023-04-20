@@ -12,8 +12,8 @@ struct TabBarView: View{
     @Binding var currentTab: Int
     @Namespace var namespace
     @State private var ongoingTab = 0
-    @State private var completedTab = 0
-    @State private var cancelledTab = 0
+    @State private var completedTab = 1
+    @State private var cancelledTab = 2
     
     let options = ["Ongoing", "Completed", "Cancelled"]
     var body: some View{

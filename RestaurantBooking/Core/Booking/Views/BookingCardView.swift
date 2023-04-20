@@ -19,7 +19,7 @@ struct BookingCardView: View {
     var body: some View {
         VStack(alignment: .leading){
             HStack(spacing: 15){
-                Image(restaurant.image)
+                Image(uiImage: restaurant.wrappedImage)
                     .resizable()
                     .frame(width: 100, height: 100)
                     .clipShape(RoundedRectangle(cornerRadius: 20))

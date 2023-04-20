@@ -36,6 +36,9 @@ class Constants{
     //MARK: RestaurantScheme
     static let RESTAURANT_SCHEME = "/Scheme"
     
+    //MARK: ReservedRestaurants
+    static let RESERVED_RESTAURANTS_BASE_URL = "/RESERVED"
+    
     //MARK: Pagination
     static let DEFAULT_OFFSET = 0
     static let DEFAULT_LIMIT = 5

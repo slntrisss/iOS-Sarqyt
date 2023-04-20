@@ -93,7 +93,9 @@ class OrderViewModel: ObservableObject{
         bookDataService.$restaurantBooked
             .sink { [weak self] isBooked in
                 if isBooked != nil{
-                    self?.showCheckmark = 0
+                    DispatchQueue.main.async {
+                        self?.showCheckmark = 0
+                    }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                         self?.confirmButtonTapped = false
                     }
