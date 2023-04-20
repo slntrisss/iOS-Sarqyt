@@ -68,39 +68,47 @@ class BookDataService{
     }
     
     func bookRestaurant(bookedRestaurant: BookedRestaurant, orderedFoods: [OrderedFood]){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3){[weak self] in
-            self?.restaurantBooked = true
+        let urlString = Constants.BASE_URL + "/\(bookedRestaurant.restaurantId)" + Constants.BOOK_BASE_URL
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
+            return
         }
-//        let urlString = Constants.BASE_URL + "/\(bookedRestaurant.restaurantId)" + Constants.BOOK_BASE_URL
-//        guard let url = URL(string: urlString) else {
-//            print("BAD URL: \(urlString)")
-//            return
-//        }
-//
-//
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//
-//        do{
-//            let jsonRestaurantData = try JSONEncoder().encode(bookedRestaurant)
-//            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//            request.httpBody = jsonRestaurantData
-//
-//            bookingRestaurantSubscription = URLSession.shared.dataTaskPublisher(for: request)
-//                .sink(receiveCompletion: { completion in
-//                    switch completion{
-//                    case .finished:
-//                        print("POST success")
-//                    case .failure(let error):
-//                        print("POST failed: \(error.localizedDescription)")
-//                    }
-//                }, receiveValue: { (data, response) in
-//                    print(response)
-//                })
-//        }catch let error{
-//            print("Error occured: \(error.localizedDescription)")
-//        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+
+        do{
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            
+            let jsonRestaurantData = try encoder.encode(bookedRestaurant)
+            let jsonOrderedFoodsData = try encoder.encode(orderedFoods)
+            
+            var jsonDictionary = [String: Any]()
+            jsonDictionary["bookedRestaurant"] = try JSONSerialization.jsonObject(with: jsonRestaurantData)
+            jsonDictionary["orderedFoods"] = try JSONSerialization.jsonObject(with: jsonOrderedFoodsData)
+            let jsonData = try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+
+            request.httpBody = jsonData
+            
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+
+            bookingRestaurantSubscription = URLSession.shared.dataTaskPublisher(for: request)
+                .sink(receiveCompletion: {[weak self] completion in
+                    switch completion{
+                    case .finished:
+                        print("POST success")
+                        self?.restaurantBooked = true
+                    case .failure(let error):
+                        print("POST failed: \(error.localizedDescription)")
+                    }
+                }, receiveValue: { (data, response) in
+                    print(response)
+                })
+        }catch let error{
+            print("Error occured: \(error.localizedDescription)")
+        }
     }
 }
 
