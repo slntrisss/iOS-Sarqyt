@@ -10,14 +10,16 @@ import SwiftUI
 struct OrderView: View {
     @ObservedObject var bookVM: BookViewModel
     @StateObject private var orderVM: OrderViewModel
+    @ObservedObject var schemeVM: SchemeViewModel
     @Environment(\.dismiss) private var dismiss
     let restaurant: Restaurant
     
     @State private var showFoodView = false
-    init(bookVM: BookViewModel){
+    init(bookVM: BookViewModel, schemeVM: SchemeViewModel){
         self.restaurant = bookVM.wrappedBookedRestaurant.restaurant
         self._bookVM = ObservedObject(wrappedValue: bookVM)
         self._orderVM = StateObject(wrappedValue: OrderViewModel(bookVM: bookVM))
+        self._schemeVM = ObservedObject(wrappedValue: schemeVM)
     }
     var body: some View {
         ScrollView{
@@ -58,13 +60,19 @@ struct OrderView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {ToolbarItem(placement: .navigationBarLeading) {cancelBookingButton}}
         .safeAreaInset(edge: .bottom) {confirmButton}
+        .navigationDestination(isPresented: $orderVM.showFoodView) {
+            FoodView(bookVM: bookVM, schemeVM: schemeVM)
+        }
+        .navigationDestination(isPresented: $orderVM.showRestaurantBookingView) {
+            RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)
+        }
     }
 }
 
 struct OrderedFoodsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            OrderView(bookVM: BookViewModel(restaurant: dev.restaurant))
+            OrderView(bookVM: BookViewModel(restaurant: dev.restaurant), schemeVM: SchemeViewModel(restaurantId: dev.restaurant.id))
         }
     }
 }
@@ -126,7 +134,7 @@ extension OrderView{
         HStack{
             Spacer()
             Button{
-                
+                orderVM.changeOrderedFoodsButtonTapped()
             }label: {
                 Text("Change")
                     .padding(.vertical, 7)
@@ -224,7 +232,7 @@ extension OrderView{
         HStack{
             Spacer()
             Button{
-                
+                orderVM.changeRestaurantBookingButtonTapped()
             }label: {
                 Text("Change")
                     .padding(.vertical, 7)

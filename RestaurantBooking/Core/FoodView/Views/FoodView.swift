@@ -43,7 +43,7 @@ struct FoodView: View {
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $foodVM.navigateToRestaurantBookingView) {RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)}
             .navigationDestination(isPresented: $foodVM.showOrderView) {
-                OrderView(bookVM: bookVM)
+                OrderView(bookVM: bookVM, schemeVM: schemeVM)
             }
         }
     }
@@ -121,6 +121,10 @@ extension FoodView{
     
     private var orderButtonView: some View{
         Button{
+            if bookVM.secondaryCheckView{
+                dismiss()
+                return
+            }
             foodVM.navigateToOrderView()
         }label: {
             Text(foodVM.orderButtonLabelText)

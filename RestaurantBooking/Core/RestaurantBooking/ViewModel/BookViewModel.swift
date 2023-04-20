@@ -14,6 +14,7 @@ class BookViewModel: ObservableObject{
             checkForValidity()
         }
     }
+    @Published var secondaryCheckView = false
     @Published var showOrderFoodAlertView = false
     @Published var showRequiredFieldsMissedAlertView = false
     @Published var navigateToFoodView = false
@@ -80,6 +81,9 @@ class BookViewModel: ObservableObject{
     private func checkForValidity(){
         if selectedTime.isEmpty{
             showRequiredFieldsMissedAlertView = true
+            return
+        }
+        if secondaryCheckView{
             return
         }
         if bookedRestaurant == nil {

@@ -16,6 +16,8 @@ class OrderViewModel: ObservableObject{
             print("Changing")
         }
     }
+    @Published var showFoodView = false
+    @Published var showRestaurantBookingView = false
     init(bookVM: BookViewModel){
         self.bookVM = bookVM
     }
@@ -55,5 +57,15 @@ class OrderViewModel: ObservableObject{
             }
             bookVM.orderedFoods[food.id]?.count = foodToBeUpdated.count
         }
+    }
+    
+    func changeOrderedFoodsButtonTapped(){
+        bookVM.secondaryCheckView = true
+        showFoodView = true
+    }
+    
+    func changeRestaurantBookingButtonTapped(){
+        bookVM.secondaryCheckView = true
+        showRestaurantBookingView = true
     }
 }

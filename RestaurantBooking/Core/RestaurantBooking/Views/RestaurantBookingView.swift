@@ -10,6 +10,7 @@ import SwiftUI
 struct RestaurantBookingView: View {
     @ObservedObject var schemeVM: SchemeViewModel
     @ObservedObject var bookVM: BookViewModel
+    @Environment(\.dismiss) private var dismiss
     init(bookVM: BookViewModel, schemeVM: SchemeViewModel) {
         self.bookVM = bookVM
         self.schemeVM = schemeVM
@@ -33,7 +34,7 @@ struct RestaurantBookingView: View {
             .navigationTitle("Book")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $bookVM.navigateToOrderView, destination: {
-                OrderView(bookVM: bookVM)
+                OrderView(bookVM: bookVM, schemeVM: schemeVM)
             })
             .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
                 FoodView(bookVM: bookVM, schemeVM: schemeVM)
@@ -122,6 +123,11 @@ extension RestaurantBookingView{
                 .font(.headline)
             PrimaryButton(buttonLabel: "Continue", buttonClicked: $bookVM.continueButtonTapped)
         }
+        .onChange(of: bookVM.continueButtonTapped, perform: { newValue in
+            if bookVM.secondaryCheckView{
+                dismiss()
+            }
+        })
         .padding(.horizontal)
         .padding(.top, 50)
     }

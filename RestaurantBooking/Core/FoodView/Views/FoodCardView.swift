@@ -56,7 +56,7 @@ extension FoodCardView{
                         Image(systemName: "minus.circle.fill")
                             .foregroundColor(Color.theme.green)
                     }
-                    Text(foodCardVM.orderedFood.price.toKZTCurrency())
+                    Text(foodCardVM.foodPriceLabel.toKZTCurrency())
                         .font(.headline)
                         .foregroundColor(Color.theme.accent)
                         .lineLimit(1)
@@ -88,11 +88,15 @@ extension FoodCardView{
             .fill(Color.theme.green)
             .frame(width: 40, height: 40)
             .overlay(
-                Text("\(foodCardVM.orderedFood.count)x")
+                Text("\(foodCardVM.foodQuantity)x")
                     .font(.headline)
                     .foregroundColor(.white)
             )
             .offset(x: -10, y: -10)
             .opacity(foodCardVM.showQuantityLabel ? 1.0 : 0.0)
+            .onChange(of: foodCardVM.bookVM.orderedFoods) { _ in
+                foodCardVM.hideQuantityLabel()
+                print("-1")
+            }
     }
 }

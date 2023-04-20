@@ -34,7 +34,7 @@ struct FoodDetailView_Previews: PreviewProvider {
 extension FoodDetailView{
     
     private var foodImageView: some View{
-        Image(food.image)
+        Image(uiImage: food.wrappedImage)
             .resizable()
             .scaledToFit()
             .frame(width: UIScreen.main.bounds.width * 0.5)
@@ -50,7 +50,7 @@ extension FoodDetailView{
             Text("Special Wishes")
                 .font(.subheadline)
                 .padding(.top)
-            TextEditor(text: $foodCardVM.orderedFood.specialWishes)
+            TextEditor(text: $foodCardVM.specialWishes)
                 .padding()
                 .foregroundColor(Color.theme.secondaryText)
                 .cornerRadius(10)
