@@ -11,30 +11,37 @@ struct SignUpView: View {
     @StateObject private var signUpVM = SignUpViewModel()
     
     var body: some View {
-        ScrollView{
-            title
-    
-            fields
-                .padding(.vertical)
-            
-            HStack{
-                RemembeMeToggle(isOn: $signUpVM.rememberMe)
-                Spacer()
+        ZStack{
+            ScrollView{
+                title
+                
+                fields
+                    .padding(.vertical)
+                
+                HStack{
+                    RemembeMeToggle(isOn: $signUpVM.rememberMe)
+                    Spacer()
+                }
+                
+                PrimaryButton(buttonLabel: "Sign Up", buttonClicked: $signUpVM.signUpButtonClicked)
+                    .padding(.vertical)
+                    .onChange(of: signUpVM.signUpButtonClicked) { _ in
+                        signUpVM.signUp()
+                    }
+                
+                DividerWithText(text: "or continue with")
+                    .padding(.vertical)
+                
+                SignInWithView(signInWithGoogleTapped: $signUpVM.signInWithGoogleTapped, signInWithMetaTapped: $signUpVM.signInWithMetaTapped, signInWithAppleTapped: $signUpVM.signInWithAppleTapped)
+                
+                
             }
-            
-            PrimaryButton(buttonLabel: "Sign Up", buttonClicked: $signUpVM.signUpButtonClicked)
-                .padding(.vertical)
-            
-            DividerWithText(text: "or continue with")
-                .padding(.vertical)
-            
-            SignInWithView(signInWithGoogleTapped: $signUpVM.signInWithGoogleTapped, signInWithMetaTapped: $signUpVM.signInWithMetaTapped, signInWithAppleTapped: $signUpVM.signInWithAppleTapped)
-            
-            
+            .padding()
+            .navigationTitle("Sign Up")
+            .navigationBarTitleDisplayMode(.inline)
+            ProcessingView(showProcessingView: $signUpVM.showProgressView)
+            credentialsNotProvidedError
         }
-        .padding()
-        .navigationTitle("Sign Up")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -61,5 +68,38 @@ extension SignUpView{
             PasswordField(password: $signUpVM.password, showPassword: $signUpVM.showPassword)
             PasswordConfirmField(password: $signUpVM.confirmPassword, showPassword: $signUpVM.showPassword)
         }
+    }
+    
+    private var credentialsNotProvidedError: some View{
+        AlertBuilder(showAlert: $signUpVM.showCredentialsError) {
+            VStack(spacing: 20){
+                
+                Image(systemName: "xmark.circle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(.red)
+                
+                Text("Credentials error")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color.theme.accent)
+                
+                Text(signUpVM.errorMessage)
+                    .foregroundColor(Color.theme.secondaryText)
+                    .multilineTextAlignment(.center)
+                
+                Divider()
+                
+                Button{
+                    signUpVM.showCredentialsError = false
+                }label: {
+                    Text("Dismiss")
+                        .foregroundColor(.blue)
+                }
+            }
+            .frame(width: UIScreen.main.bounds.width * 0.6)
+        }
+        .animation(.default, value: signUpVM.showCredentialsError)
     }
 }

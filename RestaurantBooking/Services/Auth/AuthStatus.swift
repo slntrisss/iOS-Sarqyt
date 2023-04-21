@@ -6,7 +6,8 @@
 //
 
 import Foundation
-enum AuthStatus{
+enum AuthStatus: Equatable{
     case ok
     case credentialsError
+    case authorizationError(message: String)
 }

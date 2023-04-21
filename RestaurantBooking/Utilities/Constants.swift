@@ -14,6 +14,7 @@ class Constants{
     static let SARQYT_ACCOUNT = "Sarqyt"
     static let ACCESS_TOKEN = "jwt-token"
     static let SIGN_IN = "/signin"
+    static let SIGN_UP = "/signup"
     
     //MARK: - Network Calls
     static let BASE_URL = "http://localhost:3000"

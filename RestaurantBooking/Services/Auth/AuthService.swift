@@ -17,6 +17,7 @@ class AuthService{
     private init(){ }
     
     var signInSubscription: AnyCancellable?
+    var signUpSubscription: AnyCancellable?
     
     func authenticate(with credentials: Credentials){
         signIn(credentials: credentials)
@@ -50,48 +51,68 @@ class AuthService{
 extension AuthService{
     private func signIn(credentials: Credentials){
         let urlString = Constants.BASE_URL + Constants.SIGN_IN
-        guard let url = URL(string: urlString) else {
-            print("BAD URL: \(urlString)")
+        authStatus = nil
+        guard var request = AuthManager.constructRequest(for: urlString) else {
+            print("Error creating request")
             return
         }
-        var request = URLRequest(url: url)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        authStatus = .ok
+        
         do{
             let jsonData = try JSONEncoder().encode(credentials)
             request.httpBody = jsonData
             
-            signInSubscription = URLSession.shared.dataTaskPublisher(for: request)
-                .tryMap{ [weak self] (data, response) throws -> Data in
-                    guard let response = response as? HTTPURLResponse else{
-                        print("Error occured while unwrapping response.")
-                        throw URLError(.badServerResponse)
-                    }
-                    if !(response.statusCode >= 200 && response.statusCode < 300){
-                        self?.authStatus = .credentialsError
-                        print("User credentials error....")
-                        throw NetworkingError.unauthorizedAccess(url: url)
-                    }
-                    return data
-                }
-                .receive(on: DispatchQueue.main)
+            signInSubscription = AuthManager.post(request: request)
                 .decode(type: AuthResponse.self, decoder: JSONDecoder())
-                .sink {completion in
-                    print("inside sink")
+                .sink {[weak self] completion in
                     switch completion{
                     case .finished:
                         print("Authenticated!")
+                    case .failure(let error as NetworkingError):
+                        self?.authStatus = .authorizationError(message: error.localizedDescription)
                     case .failure(let error):
                         print("Error occured while signing in: \(error.localizedDescription)")
                     }
                 } receiveValue: {[weak self] fetchedAuthResponse in
                     self?.authResponse = fetchedAuthResponse
+                    self?.authStatus = .ok
                     self?.signInSubscription?.cancel()
                 }
 
         }catch let error{
             print("Error occured: \(error.localizedDescription)")
+        }
+    }
+    
+    func signUp(credentials: Credentials) {
+        let urlString = Constants.BASE_URL + Constants.SIGN_UP
+        authStatus = nil
+        guard var request = AuthManager.constructRequest(for: urlString) else {
+            print("Error creating request")
+            return
+        }
+        do{
+            let jsonData = try JSONEncoder().encode(credentials)
+            request.httpBody = jsonData
+            
+            signUpSubscription = AuthManager.post(request: request)
+                .decode(type: AuthResponse.self, decoder: JSONDecoder())
+                .sink {[weak self] completion in
+                    switch completion{
+                    case .finished:
+                        print("Authenticated!")
+                    case .failure(let error as NetworkingError):
+                        self?.authStatus = .authorizationError(message: error.localizedDescription)
+                    case .failure(let error):
+                        print("Error occured while signing in: \(error.localizedDescription)")
+                    }
+                } receiveValue: { [weak self] fetchedAuthResponse in
+                    self?.authResponse = fetchedAuthResponse
+                    self?.authStatus = .ok
+                    self?.signUpSubscription?.cancel()
+                }
+
+        } catch let error{
+            print("Error occured : \(error.localizedDescription)")
         }
     }
 }

@@ -133,6 +133,8 @@
 		FFB857DC29F2B571001C4DC5 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857DB29F2B571001C4DC5 /* KeychainManager.swift */; };
 		FFB857DE29F2BDC2001C4DC5 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857DD29F2BDC2001C4DC5 /* AuthResponse.swift */; };
 		FFB857E029F2C228001C4DC5 /* AuthStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857DF29F2C228001C4DC5 /* AuthStatus.swift */; };
+		FFB857E229F3178F001C4DC5 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857E129F3178F001C4DC5 /* ErrorResponse.swift */; };
+		FFB857E429F32B1C001C4DC5 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857E329F32B1C001C4DC5 /* AuthManager.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -282,6 +284,8 @@
 		FFB857DB29F2B571001C4DC5 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FFB857DD29F2BDC2001C4DC5 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		FFB857DF29F2C228001C4DC5 /* AuthStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStatus.swift; sourceTree = "<group>"; };
+		FFB857E129F3178F001C4DC5 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		FFB857E329F32B1C001C4DC5 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -695,6 +699,7 @@
 				FF470E6B29A129D400314934 /* Credentials.swift */,
 				FF470E7929A1457B00314934 /* Authentication.swift */,
 				FFB857DD29F2BDC2001C4DC5 /* AuthResponse.swift */,
+				FFB857E129F3178F001C4DC5 /* ErrorResponse.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -1105,6 +1110,7 @@
 				FFB2597229ED601C005B679B /* View */,
 				FFB2596A29ED3CD4005B679B /* Constants.swift */,
 				FFB2596F29ED4CE2005B679B /* NetworkingManager.swift */,
+				FFB857E329F32B1C001C4DC5 /* AuthManager.swift */,
 				FFB2597529ED7ACE005B679B /* NetworkingError.swift */,
 			);
 			path = Utilities;
@@ -1425,6 +1431,7 @@
 				FFB6C44029F17AA5005F2346 /* ReservedRestaurantDataService.swift in Sources */,
 				FF470E6F29A12A1600314934 /* LoginViewModel.swift in Sources */,
 				FF41F209299CA44A003B1745 /* LoginView.swift in Sources */,
+				FFB857E429F32B1C001C4DC5 /* AuthManager.swift in Sources */,
 				FF1E49AA29A3EB2F004B6FE1 /* Double.swift in Sources */,
 				FF41F218299CB256003B1745 /* RemembeMeToggle.swift in Sources */,
 				FFAFDFA729A8B39D002A000B /* FilterPriceRangeView.swift in Sources */,
@@ -1451,6 +1458,7 @@
 				FF68D24A29D8A4AB0064ECF9 /* ProfileViewModel.swift in Sources */,
 				FFAFDFA329A8B09E002A000B /* FilterViewModel.swift in Sources */,
 				FF83D1E229D9723100081B94 /* LogoutView.swift in Sources */,
+				FFB857E229F3178F001C4DC5 /* ErrorResponse.swift in Sources */,
 				FF8BA8B929B8816E00D71861 /* RestaurantRatingStarView.swift in Sources */,
 				FF874ED229D1EA2900C42306 /* UIFont.swift in Sources */,
 				FF83D1E529D9777300081B94 /* RateRestaurantView.swift in Sources */,
