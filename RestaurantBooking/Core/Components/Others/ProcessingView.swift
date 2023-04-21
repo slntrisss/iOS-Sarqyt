@@ -9,30 +9,23 @@ import SwiftUI
 
 struct ProcessingView: View {
     @Binding var showProcessingView: Bool
-    @State private var rotationAngle = 0.0
     var body: some View {
-        AlertBuilder(showAlert: $showProcessingView) {
-            VStack(spacing: 20){
-                Image("loadingState")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .rotationEffect(.degrees(rotationAngle))
-                    .animation(.linear(duration: 0.1)
-                        .speed(0.1).repeatForever(autoreverses: false), value: rotationAngle)
+        if showProcessingView{
+            ZStack{
+                Color.black.opacity(0.55)
+                    .ignoresSafeArea(.all)
                 
-                Text("Processing...")
-                    .foregroundColor(Color.theme.secondaryText)
-                    .font(.caption)
+                VStack(spacing: 20){
+                    ProgressView()
+                    
+                    Text("Processing...")
+                        .foregroundColor(Color.theme.secondaryText)
+                        .font(.caption)
+                }
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 10).fill(Color.theme.sheetBackground))
             }
         }
-        .onChange(of: showProcessingView, perform: { newValue in
-            if showProcessingView{
-                withAnimation {
-                    rotationAngle = 360.0
-                }
-            }
-        })
     }
 }
 

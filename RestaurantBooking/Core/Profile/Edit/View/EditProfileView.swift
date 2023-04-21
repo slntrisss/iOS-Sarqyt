@@ -10,7 +10,7 @@ import SwiftUI
 struct EditProfileView: View {
     @FocusState private var inFocus: Field?
     @StateObject private var profileVM: EditProfileViewModel
-    init(user: User?){
+    init(user: Userr?){
         self._profileVM = StateObject(wrappedValue: EditProfileViewModel(user: user))
     }
     var body: some View {

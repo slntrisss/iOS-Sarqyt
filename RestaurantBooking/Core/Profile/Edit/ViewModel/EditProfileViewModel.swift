@@ -23,9 +23,9 @@ class EditProfileViewModel: ObservableObject{
     @Published var takeAPhoto = false
     @Published var showErrorAlert = false
     let genders = ["Male", "Female"]
-    @Published var user: User?
+    @Published var user: Userr?
     
-    init(user: User? = nil){
+    init(user: Userr? = nil){
         self.user = user
         if let user = user{
             self.firstName = user.firstName

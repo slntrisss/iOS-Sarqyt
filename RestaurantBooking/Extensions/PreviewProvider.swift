@@ -20,7 +20,7 @@ class DeveloperPreview{
         PaymentCard(id: UUID().uuidString, cardNumber: "8794_6574_1239_0475_8794", expirationMonth: "11", expirationYear: "23", cvv: "184", inUse: false),
     ]
     
-    let user = User(
+    let user = Userr(
         id: UUID().uuidString,
         profileImage: "john-wick",
         firstName: "Adilzhan",
@@ -149,7 +149,7 @@ class DeveloperPreview{
         Comment(
             id: UUID().uuidString,
             date: Date().description,
-            user: User(
+            user: Userr(
                 id: UUID().uuidString,
                 profileImage: "john-wick",
                 firstName: "Ruslan",
@@ -163,7 +163,7 @@ class DeveloperPreview{
         Comment(
             id: UUID().uuidString,
             date: Date().description,
-            user: User(
+            user: Userr(
                 id: UUID().uuidString,
                 profileImage: "john-wick",
                 firstName: "Azamat",
@@ -177,7 +177,7 @@ class DeveloperPreview{
         Comment(
             id: UUID().uuidString,
             date: Date().description,
-            user: User(
+            user: Userr(
                 id: UUID().uuidString,
                 profileImage: "",
                 firstName: "Adilzhan",

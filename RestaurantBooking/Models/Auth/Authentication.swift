@@ -20,6 +20,7 @@ class Authentication: ObservableObject{
     enum AuthenticationError: Error, LocalizedError, Identifiable {
         case emailOrPasswordNotProvided
         case invalidCredentials
+        case userDoesNotExist
         case deniedAccess
         case noFaceIdEnrolled
         case noFingerprintEnrolled
@@ -46,6 +47,8 @@ class Authentication: ObservableObject{
                 return NSLocalizedString("Your face or fingerprint were not recognized.", comment: "")
             case .credentialsNotSaved:
                 return NSLocalizedString("Your credentials have not been saved. Do you want to save them after the next successful login?", comment: "")
+            case .userDoesNotExist:
+                return NSLocalizedString("User does not exist for provided credentials", comment: "")
             }
         }
     }

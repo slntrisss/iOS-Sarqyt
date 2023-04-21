@@ -46,7 +46,6 @@
 		FF41F227299CC3E1003B1745 /* ProfileSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F226299CC3E1003B1745 /* ProfileSetupView.swift */; };
 		FF41F229299CC566003B1745 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F228299CC566003B1745 /* ProfileImageView.swift */; };
 		FF41F22B299CC721003B1745 /* ProfileImageViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41F22A299CC721003B1745 /* ProfileImageViewModifier.swift */; };
-		FF43291C29A21DD900AEA0EA /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF43291B29A21DD900AEA0EA /* KeychainService.swift */; };
 		FF43291F29A2289F00AEA0EA /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF43291E29A2289F00AEA0EA /* HomeView.swift */; };
 		FF470E6929A0DE1E00314934 /* NewPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E6829A0DE1E00314934 /* NewPasswordView.swift */; };
 		FF470E6C29A129D400314934 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF470E6B29A129D400314934 /* Credentials.swift */; };
@@ -57,7 +56,7 @@
 		FF518F5629CB92CA00A285CD /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF518F5529CB92CA00A285CD /* OrderView.swift */; };
 		FF5391BC29BCAB61004AF07D /* CommentBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391BB29BCAB61004AF07D /* CommentBoxView.swift */; };
 		FF5391BE29BCAB7F004AF07D /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391BD29BCAB7F004AF07D /* Comment.swift */; };
-		FF5391C029BCAC06004AF07D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391BF29BCAC06004AF07D /* User.swift */; };
+		FF5391C029BCAC06004AF07D /* Userr.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391BF29BCAC06004AF07D /* Userr.swift */; };
 		FF5391C229BCB72A004AF07D /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5391C129BCB72A004AF07D /* CommentView.swift */; };
 		FF53992C29C8D2E800CA0F89 /* FoodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF53992B29C8D2E800CA0F89 /* FoodViewModel.swift */; };
 		FF59750729D75425009E15D0 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF59750629D75425009E15D0 /* Point.swift */; };
@@ -84,7 +83,6 @@
 		FF83D1E229D9723100081B94 /* LogoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83D1E129D9723100081B94 /* LogoutView.swift */; };
 		FF83D1E529D9777300081B94 /* RateRestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83D1E429D9777300081B94 /* RateRestaurantView.swift */; };
 		FF83D1E729D98C3900081B94 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83D1E629D98C3900081B94 /* SignUpViewModel.swift */; };
-		FF83D1EA29D99D5900081B94 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83D1E929D99D5900081B94 /* KeychainManager.swift */; };
 		FF841F1E29CA37DA00CA7593 /* OrderedFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */; };
 		FF874ED229D1EA2900C42306 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF874ED129D1EA2900C42306 /* UIFont.swift */; };
 		FF8BA8B729B864DB00D71861 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8BA8B629B864DB00D71861 /* DetailView.swift */; };
@@ -132,6 +130,9 @@
 		FFB6C43D29F16165005F2346 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43C29F16165005F2346 /* NavigationUtil.swift */; };
 		FFB6C44029F17AA5005F2346 /* ReservedRestaurantDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */; };
 		FFB857D529F28223001C4DC5 /* MapDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857D429F28223001C4DC5 /* MapDataService.swift */; };
+		FFB857DC29F2B571001C4DC5 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857DB29F2B571001C4DC5 /* KeychainManager.swift */; };
+		FFB857DE29F2BDC2001C4DC5 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857DD29F2BDC2001C4DC5 /* AuthResponse.swift */; };
+		FFB857E029F2C228001C4DC5 /* AuthStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857DF29F2C228001C4DC5 /* AuthStatus.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -192,7 +193,6 @@
 		FF41F226299CC3E1003B1745 /* ProfileSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupView.swift; sourceTree = "<group>"; };
 		FF41F228299CC566003B1745 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		FF41F22A299CC721003B1745 /* ProfileImageViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewModifier.swift; sourceTree = "<group>"; };
-		FF43291B29A21DD900AEA0EA /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		FF43291E29A2289F00AEA0EA /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FF43292129A2539000AEA0EA /* RestaurantBooking.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RestaurantBooking.entitlements; sourceTree = "<group>"; };
 		FF470E6829A0DE1E00314934 /* NewPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordView.swift; sourceTree = "<group>"; };
@@ -204,7 +204,7 @@
 		FF518F5529CB92CA00A285CD /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		FF5391BB29BCAB61004AF07D /* CommentBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBoxView.swift; sourceTree = "<group>"; };
 		FF5391BD29BCAB7F004AF07D /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
-		FF5391BF29BCAC06004AF07D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		FF5391BF29BCAC06004AF07D /* Userr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Userr.swift; sourceTree = "<group>"; };
 		FF5391C129BCB72A004AF07D /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		FF53992B29C8D2E800CA0F89 /* FoodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewModel.swift; sourceTree = "<group>"; };
 		FF59750629D75425009E15D0 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
@@ -231,7 +231,6 @@
 		FF83D1E129D9723100081B94 /* LogoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
 		FF83D1E429D9777300081B94 /* RateRestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateRestaurantView.swift; sourceTree = "<group>"; };
 		FF83D1E629D98C3900081B94 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
-		FF83D1E929D99D5900081B94 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FF841F1D29CA37DA00CA7593 /* OrderedFood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedFood.swift; sourceTree = "<group>"; };
 		FF874ED129D1EA2900C42306 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		FF8BA8B629B864DB00D71861 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -279,6 +278,10 @@
 		FFB6C43C29F16165005F2346 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservedRestaurantDataService.swift; sourceTree = "<group>"; };
 		FFB857D429F28223001C4DC5 /* MapDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataService.swift; sourceTree = "<group>"; };
+		FFB857D929F2B38A001C4DC5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFB857DB29F2B571001C4DC5 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		FFB857DD29F2BDC2001C4DC5 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
+		FFB857DF29F2C228001C4DC5 /* AuthStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStatus.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -433,6 +436,7 @@
 		FF41F1E5299C939B003B1745 /* RestaurantBooking */ = {
 			isa = PBXGroup;
 			children = (
+				FFB857D929F2B38A001C4DC5 /* Info.plist */,
 				FF41F1E8299C939B003B1745 /* ContentView.swift */,
 				FF43292129A2539000AEA0EA /* RestaurantBooking.entitlements */,
 				FF41F1E6299C939B003B1745 /* RestaurantBookingApp.swift */,
@@ -672,7 +676,7 @@
 			isa = PBXGroup;
 			children = (
 				FF470E7129A12FCA00314934 /* AuthService.swift */,
-				FF43291B29A21DD900AEA0EA /* KeychainService.swift */,
+				FFB857DF29F2C228001C4DC5 /* AuthStatus.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -690,6 +694,7 @@
 			children = (
 				FF470E6B29A129D400314934 /* Credentials.swift */,
 				FF470E7929A1457B00314934 /* Authentication.swift */,
+				FFB857DD29F2BDC2001C4DC5 /* AuthResponse.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -806,7 +811,7 @@
 			isa = PBXGroup;
 			children = (
 				FF68D25729D8B0100064ECF9 /* Biometrics.swift */,
-				FF83D1E929D99D5900081B94 /* KeychainManager.swift */,
+				FFB857DB29F2B571001C4DC5 /* KeychainManager.swift */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -1077,7 +1082,7 @@
 			children = (
 				FF2CAB6029A3820100E062E1 /* Category.swift */,
 				FFAFDFA429A8B120002A000B /* RestaurantFilter.swift */,
-				FF5391BF29BCAC06004AF07D /* User.swift */,
+				FF5391BF29BCAC06004AF07D /* Userr.swift */,
 				FFEE49DC29BDA96A003E8466 /* Book.swift */,
 				FF68D24029D83FF00064ECF9 /* ReservedRestaurant.swift */,
 				FF68D26029D8B3F50064ECF9 /* PaymentCard.swift */,
@@ -1326,16 +1331,17 @@
 				FFDF071229B3972F00AB0173 /* BookingStatus.swift in Sources */,
 				FF0E2A0B299D47FA0011BF01 /* String.swift in Sources */,
 				FFB857D529F28223001C4DC5 /* MapDataService.swift in Sources */,
+				FFB857E029F2C228001C4DC5 /* AuthStatus.swift in Sources */,
 				FF68D24829D8A45A0064ECF9 /* ProfileView.swift in Sources */,
 				FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */,
 				FF43291F29A2289F00AEA0EA /* HomeView.swift in Sources */,
-				FF83D1EA29D99D5900081B94 /* KeychainManager.swift in Sources */,
 				FF9F904429C5F91700386B19 /* FoodType.swift in Sources */,
 				FFB6C43D29F16165005F2346 /* NavigationUtil.swift in Sources */,
 				FF68D25829D8B0100064ECF9 /* Biometrics.swift in Sources */,
 				FF2CAB6729A38AAA00E062E1 /* PreviewProvider.swift in Sources */,
 				FF68D23F29D83F760064ECF9 /* ReserveInfoView.swift in Sources */,
 				FF59750929D76C1E009E15D0 /* AddPaymentMethodView.swift in Sources */,
+				FFB857DE29F2BDC2001C4DC5 /* AuthResponse.swift in Sources */,
 				FFAFDFA529A8B120002A000B /* RestaurantFilter.swift in Sources */,
 				FFAA49A729EE73F800B2561D /* RestaurantDetailDataService.swift in Sources */,
 				FFB2350C29E16FCE0053FD59 /* GroupView.swift in Sources */,
@@ -1358,7 +1364,7 @@
 				FF470E6C29A129D400314934 /* Credentials.swift in Sources */,
 				FF41F229299CC566003B1745 /* ProfileImageView.swift in Sources */,
 				FF41F1E7299C939B003B1745 /* RestaurantBookingApp.swift in Sources */,
-				FF5391C029BCAC06004AF07D /* User.swift in Sources */,
+				FF5391C029BCAC06004AF07D /* Userr.swift in Sources */,
 				FFFC84FF29A64B4200C1130D /* RestaurantCardView.swift in Sources */,
 				FFAA49B629EF128100B2561D /* BookDataService.swift in Sources */,
 				FFAA49B029EEAA2E00B2561D /* FoodDataService.swift in Sources */,
@@ -1393,6 +1399,7 @@
 				FFAFDFA929A8B634002A000B /* PriceSliderView.swift in Sources */,
 				FFB2350529E14C830053FD59 /* SchemeView.swift in Sources */,
 				FF41F216299CB046003B1745 /* View.swift in Sources */,
+				FFB857DC29F2B571001C4DC5 /* KeychainManager.swift in Sources */,
 				FF41F205299CA209003B1745 /* RegistrationBottomHelperButton.swift in Sources */,
 				FFAFDFAB29A8C8BE002A000B /* StarRatingView.swift in Sources */,
 				FFEE49DD29BDA96A003E8466 /* Book.swift in Sources */,
@@ -1426,7 +1433,6 @@
 				FF68D25529D8AF4E0064ECF9 /* SecurityViewModel.swift in Sources */,
 				FF90C25729EC1A55005FAF4C /* TableInfo.swift in Sources */,
 				FF1E49A829A3EA03004B6FE1 /* RestaurantBannerView.swift in Sources */,
-				FF43291C29A21DD900AEA0EA /* KeychainService.swift in Sources */,
 				FF5391C229BCB72A004AF07D /* CommentView.swift in Sources */,
 				FF53992C29C8D2E800CA0F89 /* FoodViewModel.swift in Sources */,
 				FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */,
@@ -1586,7 +1592,9 @@
 				DEVELOPMENT_TEAM = 3RYA52PLG7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow to use  \"FaceID\" information to unlock the data.";
+				INFOPLIST_FILE = RestaurantBooking/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow to use \"FaceID\" information to unlock the data.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please, allow \"Sarqyt\" app to use your location to show it on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1622,7 +1630,9 @@
 				DEVELOPMENT_TEAM = 3RYA52PLG7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow to use  \"FaceID\" information to unlock the data.";
+				INFOPLIST_FILE = RestaurantBooking/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow to use \"FaceID\" information to unlock the data.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please, allow \"Sarqyt\" app to use your location to show it on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

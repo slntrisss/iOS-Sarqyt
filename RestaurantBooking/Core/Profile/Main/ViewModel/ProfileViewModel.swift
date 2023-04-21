@@ -17,13 +17,13 @@ class ProfileViewModel: ObservableObject{
     @Published var showLogoutView: Bool = false
     @Published var logout: Bool = false
     
-    var user: User? = nil
+    var user: Userr? = nil
     
     init(){
         self.user = getUser()
     }
     
-    private func getUser() -> User {
+    private func getUser() -> Userr {
         return DeveloperPreview.instance.user
     }
     

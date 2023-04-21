@@ -14,10 +14,6 @@ struct LoginView: View {
     
     @State private var forgotPasswordButtonClicked = false
     
-    @State private var signInWithGoogleTapped = false
-    @State private var signInWithMetaTapped = false
-    @State private var signInWithAppleTapped = false
-    
     @State private var showPassword = false
     
     var body: some View {
@@ -37,16 +33,18 @@ struct LoginView: View {
                 HStack{
                     RemembeMeToggle(isOn: $rememberMe)
                     Spacer()
+                    forgotPasswordButton
                 }
                 .padding(.vertical)
                 
                 PrimaryButton(buttonLabel: "Sign In", buttonClicked: $vm.signInButtonTapped)
                     .padding(.bottom, 10)
                     .onChange(of: vm.signInButtonTapped) { _ in vm.signIn()}
-                
-                forgotPasswordButton
-                
+                dividerLabel
                 bottomViewButtons
+            }
+            .onAppear{
+                vm.authenticate()
             }
             .padding()
             .navigationTitle("Login")
@@ -68,14 +66,38 @@ struct LoginView_Previews: PreviewProvider {
 
 extension LoginView{
     
+    private var dividerLabel: some View{
+        Text("or sign in with")
+            .foregroundColor(Color.theme.accent.opacity(0.3))
+            .padding(.vertical)
+            .opacity(vm.showBiometricsView ? 1.0 : 0.0)
+    }
+    
     private var bottomViewButtons: some View{
-        VStack{
-            DividerWithText(text: "or continue with")
-                .padding(.top, 30)
-            
-            SignInWithView(signInWithGoogleTapped: $signInWithGoogleTapped, signInWithMetaTapped: $signInWithMetaTapped, signInWithAppleTapped: $signInWithAppleTapped)
-                .padding(.vertical)
+        Button{
+            vm.authenticate()
+        }label: {
+            VStack{
+                Image(systemName: vm.biometricImageName)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(Color.theme.green)
+                    .frame(width: 30, height: 30)
+                VStack{
+                    Text("Sign in with")
+                    Text(vm.biometricLabel)
+                        .font(.headline)
+                        .foregroundColor(Color.theme.green)
+                }
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.theme.field)
+                    .shadow(radius: 4)
+            )
         }
+        .opacity(vm.showBiometricsView ? 1.0 : 0.0)
     }
     
     private var forgotPasswordButton: some View{

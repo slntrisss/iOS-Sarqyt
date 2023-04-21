@@ -10,7 +10,7 @@ import Foundation
 struct Comment: Identifiable, Codable{
     let id: String
     let date: String
-    let user: User
+    let user: Userr
     let text: String
     let rating: Int
 }

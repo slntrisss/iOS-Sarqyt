@@ -9,6 +9,13 @@ import Foundation
 
 class Constants{
     
+    //MARK: - Auth & Security
+    static let USER_CEREDENTIALS = "user-credentials"
+    static let SARQYT_ACCOUNT = "Sarqyt"
+    static let ACCESS_TOKEN = "jwt-token"
+    static let SIGN_IN = "/signin"
+    
+    //MARK: - Network Calls
     static let BASE_URL = "http://localhost:3000"
     
     //MARK: Home
