@@ -125,7 +125,7 @@ extension LoginView{
                     .fontWeight(.semibold)
                     .foregroundColor(Color.theme.accent)
                 
-                Text(vm.error?.localizedDescription ?? "")
+                Text(vm.errorMessage)
                     .foregroundColor(Color.theme.secondaryText)
                     .multilineTextAlignment(.center)
                 

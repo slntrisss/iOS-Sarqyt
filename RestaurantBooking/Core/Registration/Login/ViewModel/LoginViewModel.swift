@@ -14,7 +14,7 @@ class LoginViewModel: ObservableObject{
     @Published var authentication = Authentication()
     
     @Published var showCredentialsError = false
-    @Published var error: Authentication.AuthenticationError?
+    var errorMessage: String = ""
     
     @Published var signInButtonTapped = false
     @Published var showProcessingView = false
@@ -25,7 +25,7 @@ class LoginViewModel: ObservableObject{
     var biometricImageName: String = ""
     
     let authService = AuthService.shared
-    var cancellables = Set<AnyCancellable>()
+    var signInSubscription : AnyCancellable?
     
     init(){
         initBiometrics()
@@ -54,6 +54,7 @@ class LoginViewModel: ObservableObject{
                 context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {[weak self] success, error in
                     if success{
                         self?.authService.authenticateUsingBiometrics()
+                        self?.addSubscription()
                     } else {
                         print("Error occured while evaluating biometrics")
                     }
@@ -66,7 +67,7 @@ class LoginViewModel: ObservableObject{
     
     func signIn(){
         if credentials.email.isEmpty || credentials.password.isEmpty{
-            error = .emailOrPasswordNotProvided
+            errorMessage = "Email or password is missing. Please try to fill all required fields."
             showCredentialsError = true
             return
         }
@@ -74,24 +75,27 @@ class LoginViewModel: ObservableObject{
         
         authService.authenticate(with: credentials)
         
-        authService.$authStatus
-            .sink {[weak self] authStatus in
-                guard let authStatus = authStatus else{return}
+        addSubscription()
+    }
+    
+    private func addSubscription(){
+        signInSubscription = authService.$authStatus
+            .sink {[weak self] fetchedStatus in
                 DispatchQueue.main.async {
                     self?.showProcessingView = false
                 }
-                if authStatus == .credentialsError{
-                    DispatchQueue.main.async {
+                if let fetchedStatus = fetchedStatus{
+                    switch fetchedStatus{
+                    case .authorizationError(let message):
                         self?.showCredentialsError = true
-                        self?.error = .invalidCredentials
+                        self?.errorMessage = message
+                    case .ok:
+                        self?.signInSubscription?.cancel()
+                    case .credentialsError:
+                        print("credentialsError")
                     }
                 }
             }
-            .store(in: &cancellables)
-    }
-    
-    func authenticateUsingBiometrics(){
-        authentication.requestBiomotricAuthentication()
     }
     
     var showBiometricsView: Bool{

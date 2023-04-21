@@ -108,6 +108,7 @@ extension AuthService{
                 } receiveValue: { [weak self] fetchedAuthResponse in
                     self?.authResponse = fetchedAuthResponse
                     self?.authStatus = .ok
+                    self?.saveUserCredentialsAndTokenToKeychain(credentials: credentials, token: fetchedAuthResponse.accessToken)
                     self?.signUpSubscription?.cancel()
                 }
 
@@ -148,5 +149,11 @@ extension AuthService{
         } catch let error {
             print("Error encoding user credentials: \(error.localizedDescription)")
         }
+    }
+    
+    private func saveUserCredentialsAndTokenToKeychain(credentials: Credentials, token: String){
+        saveUserCredentials(credentials: credentials)
+        let data = Data(token.utf8)
+        KeychainManager.save(data, service: Constants.ACCESS_TOKEN, account: Constants.SARQYT_ACCOUNT)
     }
 }
