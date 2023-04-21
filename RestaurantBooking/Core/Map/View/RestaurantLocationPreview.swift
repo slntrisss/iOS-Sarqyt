@@ -47,7 +47,7 @@ extension RestaurantLocationPreview{
     
     private var imageSection: some View{
         ZStack{
-            Image(restaurant.image)
+            Image(uiImage: restaurant.wrappedImage)
                 .resizable()
                 .frame(width: 100, height: 100)
                 .cornerRadius(10)
@@ -71,7 +71,7 @@ extension RestaurantLocationPreview{
     
     private var learnMoreButton: some View{
         Button {
-            
+            mapVM.navigateToDetailView = true
         } label: {
             Text("Learn more")
                 .font(.headline)

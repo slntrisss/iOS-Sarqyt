@@ -11,15 +11,21 @@ struct MapListView: View {
     @EnvironmentObject private var mapVM: MapViewModel
     var body: some View {
         List{
-            ForEach(mapVM.restaurants){ restaurant in
+            ForEach(mapVM.restaurants.indices, id: \.self){ index in
                 Button {
-                    mapVM.showNextRestaurant(restaurant: restaurant)
+                    mapVM.showNextRestaurant(restaurant: mapVM.restaurants[index])
                 } label: {
-                    listRowView(restaurant: restaurant)
+                    listRowView(restaurant: mapVM.restaurants[index])
+                        .onAppear{
+                            mapVM.fetchRestaurants(index: index)
+                        }
                 }
                 .padding(.vertical, 4)
                 .listRowBackground(Color.clear)
             }
+        }
+        .refreshable {
+            mapVM.refreshItems()
         }
         .listStyle(PlainListStyle())
     }
@@ -35,8 +41,8 @@ struct MapListView_Previews: PreviewProvider {
 
 extension MapListView{
     private func listRowView(restaurant: Restaurant) -> some View{
-        HStack{
-            Image(restaurant.image)
+        LazyHStack{
+            Image(uiImage: restaurant.wrappedImage)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 45, height: 45)

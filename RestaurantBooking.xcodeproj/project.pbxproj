@@ -131,6 +131,7 @@
 		FFB6C43B29F157EE005F2346 /* ConfirmLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43A29F157EE005F2346 /* ConfirmLoadingView.swift */; };
 		FFB6C43D29F16165005F2346 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43C29F16165005F2346 /* NavigationUtil.swift */; };
 		FFB6C44029F17AA5005F2346 /* ReservedRestaurantDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */; };
+		FFB857D529F28223001C4DC5 /* MapDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB857D429F28223001C4DC5 /* MapDataService.swift */; };
 		FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FEF299F84DC0061771C /* ImagePicker.swift */; };
 		FFBB2FF5299F97540061771C /* ImageTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF4299F97540061771C /* ImageTaker.swift */; };
 		FFBB2FF8299FA2D60061771C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */; };
@@ -277,6 +278,7 @@
 		FFB6C43A29F157EE005F2346 /* ConfirmLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLoadingView.swift; sourceTree = "<group>"; };
 		FFB6C43C29F16165005F2346 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		FFB6C43F29F17AA5005F2346 /* ReservedRestaurantDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservedRestaurantDataService.swift; sourceTree = "<group>"; };
+		FFB857D429F28223001C4DC5 /* MapDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataService.swift; sourceTree = "<group>"; };
 		FFBB2FEF299F84DC0061771C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		FFBB2FF4299F97540061771C /* ImageTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTaker.swift; sourceTree = "<group>"; };
 		FFBB2FF7299FA2D60061771C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
@@ -1033,6 +1035,7 @@
 		FFB22A8629DB1D8C00EDFEB0 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				FFB857D229F28211001C4DC5 /* Map */,
 				FFB6C43E29F17A90005F2346 /* ReservedRestaurant */,
 				FF7F6C1029EFEBFC00649819 /* RestaurantScheme */,
 				FFAA49B429EF126600B2561D /* Book */,
@@ -1133,6 +1136,14 @@
 				FF68D24229D8412E0064ECF9 /* ReservedRestaurantDetail.swift */,
 			);
 			path = ReservedRestaurant;
+			sourceTree = "<group>";
+		};
+		FFB857D229F28211001C4DC5 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				FFB857D429F28223001C4DC5 /* MapDataService.swift */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 		FFBB2FED299F83FF0061771C /* Services */ = {
@@ -1314,6 +1325,7 @@
 				FF41F20B299CAA99003B1745 /* EmailField.swift in Sources */,
 				FFDF071229B3972F00AB0173 /* BookingStatus.swift in Sources */,
 				FF0E2A0B299D47FA0011BF01 /* String.swift in Sources */,
+				FFB857D529F28223001C4DC5 /* MapDataService.swift in Sources */,
 				FF68D24829D8A45A0064ECF9 /* ProfileView.swift in Sources */,
 				FFBB2FF0299F84DC0061771C /* ImagePicker.swift in Sources */,
 				FF43291F29A2289F00AEA0EA /* HomeView.swift in Sources */,
@@ -1575,6 +1587,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow to use  \"FaceID\" information to unlock the data.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please, allow \"Sarqyt\" app to use your location to show it on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1610,6 +1623,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow to use  \"FaceID\" information to unlock the data.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please, allow \"Sarqyt\" app to use your location to show it on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

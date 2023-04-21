@@ -7,30 +7,26 @@
 
 import SwiftUI
 import MapKit
+import Combine
 
-class MapViewModel: ObservableObject{
-    //All restaurants locations
+class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     @Published var restaurants: [Restaurant] = []
-    
-    //current location
-    @Published var mapRestaurant: Restaurant{
-        didSet{
-            updateMapRegion(address: mapRestaurant.address)
-        }
-    }
-    //Current region
+    @Published var mapRestaurant: Restaurant? = nil
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
     
-    //Show list of restaurants on map
     @Published var showListView: Bool = false
+    @Published var navigateToDetailView = false
     
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-    init(){
-        let restaurants = DeveloperPreview.instance.restaurants
-        self.restaurants = restaurants
-        self.mapRestaurant = restaurants.first!
-        
-        self.updateMapRegion(address: restaurants.first!.address)
+    var locationManager: CLLocationManager?
+    
+    let dataService = MapDataService.instance
+    let pageInfo = PageInfo(itemsLoaded: 0)
+    var cancellables = Set<AnyCancellable>()
+    
+    override init(){
+        super.init()
+        addSubscribers()
     }
     
     private func updateMapRegion(address: Address){
@@ -49,6 +45,7 @@ class MapViewModel: ObservableObject{
         withAnimation(.easeInOut){
             mapRestaurant = restaurant
             showListView = false
+            updateMapRegion(address: restaurant.address)
         }
     }
     
@@ -70,5 +67,67 @@ class MapViewModel: ObservableObject{
         //Next index is VALID
         let nextRestaurant = restaurants[nextIndex]
         showNextRestaurant(restaurant: nextRestaurant)
+    }
+    
+    //MARK: - User Location
+    
+    func checkIfLocationServiceIsEnabled(){
+        if CLLocationManager.locationServicesEnabled(){
+            locationManager = CLLocationManager()
+            locationManager?.delegate = self
+            locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        } else {
+            //TODO: alert for enabling location
+            
+        }
+    }
+    
+    private func checkLocationAuthorization(){
+        guard let locationManager = locationManager else { return }
+        
+        switch locationManager.authorizationStatus{
+            
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .restricted:
+            //TODO: alert
+            print("Your location is restricted.")
+        case .denied:
+            //TODO: alert
+            print("Your location is denied. Go to settings and enable location")
+        case .authorizedAlways, .authorizedWhenInUse:
+            mapRegion = MKCoordinateRegion(center: locationManager.location?.coordinate ?? mapRegion.center, span: mapSpan)
+        @unknown default:
+            break
+        }
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        checkLocationAuthorization()
+    }
+    
+    //MARK: - Networking
+    
+    private func addSubscribers(){
+        dataService.$restaurants
+            .sink { [weak self] fetchedRestaurants in
+                self?.restaurants.append(contentsOf: fetchedRestaurants)
+            }
+            .store(in: &cancellables)
+    }
+    
+    func fetchRestaurants(offset: Int = Constants.DEFAULT_OFFSET, limit: Int = Constants.DEFAULT_LIMIT, index: Int = 0){
+        if restaurants.count == 0{
+            dataService.fetchRestaurants(offset: offset, limit: limit)
+        } else if index == restaurants.count - 1{
+            pageInfo.offset += Constants.DEFAULT_LIMIT
+            dataService.fetchRestaurants(offset: pageInfo.offset, limit: Constants.DEFAULT_LIMIT)
+        }
+    }
+    
+    func refreshItems(){
+        restaurants.removeAll()
+        pageInfo.offset = 0
+        dataService.fetchRestaurants(offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
     }
 }

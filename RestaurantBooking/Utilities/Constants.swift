@@ -41,6 +41,9 @@ class Constants{
     static let RESERVED_RESTAURANTS_DETAIL = "/Reserved/Details"
     static let CANCEL_RESERVED_RESTAURANT = "/Reserved/CancelBooking"
     
+    //MARK: Map
+    static let MAP_BASE_URL = "/Map"
+    
     //MARK: Pagination
     static let DEFAULT_OFFSET = 0
     static let DEFAULT_LIMIT = 5
