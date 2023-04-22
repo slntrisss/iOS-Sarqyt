@@ -53,8 +53,19 @@ struct OrderView: View {
                 summaryView
                     .ignoresSafeArea(.all, edges: .bottom)
             }
-            .customConfirmDialog(isPresented: $orderVM.showAllPaymentsMethodLists, actions: {
-                allPaymentMethodsList
+            .confirmationDialog("Add payment method", isPresented: $orderVM.showAllPaymentsMethodLists, actions: {
+                ForEach(orderVM.paymentCards){ card in
+                    Button{
+                        orderVM.selectedPaymentCard = card
+                    }label: {
+                        Text(orderVM.cardLabelFor(card: card))
+                    }
+                }
+                Button{
+                    orderVM.navigateToAddCardView = true
+                }label: {
+                    Text("Add new card")
+                }
             })
             .navigationTitle("Order")
             .navigationBarTitleDisplayMode(.inline)
@@ -67,14 +78,19 @@ struct OrderView: View {
             .navigationDestination(isPresented: $orderVM.showRestaurantBookingView) {
                 RestaurantBookingView(bookVM: bookVM, schemeVM: schemeVM)
             }
+            .sheet(isPresented: $orderVM.navigateToAddCardView, content: {
+                NavigationStack{
+                    AddPaymentMethodView()
+                }
+            })
             .toolbarBackground(orderVM.confirmButtonTapped ? .hidden : .visible, for: .navigationBar)
             if orderVM.confirmButtonTapped{
-                GeometryReader{ proxy in
+                if orderVM.showPaymentMethodAlert{
+                    paymentMethodAlert
+                }else{
+                    Color.black.opacity(0.55).edgesIgnoringSafeArea(.all)
                     ConfirmLoadingView(showCheckmark: $orderVM.showCheckmark)
-                        .frame(width: proxy.size.width, height: proxy.size.height)
-                    
                 }
-                .background(Color.black.opacity(0.55).edgesIgnoringSafeArea(.all))
             }
         }
     }
@@ -268,7 +284,7 @@ extension OrderView{
                     .scaledToFit()
                     .frame(width: 30)
                     .foregroundColor(Color.theme.accent.opacity(0.8))
-                Text("Add payment method")
+                Text(orderVM.paymentMethodLabel)
                     .font(.headline)
                     .foregroundColor(Color.theme.accent.opacity(0.8))
                 Spacer()
@@ -281,15 +297,33 @@ extension OrderView{
         }
     }
     
-    private var allPaymentMethodsList: some View{
-        VStack{
-            Button {
+    private var paymentMethodAlert: some View{
+        AlertBuilder(showAlert: $orderVM.confirmButtonTapped) {
+            VStack{
+                Image(systemName: "exclamationmark.triangle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40)
+                    .foregroundColor(.red)
                 
-            } label: {
-                Label("Add payment method", systemImage: "note.text.badge.plus")
+                Text("Please, add payment card")
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                Divider()
+                Button{
+                    orderVM.confirmButtonTapped = false
+                    orderVM.showPaymentMethodAlert = false
+                }label: {
+                    Text("OK")
+                        .font(.headline)
+                        .padding(.vertical, 8)
+                }
             }
+            .frame(width: UIScreen.main.bounds.size.width * 0.5)
         }
     }
+    
     //MARK: - Summary
     private var summaryView: some View{
         VStack{
@@ -372,5 +406,6 @@ extension OrderView{
                 .cornerRadius(10)
         }
         .padding(.horizontal)
+        .opacity(orderVM.showAllPaymentsMethodLists ? 0.0 : 1.0)
     }
 }

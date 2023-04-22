@@ -23,13 +23,52 @@ class OrderViewModel: ObservableObject{
     @Published var showCheckmark = -60.0
     var cancellables = Set<AnyCancellable>()
     let bookDataService = BookDataService.instance
+    
+    @Published var paymentCards: [PaymentCard] = []{
+        didSet{
+            paymentCards.forEach { card in
+                if card.inUse{
+                    self.selectedPaymentCard = card
+                }
+            }
+        }
+    }
+    @Published var showPaymentMethodAlert = false
+    @Published var navigateToAddCardView = false
+    @Published var selectedPaymentCard: PaymentCard? = nil
+    let paymentDataService = PaymentCardDataService.instance
+    
     init(bookVM: BookViewModel){
         self.bookVM = bookVM
         addSubscribers()
+        getPaymentCards()
     }
     
     var bookingTimeInterval: String{
         return "\(bookedDate)\n\(bookVM.selectedTime)"
+    }
+    
+    var paymentMethodLabel: String{
+        if let selectedPaymentCard = selectedPaymentCard{
+            return constrcutLabelFor(card: selectedPaymentCard)
+        }
+        return "Add Payment Method"
+    }
+    
+    func cardLabelFor(card: PaymentCard) -> String {
+        return constrcutLabelFor(card: card)
+    }
+    
+    private func constrcutLabelFor(card: PaymentCard) -> String {
+        let cardNumber = card.cardNumber
+        let chars = Array(cardNumber)
+        var lastFourNumbers = ""
+        var index = 4
+        while(index > 0){
+            lastFourNumbers += String(chars[cardNumber.count - index])
+            index -= 1
+        }
+        return "•••• •••• •••• " + lastFourNumbers
     }
     
     private var bookedDate: String{
@@ -81,10 +120,31 @@ class OrderViewModel: ObservableObject{
                 self?.totalPrice = reservePrice + foodPrice
             }
             .store(in: &cancellables)
+        
+        paymentDataService.$paymentCards
+            .sink { [weak self] fetchedPaymentCards in
+                self?.paymentCards = fetchedPaymentCards
+                print(fetchedPaymentCards)
+                print("Cards recieved")
+            }
+            .store(in: &cancellables)
+        
+        paymentDataService.$paymentCard
+            .sink { [weak self] fetchedCard in
+                if let fetchedCard = fetchedCard{
+                    self?.paymentCards.append(fetchedCard)
+                    self?.selectedPaymentCard = fetchedCard
+                }
+            }
+            .store(in: &cancellables)
     }
     
     func confirm(){
         confirmButtonTapped = true
+        if selectedPaymentCard == nil {
+            showPaymentMethodAlert = true
+            return
+        }
         if let bookedRestaurant = bookVM.createBookedRestautant(){
             let orderedFoods = bookVM.wrappedOrderedFoods
             bookDataService.bookRestaurant(bookedRestaurant: bookedRestaurant, orderedFoods: orderedFoods)
@@ -105,5 +165,9 @@ class OrderViewModel: ObservableObject{
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    private func getPaymentCards(){
+        paymentDataService.getPaymentCards()
     }
 }
