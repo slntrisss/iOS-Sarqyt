@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+import Combine
 
 class AddPaymentViewModel: ObservableObject{
     @Published var cardNumber = ""
     @Published var expirationMonth = ""
     @Published var expirationYear = ""
     @Published var CVV = ""
+    @Published var showProgressView = false
     
+    let dataService = PaymentCardDataService.instance
+    var cancellables = Set<AnyCancellable>()
     
     var addPaymentMethodDisabled: Bool{
         if cardNumber.count == 19 && expirationMonth.count == 2 &&
@@ -70,5 +74,31 @@ class AddPaymentViewModel: ObservableObject{
         default: return state
         }
         return state
+    }
+    
+    func cancelSaving(){
+        cardNumber = ""
+        expirationYear = ""
+        expirationMonth = ""
+        CVV = ""
+    }
+    
+    //MARK: - Networking
+    
+    func savePaymentCard(){
+        showProgressView = true
+        let card = PaymentCard(id: UUID().uuidString,
+                               cardNumber: cardNumber,
+                               expirationMonth: expirationMonth,
+                               expirationYear: expirationYear,
+                               cvv: CVV,
+                               inUse: false)
+        
+        dataService.savePaymentCard(card: card)
+        dataService.$paymentCard
+            .sink { [weak self] _ in
+                self?.showProgressView = false
+            }
+            .store(in: &cancellables)
     }
 }

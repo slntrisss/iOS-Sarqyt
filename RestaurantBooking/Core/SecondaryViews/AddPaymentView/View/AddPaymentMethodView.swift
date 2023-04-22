@@ -13,50 +13,58 @@ struct AddPaymentMethodView: View {
     @FocusState private var inFocus: AddPaymentViewModel.CardFieldsFocus?
     @Environment(\.dismiss) private var dismiss
     var body: some View {
-        ScrollView{
-            Image("logo")
-            Text("Sarqyt")
-                .font(.title2.weight(.semibold))
-            
-            VStack(spacing: 10){
-                cardNumberView
-                HStack{
-                    VStack(alignment: .leading){
-                        Text("Valid untill")
-                            .font(.caption.weight(.semibold))
-                            .foregroundColor(.white)
-                            .padding(.top)
-                        HStack(spacing: 0){
-                            expirationMonthView
-                            Text("/")
-                                .frame(width: 20)
-                            expirationYearView
-                            Spacer()
-                            cvvView
+        ZStack{
+            ScrollView{
+                Image("logo")
+                Text("Sarqyt")
+                    .font(.title2.weight(.semibold))
+                
+                VStack(spacing: 10){
+                    cardNumberView
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Valid untill")
+                                .font(.caption.weight(.semibold))
+                                .foregroundColor(.white)
+                                .padding(.top)
+                            HStack(spacing: 0){
+                                expirationMonthView
+                                Text("/")
+                                    .frame(width: 20)
+                                expirationYearView
+                                Spacer()
+                                cvvView
+                            }
                         }
+                        .multilineTextAlignment(.center)
                     }
-                    .multilineTextAlignment(.center)
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity)
+                .frame(height: 200)
+                .background(RoundedRectangle(cornerRadius: 15).fill(Color.theme.green))
+            }
+            .navigationTitle("Add Payment Method")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .keyboard) {doneButton}
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button{
+                        addPaymentVM.cancelSaving()
+                        dismiss()
+                    }label: {
+                        Text("Cancel").foregroundColor(.blue)
+                    }
                 }
             }
-            .foregroundColor(.white)
             .padding(.horizontal)
-            .frame(maxWidth: .infinity)
-            .frame(height: 200)
-            .background(RoundedRectangle(cornerRadius: 15).fill(Color.theme.green))
-        }
-        .navigationTitle("Add Payment Method")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar{
-            ToolbarItem(placement: .keyboard) {doneButton}
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button{
-                    dismiss()
-                }label: {
-                    Text("Cancel").foregroundColor(.blue)
-                }
+            if addPaymentVM.showProgressView{
+                Color.black.opacity(0.15)
+                    .ignoresSafeArea(.all)
+                ProgressView()
             }
         }
-        .padding(.horizontal)
     }
 }
 
@@ -119,6 +127,8 @@ extension AddPaymentMethodView{
     private var doneButton: some View{
         HStack{
             Button{
+                addPaymentVM.savePaymentCard()
+                dismiss()
             }label: {
                 Text("Done")
                     .font(.headline)

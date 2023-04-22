@@ -25,10 +25,10 @@ class PaymentViewModel: ObservableObject{
     func getFormattedCardNumber(cardNumber: String) -> String{
         let chars = Array(cardNumber)
         var lastFourNumbers = ""
-        var index = 1
-        while(index <= 4){
+        var index = 4
+        while(index > 0){
             lastFourNumbers += String(chars[cardNumber.count - index])
-            index += 1
+            index -= 1
         }
         return "•••• •••• •••• " + lastFourNumbers
     }
@@ -44,6 +44,9 @@ class PaymentViewModel: ObservableObject{
     }
     
     func delete(at offsets: IndexSet){
+        offsets.forEach { index in
+            dataService.deletePaymentCard(card: paymentCards[index])
+        }
         paymentCards.remove(atOffsets: offsets)
     }
     
@@ -52,6 +55,13 @@ class PaymentViewModel: ObservableObject{
         dataService.$paymentCards
             .sink { [weak self] fetchedCards in
                 self?.paymentCards = fetchedCards
+            }
+            .store(in: &cancellables)
+        dataService.$paymentCard
+            .sink { [weak self] fetchedCard in
+                if let fetchedCard = fetchedCard{
+                    self?.paymentCards.append(fetchedCard)
+                }
             }
             .store(in: &cancellables)
     }
