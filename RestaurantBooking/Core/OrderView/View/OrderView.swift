@@ -312,7 +312,6 @@ extension OrderView{
                     .padding(.horizontal)
                 Divider()
                 Button{
-                    orderVM.confirmButtonTapped = false
                     orderVM.showPaymentMethodAlert = false
                 }label: {
                     Text("OK")

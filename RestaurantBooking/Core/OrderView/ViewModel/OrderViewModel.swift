@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import LocalAuthentication
 
 class OrderViewModel: ObservableObject{
     @Published var showAllPaymentsMethodLists = false
@@ -140,11 +141,11 @@ class OrderViewModel: ObservableObject{
     }
     
     func confirm(){
-        confirmButtonTapped = true
         if selectedPaymentCard == nil {
             showPaymentMethodAlert = true
             return
         }
+        checkIdentity()
         if let bookedRestaurant = bookVM.createBookedRestautant(){
             let orderedFoods = bookVM.wrappedOrderedFoods
             bookDataService.bookRestaurant(bookedRestaurant: bookedRestaurant, orderedFoods: orderedFoods)
@@ -169,5 +170,25 @@ class OrderViewModel: ObservableObject{
     
     private func getPaymentCards(){
         paymentDataService.getPaymentCards()
+    }
+    
+    private func checkIdentity(){
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error){
+            let reason = "Allow to use \"FaceID\" information to unlock the data."
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {[weak self] success, error in
+                if success{
+                    DispatchQueue.main.async {
+                        self?.confirmButtonTapped = true
+                    }
+                } else {
+                    print("Error occured while evaluating biometrics")
+                }
+            }
+        } else {
+            print("No support for biometrics...")
+        }
     }
 }
