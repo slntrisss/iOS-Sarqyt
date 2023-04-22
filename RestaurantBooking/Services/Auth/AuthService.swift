@@ -49,6 +49,10 @@ class AuthService{
         return getTokenFromKeychain()
     }
     
+    func getEmail() -> String {
+        return getEmailAddressFromKeychain()
+    }
+    
 }
 //MARK: - Networking
 
@@ -165,6 +169,15 @@ extension AuthService{
         if let data = KeychainManager.read(service: Constants.ACCESS_TOKEN, account: Constants.SARQYT_ACCOUNT){
             let token = String(data: data, encoding: .utf8) ?? ""
             return token
+        }
+        return ""
+    }
+    
+    private func getEmailAddressFromKeychain() -> String{
+        if let data = KeychainManager.read(service: Constants.USER_CEREDENTIALS, account: Constants.SARQYT_ACCOUNT){
+            if let user = try? JSONDecoder().decode(Credentials.self, from: data){
+                return user.email
+            }
         }
         return ""
     }

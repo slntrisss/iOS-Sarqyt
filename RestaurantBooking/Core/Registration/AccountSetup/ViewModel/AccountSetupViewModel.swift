@@ -27,6 +27,7 @@ class AccountSetupViewModel: ObservableObject{
     
     let genders = ["Male", "Female"]
     let dataService = ProfileDataService.instance
+    let authService = AuthService.shared
     var user: Userr? = nil
     var cancellable = Set<AnyCancellable>()
     
@@ -37,7 +38,8 @@ class AccountSetupViewModel: ObservableObject{
     func saveAccountData(){
         if allFieldsValid{
             let base64Image = ImageService.convertImageToBase64String(image: selectedImage)
-            user = Userr(id: UUID().uuidString, profileImage: base64Image, firstName: firstName, lastName: lastName, email: "", birthDate: dateOfBirth, phoneNumber: phoneNumber, gender: selectedGender)
+            let email = authService.getEmail().trimmingCharacters(in: .whitespacesAndNewlines)
+            user = Userr(id: UUID().uuidString, profileImage: base64Image, firstName: firstName, lastName: lastName, email: email, birthDate: dateOfBirth, phoneNumber: phoneNumber, gender: selectedGender)
             dataService.save(user: user!)
         }else{
             showErrorAlert = true
