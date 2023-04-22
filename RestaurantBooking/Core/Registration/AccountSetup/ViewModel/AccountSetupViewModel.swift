@@ -60,7 +60,7 @@ class AccountSetupViewModel: ObservableObject{
             errorModel?.lastnameError = "Last name should not be empty and number of characters should be more than 2 letters."
             isValid = false
         }
-        if trimmedPhoneField.isEmpty || trimmedPhoneField.count <= 11{
+        if trimmedPhoneField.isEmpty || trimmedPhoneField.count <= 16{
             errorModel?.phoneNumberError = "Phone number should be at least 11 characters long."
         }
         return isValid
@@ -77,11 +77,5 @@ class AccountSetupViewModel: ObservableObject{
                 }
             }
             .store(in: &cancellable)
-    }
-    
-    struct AccountValidationErrorModel{
-        var firstnameError: String?
-        var lastnameError: String?
-        var phoneNumberError: String?
     }
 }

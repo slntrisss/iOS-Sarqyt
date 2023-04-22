@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class ProfileViewModel: ObservableObject{
     
@@ -17,10 +18,13 @@ class ProfileViewModel: ObservableObject{
     @Published var showLogoutView: Bool = false
     @Published var logout: Bool = false
     
-    var user: Userr? = nil
+    @Published var user: Userr? = nil
+    
+    let userDataService = ProfileDataService.instance
+    var cancellables = Set<AnyCancellable>()
     
     init(){
-        self.user = getUser()
+        addSubscribers()
     }
     
     private func getUser() -> Userr {
@@ -60,5 +64,18 @@ class ProfileViewModel: ObservableObject{
                 print("Settings opened: \(success)") // Prints true
             })
         }
+    }
+    
+    //MARK: - Networking
+    func getUser(){
+        userDataService.fetchUser()
+    }
+    
+    private func addSubscribers(){
+        userDataService.$user
+            .sink { [weak self] fetchedUser in
+                self?.user = fetchedUser
+            }
+            .store(in: &cancellables)
     }
 }

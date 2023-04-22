@@ -10,7 +10,9 @@ import SwiftUI
 struct EditProfileView: View {
     @FocusState private var inFocus: Field?
     @StateObject private var profileVM: EditProfileViewModel
-    init(user: Userr?){
+    @ObservedObject var parentVM: ProfileViewModel
+    init(user: Userr?, parentVM: ProfileViewModel){
+        self._parentVM = ObservedObject(wrappedValue: parentVM)
         self._profileVM = StateObject(wrappedValue: EditProfileViewModel(user: user))
     }
     var body: some View {
@@ -29,11 +31,14 @@ struct EditProfileView: View {
                 VStack(spacing: 20){
                     firstNameField
                     lastNameField
-                    emailField
+//                    emailField
                     dateOfBirthField
                     phoneNumberField
                     genderDropDownField
                     PrimaryButton(buttonLabel: "Continue", buttonClicked: $profileVM.continueButtonTapped)
+                        .onChange(of: profileVM.continueButtonTapped) { newValue in
+                            profileVM.saveAccountData()
+                        }
                 }
             }
             .confirmationDialog("Pick a profile choosing option", isPresented: $profileVM.showImagePicker, actions: { confirmationDialogView })
@@ -42,7 +47,11 @@ struct EditProfileView: View {
             .navigationTitle("Edit Your Profile")
             .navigationBarTitleDisplayMode(.inline)
             
-            errorAlert
+            if profileVM.showProgressView{
+                Color.black.opacity(0.15)
+                    .ignoresSafeArea(.all)
+                ProgressView()
+            }
         }
     }
 }
@@ -50,7 +59,7 @@ struct EditProfileView: View {
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            EditProfileView(user: dev.user)
+            EditProfileView(user: dev.user, parentVM: ProfileViewModel())
         }
     }
 }
@@ -65,19 +74,33 @@ extension EditProfileView{
     //MARK: - Input Field
     
     private var firstNameField: some View{
-        TextField("First Name", text: $profileVM.firstName)
-            .focused($inFocus, equals: .firstName)
-            .onSubmit { inFocus = .lastName }
-            .submitLabel(.next)
-            .emailPasswordMode()
+        VStack(alignment: .leading){
+            TextField("First Name", text: $profileVM.firstName)
+                .focused($inFocus, equals: .firstName)
+                .onSubmit { inFocus = .lastName }
+                .submitLabel(.next)
+                .emailPasswordMode()
+            if let errorMessage = profileVM.errorModel?.firstnameError{
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
     }
     
     private var lastNameField: some View{
-        TextField("First Name", text: $profileVM.lastName)
-            .focused($inFocus, equals: .lastName)
-            .onSubmit { inFocus = .email }
-            .submitLabel(.next)
-            .emailPasswordMode()
+        VStack(alignment: .leading){
+            TextField("Last Name", text: $profileVM.lastName)
+                .focused($inFocus, equals: .lastName)
+                .onSubmit { inFocus = .dateOfBirth }
+                .submitLabel(.next)
+                .emailPasswordMode()
+            if let errorMessage = profileVM.errorModel?.lastnameError{
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
     }
     
     private var emailField: some View{
@@ -104,23 +127,30 @@ extension EditProfileView{
     
     private var phoneNumberField: some View{
         //TODO: extract the logic from view
-        HStack{
-            TextField("Phone number", text: $profileVM.phoneNumber)
-                .focused($inFocus, equals: .phone)
-                .onSubmit { inFocus = nil }
-                .keyboardType(.numberPad)
-                .onChange(of: profileVM.phoneNumber) { _ in
-                    if profileVM.phoneNumber.count == 0{
-                        profileVM.phoneNumber = "+7"
-                    }else if profileVM.phoneNumber.count > 11{
-                        profileVM.phoneNumber.formatPhoneNumber()
+        VStack(alignment: .leading){
+            HStack{
+                TextField("Phone number", text: $profileVM.phoneNumber)
+                    .focused($inFocus, equals: .phone)
+                    .onSubmit { inFocus = nil }
+                    .keyboardType(.numberPad)
+                    .onChange(of: profileVM.phoneNumber) { _ in
+                        if profileVM.phoneNumber.count == 0{
+                            profileVM.phoneNumber = "+7"
+                        }else if profileVM.phoneNumber.count > 11{
+                            profileVM.phoneNumber.formatPhoneNumber()
+                        }
                     }
-                }
-            
-            Image(systemName: "phone.fill")
-                .foregroundColor(Color.theme.secondaryText)
+                
+                Image(systemName: "phone.fill")
+                    .foregroundColor(Color.theme.secondaryText)
+            }
+            .emailPasswordMode()
+            if let errorMessage = profileVM.errorModel?.firstnameError{
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }
-        .emailPasswordMode()
     }
     
     private var genderDropDownField: some View{
@@ -150,30 +180,6 @@ extension EditProfileView{
                 profileVM.takeAPhoto = true
             }
             Button("Cancel", role: .cancel){}
-        }
-    }
-    
-    //MARK: - Alerts
-    
-    private var errorAlert: some View{
-        AlertBuilder(showAlert: $profileVM.showErrorAlert) {
-            Text("Account setup error")
-                .foregroundColor(.red)
-                .padding()
-            Text("Try to fill all required fields")
-                .foregroundColor(Color.theme.secondaryText)
-                .padding(.bottom)
-            Button("OK"){
-                withAnimation {
-                    profileVM.showErrorAlert = false
-                }
-            }
-                .foregroundColor(.blue)
-        }
-        .onChange(of: profileVM.continueButtonTapped) { newValue in
-            withAnimation {
-                profileVM.showErrorAlert.toggle()
-            }
         }
     }
 }

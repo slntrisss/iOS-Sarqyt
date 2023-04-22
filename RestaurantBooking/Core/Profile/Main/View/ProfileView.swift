@@ -41,7 +41,7 @@ struct ProfileView: View {
                 .padding([.horizontal, .vertical])
             }
             .navigationDestination(isPresented: $profileVM.navigateToEditProfileView, destination: {
-                EditProfileView(user: profileVM.user)
+                EditProfileView(user: profileVM.user, parentVM: profileVM)
             })
             .navigationDestination(isPresented: $profileVM.navigateToPaymentView, destination: {
                 PaymentView()
@@ -53,6 +53,9 @@ struct ProfileView: View {
                 LogoutView(logout: $profileVM.logout, cancel: $profileVM.showLogoutView)
             })
             .safeAreaInset(edge: .bottom) { logoutButton }
+            .onAppear{
+                profileVM.getUser()
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ class ProfileDataService{
     @Published var user: Userr? = nil
     
     var saveProfileSibscription: AnyCancellable?
+    var getUserSubscription: AnyCancellable?
     
     static let instance = ProfileDataService()
     let authService = AuthService.shared
@@ -45,5 +46,25 @@ class ProfileDataService{
         }catch let error{
             print("Error occured: \(error.localizedDescription)")
         }
+    }
+    
+    func fetchUser(){
+        let urlString = Constants.BASE_URL + Constants.PROFILE_BASE_URL
+        let token = authService.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        getUserSubscription = NetworkingManager.download(request: request)
+            .decode(type: Userr.self, decoder: JSONDecoder.decoder)
+            .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedUser in
+                self?.user = fetchedUser
+                self?.getUserSubscription?.cancel()
+            })
     }
 }

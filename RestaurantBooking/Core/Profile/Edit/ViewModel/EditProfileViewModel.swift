@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 class EditProfileViewModel: ObservableObject{
     @Published var firstName = ""
@@ -25,6 +26,12 @@ class EditProfileViewModel: ObservableObject{
     let genders = ["Male", "Female"]
     @Published var user: Userr?
     
+    @Published var showProgressView = false
+    
+    var errorModel: AccountValidationErrorModel? = nil
+    let dataService = ProfileDataService.instance
+    var cancellables = Set<AnyCancellable>()
+    
     init(user: Userr? = nil){
         self.user = user
         if let user = user{
@@ -36,5 +43,47 @@ class EditProfileViewModel: ObservableObject{
             self.selectedGender = user.gender
             self.selectedImage = UIImage(named: user.profileImage)
         }
+    }
+    
+    func saveAccountData(){
+        if allFieldsValid{
+            showProgressView = true
+            let base64Image = ImageService.convertImageToBase64String(image: selectedImage)
+            user = Userr(id: UUID().uuidString, profileImage: base64Image, firstName: firstName, lastName: lastName, email: email, birthDate: dateOfBirth, phoneNumber: phoneNumber, gender: selectedGender)
+            dataService.save(user: user!)
+            addSubscribers()
+        }else{
+            showErrorAlert = true
+        }
+    }
+    
+    private var allFieldsValid: Bool{
+        var isValid = true
+        errorModel = AccountValidationErrorModel()
+        let trimmedFirstName = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedLastName = lastName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedPhoneField = phoneNumber.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedFirstName.isEmpty || trimmedFirstName.count < 2 {
+            errorModel?.firstnameError = "First name should not be empty and number of characters should be more than 2 letters."
+            isValid = false
+        }
+        if trimmedLastName.isEmpty || trimmedLastName.count < 2 {
+            errorModel?.lastnameError = "Last name should not be empty and number of characters should be more than 2 letters."
+            isValid = false
+        }
+        if trimmedPhoneField.isEmpty || trimmedPhoneField.count <= 16{
+            errorModel?.phoneNumberError = "Phone number should be at least 11 characters long."
+        }
+        return isValid
+    }
+    
+    private func addSubscribers(){
+        dataService.$user
+            .sink { [weak self] fetchedUser in
+                print("updated")
+                self?.user = fetchedUser
+                self?.showProgressView = false
+            }
+            .store(in: &cancellables)
     }
 }
