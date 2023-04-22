@@ -42,6 +42,9 @@ struct SignUpView: View {
             ProcessingView(showProcessingView: $signUpVM.showProgressView)
             credentialsNotProvidedError
         }
+        .navigationDestination(isPresented: $signUpVM.navigateToProfileSetupView) {
+            ProfileSetupView()
+        }
     }
 }
 

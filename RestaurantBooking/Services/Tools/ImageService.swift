@@ -19,4 +19,13 @@ class ImageService{
         print("BAD Base64")
         return UIImage(systemName: "photo.fill")!
     }
+    
+    static func convertImageToBase64String(image: UIImage?) -> String{
+        if let image = image{
+            if let imageData = image.jpegData(compressionQuality: 0.1){
+                return imageData.base64EncodedString(options: .lineLength64Characters)
+            }
+        }
+        return ""
+    }
 }

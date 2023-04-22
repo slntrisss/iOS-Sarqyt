@@ -14,4 +14,10 @@ extension JSONDecoder{
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         return decoder
     }
+    
+    static var decoder: JSONDecoder{
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }
 }

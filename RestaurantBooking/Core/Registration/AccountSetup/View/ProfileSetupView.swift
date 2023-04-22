@@ -8,50 +8,39 @@
 import SwiftUI
 
 struct ProfileSetupView: View {
-    @State private var firstName = ""
-    @State private var lastName = ""
-    @State private var dateOfBirth = Date()
-    @State private var email = ""
-    @State private var phoneNumber = "+7"
-    @State private var selectedGender = "Male"
-    let genders = ["Male", "Female"]
-    @State private var dropDownListExpanded = false
-    @State private var continueButtonTapped = false
-    @State private var showImagePicker = false
-    @State private var selectedImage: UIImage? = nil
-    @State private var chooseFromLibrary = false
-    @State private var takeAPhoto = false
+    @StateObject private var vm = AccountSetupViewModel()
     @FocusState private var inFocus: Field?
-    @State private var showErrorAlert = false
-    
     var body: some View {
         ZStack{
             ScrollView(.vertical, showsIndicators: false) {
-                ProfileImageView(image: selectedImage)
+                ProfileImageView(image: vm.selectedImage)
                     .profileImageViewModifier()
                     .onTapGesture {
-                        showImagePicker = true
+                        vm.showImagePicker = true
                     }
-                    .sheet(isPresented: $takeAPhoto, content: {
-                        ImageTaker(takedImage: $selectedImage)
+                    .sheet(isPresented: $vm.takeAPhoto, content: {
+                        ImageTaker(takedImage: $vm.selectedImage)
                     })
                     .padding(.vertical)
                 
                 VStack(spacing: 20){
                     firstNameField
                     lastNameField
-                    emailField
                     dateOfBirthField
                     phoneNumberField
                     genderDropDownField
-                    PrimaryButton(buttonLabel: "Continue", buttonClicked: $continueButtonTapped)
+                    PrimaryButton(buttonLabel: "Continue", buttonClicked: $vm.continueButtonTapped)
+                        .onChange(of: vm.continueButtonTapped) { _ in
+                            vm.saveAccountData()
+                        }
                 }
             }
-            .confirmationDialog("Pick a profile choosing option", isPresented: $showImagePicker, actions: { confirmationDialogView })
-            .sheet(isPresented: $chooseFromLibrary, content: {ImagePicker(selectedImage: $selectedImage)})
+            .confirmationDialog("Pick a profile choosing option", isPresented: $vm.showImagePicker, actions: { confirmationDialogView })
+            .sheet(isPresented: $vm.chooseFromLibrary, content: {ImagePicker(selectedImage: $vm.selectedImage)})
             .padding()
             .navigationTitle("Fill Your Profile")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
             
             errorAlert
         }
@@ -77,36 +66,38 @@ extension ProfileSetupView{
     //MARK: - Input Field
     
     private var firstNameField: some View{
-        TextField("First Name", text: $firstName)
-            .focused($inFocus, equals: .firstName)
-            .onSubmit { inFocus = .lastName }
-            .submitLabel(.next)
-            .emailPasswordMode()
+        VStack(alignment: .leading){
+            TextField("First Name", text: $vm.firstName)
+                .focused($inFocus, equals: .firstName)
+                .onSubmit { inFocus = .lastName }
+                .submitLabel(.next)
+                .emailPasswordMode()
+            if let errorMessage = vm.errorModel?.firstnameError{
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
+        }
     }
     
     private var lastNameField: some View{
-        TextField("First Name", text: $lastName)
-            .focused($inFocus, equals: .lastName)
-            .onSubmit { inFocus = .email }
-            .submitLabel(.next)
-            .emailPasswordMode()
-    }
-    
-    private var emailField: some View{
-        HStack{
-            TextField("Email", text: $email)
-                .focused($inFocus, equals: .email)
-                .onSubmit { inFocus = .dateOfBirth }
+        VStack(alignment: .leading){
+            TextField("First Name", text: $vm.lastName)
+                .focused($inFocus, equals: .lastName)
+                .onSubmit { inFocus = .email }
                 .submitLabel(.next)
-            Image(systemName: "envelope.fill")
-                .foregroundColor(Color.theme.secondaryText)
+                .emailPasswordMode()
+            if let errorMessage = vm.errorModel?.lastnameError{
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }
-        .emailPasswordMode()
     }
     
     private var dateOfBirthField: some View{
         Group{
-            DatePicker("Date of birth", selection: $dateOfBirth, displayedComponents: [.date])
+            DatePicker("Date of birth", selection: $vm.dateOfBirth, displayedComponents: [.date])
                 .foregroundColor(Color.theme.secondaryText.opacity(0.5))
                 .padding()
                 .background(Color.theme.field)
@@ -115,35 +106,42 @@ extension ProfileSetupView{
     }
     
     private var phoneNumberField: some View{
-        //TODO: extract the logic from view
-        HStack{
-            TextField("Phone number", text: $phoneNumber)
-                .focused($inFocus, equals: .phone)
-                .onSubmit { inFocus = nil }
-                .keyboardType(.numberPad)
-                .onChange(of: phoneNumber) { _ in
-                    if phoneNumber.count == 0{
-                        phoneNumber = "+7"
-                    }else if phoneNumber.count > 11{
-                        phoneNumber.formatPhoneNumber()
+        VStack(alignment: .leading){
+            HStack{
+                TextField("Phone number", text: $vm.phoneNumber)
+                    .focused($inFocus, equals: .phone)
+                    .onSubmit { inFocus = nil }
+                    .keyboardType(.numberPad)
+                    .onChange(of: vm.phoneNumber) { _ in
+                        
+                        if vm.phoneNumber.count == 0{
+                            vm.phoneNumber = "+7"
+                        }else if vm.phoneNumber.count > 11{
+                            vm.phoneNumber.formatPhoneNumber()
+                        }
                     }
-                }
-            
-            Image(systemName: "phone.fill")
-                .foregroundColor(Color.theme.secondaryText)
+                
+                Image(systemName: "phone.fill")
+                    .foregroundColor(Color.theme.secondaryText)
+            }
+            .emailPasswordMode()
+            if let errorMessage = vm.errorModel?.phoneNumberError{
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }
-        .emailPasswordMode()
     }
     
     private var genderDropDownField: some View{
-        DisclosureGroup(selectedGender, isExpanded: $dropDownListExpanded) {
-            ForEach(genders, id: \.self) { gender in
+        DisclosureGroup(vm.selectedGender, isExpanded: $vm.dropDownListExpanded) {
+            ForEach(vm.genders, id: \.self) { gender in
                 Text(gender)
                     .foregroundColor(Color.theme.secondaryText)
                     .onTapGesture {
-                        selectedGender = gender
+                        vm.selectedGender = gender
                         withAnimation {
-                            dropDownListExpanded = false
+                            vm.dropDownListExpanded = false
                         }
                     }
             }
@@ -156,10 +154,10 @@ extension ProfileSetupView{
     private var confirmationDialogView: some View{
         Group{
             Button("Choose from Photo Library"){
-                chooseFromLibrary = true
+                vm.chooseFromLibrary = true
             }
             Button("Take a photo") {
-                takeAPhoto = true
+                vm.takeAPhoto = true
             }
             Button("Cancel", role: .cancel){}
         }
@@ -168,24 +166,16 @@ extension ProfileSetupView{
     //MARK: - Alerts
     
     private var errorAlert: some View{
-        AlertBuilder(showAlert: $showErrorAlert) {
+        AlertBuilder(showAlert: $vm.showErrorAlert) {
             Text("Account setup error")
                 .foregroundColor(.red)
                 .padding()
-            Text("Try to fill all required fields")
-                .foregroundColor(Color.theme.secondaryText)
-                .padding(.bottom)
             Button("OK"){
                 withAnimation {
-                    showErrorAlert = false
+                    vm.showErrorAlert = false
                 }
             }
                 .foregroundColor(.blue)
-        }
-        .onChange(of: continueButtonTapped) { newValue in
-            withAnimation {
-                showErrorAlert.toggle()
-            }
         }
     }
 }

@@ -52,6 +52,9 @@ class Constants{
     //MARK: Map
     static let MAP_BASE_URL = "/Map"
     
+    //MARK: Profile
+    static let PROFILE_BASE_URL = "/Profile"
+    
     //MARK: Pagination
     static let DEFAULT_OFFSET = 0
     static let DEFAULT_LIMIT = 5

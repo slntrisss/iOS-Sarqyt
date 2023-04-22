@@ -25,6 +25,8 @@ class SignUpViewModel: ObservableObject{
     @Published var showCredentialsError = false
     var errorMessage = ""
     
+    @Published var navigateToProfileSetupView = false
+    
     func signUp(){
         if password.isEmpty || email.isEmpty{
             errorMessage = "Email or password is missing. Please try to fill all required fields."
@@ -48,6 +50,7 @@ class SignUpViewModel: ObservableObject{
                         self?.showCredentialsError = true
                         self?.errorMessage = message
                     case .ok:
+                        self?.navigateToProfileSetupView = true
                         self?.signUpStatusSubscription?.cancel()
                     case .credentialsError:
                         print("")

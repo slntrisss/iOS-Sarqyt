@@ -45,6 +45,10 @@ class AuthService{
         authenticate(with: credentials)
     }
     
+    func getToken() -> String {
+        return getTokenFromKeychain()
+    }
+    
 }
 //MARK: - Networking
 
@@ -155,5 +159,13 @@ extension AuthService{
         saveUserCredentials(credentials: credentials)
         let data = Data(token.utf8)
         KeychainManager.save(data, service: Constants.ACCESS_TOKEN, account: Constants.SARQYT_ACCOUNT)
+    }
+    
+    private func getTokenFromKeychain() -> String{
+        if let data = KeychainManager.read(service: Constants.ACCESS_TOKEN, account: Constants.SARQYT_ACCOUNT){
+            let token = String(data: data, encoding: .utf8) ?? ""
+            return token
+        }
+        return ""
     }
 }
