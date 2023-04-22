@@ -25,7 +25,7 @@ struct PaymentView: View {
                         }
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            paymentVM.changeDefaultPaymentCard(cardId: card.id)
+                            paymentVM.changeDefaultPaymentCard(card: card)
                         }
                     }
                     .onDelete(perform: paymentVM.delete)
@@ -39,6 +39,9 @@ struct PaymentView: View {
                         }
                     }
                 }
+            }
+            .onAppear{
+                paymentVM.getCards()
             }
         }
         .sheet(isPresented: $paymentVM.addNewPaymentCard, content: {

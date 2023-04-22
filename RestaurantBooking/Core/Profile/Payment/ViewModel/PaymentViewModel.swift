@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import Combine
 
 class PaymentViewModel: ObservableObject{
     @Published var paymentCards: [PaymentCard] = []
     
     @Published var addNewPaymentCard = false
+    
+    let dataService = PaymentCardDataService.instance
+    var cancellables = Set<AnyCancellable>()
+    
     init(){
-        paymentCards = getCards()
+        addSubscribers()
     }
     
-    private func getCards() -> [PaymentCard]{
-        return DeveloperPreview.instance.cards
-    }
+    
     
     func getFormattedCardNumber(cardNumber: String) -> String{
         let chars = Array(cardNumber)
@@ -30,16 +33,30 @@ class PaymentViewModel: ObservableObject{
         return "•••• •••• •••• " + lastFourNumbers
     }
     
-    func changeDefaultPaymentCard(cardId: String){
+    func changeDefaultPaymentCard(card: PaymentCard){
         if let oldDefaultCardIndex = paymentCards.firstIndex(where: {$0.inUse}){
             paymentCards[oldDefaultCardIndex].inUse = false
         }
-        if let newDefaultCardIndex = paymentCards.firstIndex(where: {$0.id == cardId}){
+        if let newDefaultCardIndex = paymentCards.firstIndex(where: {$0.id == card.id}){
             paymentCards[newDefaultCardIndex].inUse = true
+            dataService.changeDefaultPaymentCard(card: paymentCards[newDefaultCardIndex])
         }
     }
     
     func delete(at offsets: IndexSet){
         paymentCards.remove(atOffsets: offsets)
+    }
+    
+    //MARK: - Networking
+    private func addSubscribers(){
+        dataService.$paymentCards
+            .sink { [weak self] fetchedCards in
+                self?.paymentCards = fetchedCards
+            }
+            .store(in: &cancellables)
+    }
+    
+    func getCards(){
+        dataService.getPaymentCards()
     }
 }

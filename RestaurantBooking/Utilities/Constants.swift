@@ -54,6 +54,7 @@ class Constants{
     
     //MARK: Profile
     static let PROFILE_BASE_URL = "/Profile"
+    static let PAYMENT_CARDS = "/Profile/Payment-Cards"
     
     //MARK: Pagination
     static let DEFAULT_OFFSET = 0
