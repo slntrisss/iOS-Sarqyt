@@ -83,6 +83,10 @@ extension AuthService{
                 } receiveValue: {[weak self] fetchedAuthResponse in
                     self?.authResponse = fetchedAuthResponse
                     self?.authStatus = .ok
+                    self?.saveTokenToKeychain()
+                    if !KeychainManager.itemExists(service: Constants.USER_CEREDENTIALS, account: Constants.SARQYT_ACCOUNT){
+                        self?.saveUserCredentials(credentials: credentials)
+                    }
                     self?.signInSubscription?.cancel()
                 }
 

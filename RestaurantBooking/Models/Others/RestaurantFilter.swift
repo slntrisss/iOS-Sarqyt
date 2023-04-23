@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RestaurantFilter{
+struct RestaurantFilter: Codable{
     var city: String
     var category: String
     var fromPrice: Double

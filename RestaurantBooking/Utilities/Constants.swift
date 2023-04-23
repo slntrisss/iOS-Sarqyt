@@ -27,6 +27,8 @@ class Constants{
     static let PROMOTED_RESTAURANTS = "/Home/PromotedRestaurants"
     static let BOOKMARK_RESTAURANT = "/Home/Restaurants/Bookmark"
     
+    static let FILTERED_RESTAURANTS = "/Restaurants/Filtered"
+    
     //MARK: Detail
     static let DETAILS = "/Detail"
     static let COMMENTS = "/Comments"

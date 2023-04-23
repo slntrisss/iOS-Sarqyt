@@ -22,6 +22,7 @@ class RestaurantDataService{
     var promotedRestaurantsSubscription: AnyCancellable?
     
     static let instance = RestaurantDataService()
+    let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
     
     private init(){ }
     
@@ -32,12 +33,16 @@ class RestaurantDataService{
     }
     
     private func getRecommendedPreviewRestaurants(){
-        guard let url = URL(string: Constants.BASE_URL + Constants.RECOMMENDATIONS_PREVIEW) else {
-            print("BAD URL: \(Constants.BASE_URL)\(Constants.RECOMMENDATIONS_PREVIEW)")
+        let urlString = Constants.BASE_URL + Constants.RECOMMENDATIONS_PREVIEW
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
             return
         }
-        
-        NetworkingManager.download(url: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
                 self?.recommendedRestaurantsPreviewList = restaurants
@@ -47,12 +52,18 @@ class RestaurantDataService{
     }
     
     private func getPromotedRestaurants(){
-        guard let url = URL(string: Constants.BASE_URL + Constants.PROMOTIONS_PREVIEW) else {
-            print("BAD URL: \(Constants.BASE_URL)\(Constants.PROMOTIONS_PREVIEW)")
+        let urlString = Constants.BASE_URL + Constants.PROMOTIONS_PREVIEW
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
             return
         }
         
-        NetworkingManager.download(url: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
                 self?.promotedRestaurantsPreviewList = restaurants
@@ -61,12 +72,18 @@ class RestaurantDataService{
     }
     
     private func getRestaurants(){
-        guard let url = URL(string: Constants.BASE_URL + Constants.ALL_RESTAURANTS) else {
-            print("BAD URL: \(Constants.BASE_URL)\(Constants.ALL_RESTAURANTS)")
+        let urlString = Constants.BASE_URL + Constants.ALL_RESTAURANTS
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
             return
         }
         
-        NetworkingManager.download(url: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
                 self?.restaurantList = restaurants
@@ -75,8 +92,9 @@ class RestaurantDataService{
     }
     
     func getRestaurantList(offset: Int, limit: Int){
-        guard let url = URL(string: Constants.BASE_URL + Constants.ALL_RESTAURANTS) else {
-            print("BAD URL: \(Constants.BASE_URL)\(Constants.ALL_RESTAURANTS)")
+        let urlString = Constants.BASE_URL + Constants.ALL_RESTAURANTS
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
             return
         }
         
@@ -89,6 +107,8 @@ class RestaurantDataService{
             let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             restaurantListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
@@ -104,8 +124,9 @@ class RestaurantDataService{
     }
     
     func getRecommendedRestaurants(offset: Int, limit: Int){
-        guard let url = URL(string: Constants.BASE_URL + Constants.RECOMMENDED_RESTAURANTS) else {
-            print("BAD URL: \(Constants.BASE_URL)\(Constants.RECOMMENDED_RESTAURANTS)")
+        let urlString = Constants.BASE_URL + Constants.RECOMMENDED_RESTAURANTS
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
             return
         }
         
@@ -118,6 +139,8 @@ class RestaurantDataService{
             let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             
             recommendedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
@@ -133,8 +156,9 @@ class RestaurantDataService{
     }
     
     func getPromotedRestaurants(offset: Int, limit: Int){
-        guard let url = URL(string: Constants.BASE_URL + Constants.PROMOTED_RESTAURANTS) else {
-            print("BAD URL: \(Constants.BASE_URL)\(Constants.PROMOTED_RESTAURANTS)")
+        let urlString = Constants.BASE_URL + Constants.PROMOTED_RESTAURANTS
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
             return
         }
         
@@ -147,6 +171,8 @@ class RestaurantDataService{
             let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             
             promotedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
@@ -162,14 +188,17 @@ class RestaurantDataService{
     }
     
     func bookmarkRestaurant(id: String, bookmarked: Bool) -> Restaurant?{
-        guard let url = URL(string: Constants.BASE_URL + Constants.BOOKMARK_RESTAURANT + "/\(id)") else {
-            print("BAD URL: \(Constants.BASE_URL)\(Constants.BOOKMARK_RESTAURANT)/\(id)")
+        let urlString = Constants.BASE_URL + Constants.BOOKMARK_RESTAURANT + "/\(id)"
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
             return nil
         }
         var restaurant: Restaurant? = nil
         let json = ["bookmarked": bookmarked]
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         do{
             let jsonData = try JSONSerialization.data(withJSONObject: json)
             request.httpBody = jsonData
