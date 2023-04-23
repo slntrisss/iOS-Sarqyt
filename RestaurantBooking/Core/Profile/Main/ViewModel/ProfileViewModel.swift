@@ -33,7 +33,7 @@ class ProfileViewModel: ObservableObject{
     
     var profileImage: UIImage? {
         if let profileImage = user?.profileImage{
-            return UIImage(named: profileImage)
+            return ImageService.convertBase64ToImage(base64: profileImage)
         }
         return nil
     }

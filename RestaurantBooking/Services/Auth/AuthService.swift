@@ -21,12 +21,6 @@ class AuthService{
     
     func authenticate(with credentials: Credentials){
         signIn(credentials: credentials)
-        if authStatus == .ok {
-            saveTokenToKeychain()
-            if !KeychainManager.itemExists(service: Constants.USER_CEREDENTIALS, account: Constants.SARQYT_ACCOUNT){
-                saveUserCredentials(credentials: credentials)
-            }
-        }
     }
     
     func authenticated() -> Bool {
@@ -167,6 +161,7 @@ extension AuthService{
         saveUserCredentials(credentials: credentials)
         let data = Data(token.utf8)
         KeychainManager.save(data, service: Constants.ACCESS_TOKEN, account: Constants.SARQYT_ACCOUNT)
+        print("sign up user saved to Keychain: \(authenticated())")
     }
     
     private func getTokenFromKeychain() -> String{

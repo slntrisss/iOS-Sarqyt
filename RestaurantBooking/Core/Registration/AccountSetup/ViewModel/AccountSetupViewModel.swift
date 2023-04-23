@@ -25,6 +25,8 @@ class AccountSetupViewModel: ObservableObject{
     @Published var userSaved = false
     var errorModel: AccountValidationErrorModel? = nil
     
+    @Published var navigateToMainView = false
+    
     let genders = ["Male", "Female"]
     let dataService = ProfileDataService.instance
     let authService = AuthService.shared
@@ -70,9 +72,12 @@ class AccountSetupViewModel: ObservableObject{
         dataService.$user
             .sink { [weak self] fetchedUser in
                 if let user = self?.user, let fetchedUser = fetchedUser,
-                   user == fetchedUser{
+                   user.id == fetchedUser.id{
+                    print("User saved to DB")
                     DispatchQueue.main.async {
                         self?.userSaved = true
+                        self?.navigateToMainView = true
+                        NavigationUtil.popToRootView()
                     }
                 }
             }

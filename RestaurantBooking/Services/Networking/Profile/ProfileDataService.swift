@@ -35,11 +35,10 @@ class ProfileDataService{
             encoder.dateEncodingStrategy = .iso8601
             let jsonData = try encoder.encode(user)
             request.httpBody = jsonData
-            print("token: \(token)")
             saveProfileSibscription = NetworkingManager.post(request: request)
                 .decode(type: Userr.self, decoder: JSONDecoder.decoder)
-                .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetcjedUser in
-                    self?.user = fetcjedUser
+                .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedUser in
+                    self?.user = fetchedUser
                     print("POST request success!")
                     self?.saveProfileSibscription?.cancel()
                 })

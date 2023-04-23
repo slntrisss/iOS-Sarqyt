@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject private var signUpVM = SignUpViewModel()
-    
+    @Binding var isAuthenticated: Bool
     var body: some View {
         ZStack{
             ScrollView{
@@ -43,7 +43,7 @@ struct SignUpView: View {
             credentialsNotProvidedError
         }
         .navigationDestination(isPresented: $signUpVM.navigateToProfileSetupView) {
-            ProfileSetupView()
+            ProfileSetupView(isAuthenticated: $isAuthenticated)
         }
     }
 }
@@ -51,7 +51,7 @@ struct SignUpView: View {
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            SignUpView()
+            SignUpView(isAuthenticated: .constant(false))
         }
     }
 }

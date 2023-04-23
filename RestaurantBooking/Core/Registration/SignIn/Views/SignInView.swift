@@ -29,7 +29,7 @@ struct SignInView: View {
                 .padding()
             }
             .navigationTitle("Sign In")
-            .navigationDestination(isPresented: $signUpButtonClicked) {SignUpView()}
+            .navigationDestination(isPresented: $signUpButtonClicked) {SignUpView(isAuthenticated: $isAuthenticated)}
             .navigationDestination(isPresented: $signInWithPasswordButtonClicked) {LoginView(isAuthenticated: $isAuthenticated)}
         }
     }

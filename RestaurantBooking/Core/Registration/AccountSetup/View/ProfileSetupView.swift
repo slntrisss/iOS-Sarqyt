@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileSetupView: View {
     @StateObject private var vm = AccountSetupViewModel()
     @FocusState private var inFocus: Field?
+    @Binding var isAuthenticated: Bool
     var body: some View {
         ZStack{
             ScrollView(.vertical, showsIndicators: false) {
@@ -33,6 +34,10 @@ struct ProfileSetupView: View {
                         .onChange(of: vm.continueButtonTapped) { _ in
                             vm.saveAccountData()
                         }
+                        .onChange(of: vm.navigateToMainView) { _ in
+                            isAuthenticated = vm.navigateToMainView
+                            print("Changed, is authenticated: \(isAuthenticated)")
+                        }
                 }
             }
             .confirmationDialog("Pick a profile choosing option", isPresented: $vm.showImagePicker, actions: { confirmationDialogView })
@@ -50,7 +55,7 @@ struct ProfileSetupView: View {
 struct ProfileSetupView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            ProfileSetupView()
+            ProfileSetupView(isAuthenticated: .constant(false))
                 .preferredColorScheme(.dark)
         }
     }
