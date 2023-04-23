@@ -9,14 +9,9 @@ import SwiftUI
 
 @main
 struct RestaurantBookingApp: App {
-    @StateObject private var navVM = NavigationViewModel()
     var body: some Scene {
         WindowGroup {
-            ZStack{
-                Color.theme.background
-                    .ignoresSafeArea()
-                MainView()
-            }
+            ContentView()
         }
     }
 }

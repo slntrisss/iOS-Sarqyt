@@ -10,6 +10,7 @@ import SwiftUI
 struct SignInView: View {
     @State private var signInWithPasswordButtonClicked = false
     @State private var signUpButtonClicked = false
+    @Binding var isAuthenticated: Bool
     var body: some View {
         NavigationStack{
             VStack{
@@ -29,14 +30,14 @@ struct SignInView: View {
             }
             .navigationTitle("Sign In")
             .navigationDestination(isPresented: $signUpButtonClicked) {SignUpView()}
-            .navigationDestination(isPresented: $signInWithPasswordButtonClicked) {LoginView()}
+            .navigationDestination(isPresented: $signInWithPasswordButtonClicked) {LoginView(isAuthenticated: $isAuthenticated)}
         }
     }
 }
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView()
+        SignInView(isAuthenticated: .constant(false))
             .preferredColorScheme(.dark)
     }
 }

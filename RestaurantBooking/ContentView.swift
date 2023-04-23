@@ -8,9 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isAuthenticated = false
+    let authService = AuthService.shared
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        ZStack{
+            Color.theme.background
+                .ignoresSafeArea()
+            if isAuthenticated{
+                MainView()
+            }else{
+                SignInView(isAuthenticated: $isAuthenticated)
+            }
+        }
     }
 }
 

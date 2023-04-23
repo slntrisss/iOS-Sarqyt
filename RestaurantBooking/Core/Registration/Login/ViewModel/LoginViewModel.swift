@@ -19,6 +19,8 @@ class LoginViewModel: ObservableObject{
     @Published var signInButtonTapped = false
     @Published var showProcessingView = false
     
+    @Published var navigateToMainView = false
+    
     var supportsBiometrics: Bool = true
     var isAuthenticated: Bool = false
     var biometricLabel: String = ""
@@ -91,6 +93,8 @@ class LoginViewModel: ObservableObject{
                         self?.errorMessage = message
                     case .ok:
                         self?.signInSubscription?.cancel()
+                        self?.navigateToMainView = true
+                        NavigationUtil.popToRootView()
                     case .credentialsError:
                         print("credentialsError")
                     }

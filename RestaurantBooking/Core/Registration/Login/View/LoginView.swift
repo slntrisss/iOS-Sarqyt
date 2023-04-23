@@ -9,12 +9,10 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var vm = LoginViewModel()
-    
     @State private var rememberMe = false
-    
     @State private var forgotPasswordButtonClicked = false
-    
     @State private var showPassword = false
+    @Binding var isAuthenticated: Bool
     
     var body: some View {
         ZStack{
@@ -40,6 +38,9 @@ struct LoginView: View {
                 PrimaryButton(buttonLabel: "Sign In", buttonClicked: $vm.signInButtonTapped)
                     .padding(.bottom, 10)
                     .onChange(of: vm.signInButtonTapped) { _ in vm.signIn()}
+                    .onChange(of: vm.navigateToMainView) { _ in
+                        isAuthenticated = vm.navigateToMainView
+                    }
                 dividerLabel
                 bottomViewButtons
             }
@@ -59,7 +60,7 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            LoginView()
+            LoginView(isAuthenticated: .constant(false))
         }
     }
 }
