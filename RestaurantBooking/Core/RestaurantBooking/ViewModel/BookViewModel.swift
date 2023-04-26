@@ -59,6 +59,8 @@ class BookViewModel: ObservableObject{
             print("Cannot init date range for datepicker")
             return Date()...Date().addingTimeInterval(60 * 60)
         }
+        print(minDate)
+        print(maxDate)
         return minDate...maxDate
     }
     

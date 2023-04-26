@@ -710,6 +710,8 @@
 		FF470E7429A1322200314934 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				FF68D24029D83FF00064ECF9 /* ReservedRestaurant.swift */,
+				FF5391BF29BCAC06004AF07D /* Userr.swift */,
 				FF470E6B29A129D400314934 /* Credentials.swift */,
 				FF470E7929A1457B00314934 /* Authentication.swift */,
 				FFB857DD29F2BDC2001C4DC5 /* AuthResponse.swift */,
@@ -927,6 +929,7 @@
 		FF90C25829EC6104005FAF4C /* Restaurant */ = {
 			isa = PBXGroup;
 			children = (
+				FFAFDFA429A8B120002A000B /* RestaurantFilter.swift */,
 				FF2CAB6829A38EA400E062E1 /* Restaurant.swift */,
 				FFDF071129B3972F00AB0173 /* BookingStatus.swift */,
 				FF5391BD29BCAB7F004AF07D /* Comment.swift */,
@@ -1047,6 +1050,7 @@
 				FF6E671629CF014E00B3FE7D /* BookingRestaurant.swift */,
 				FF90C25629EC1A55005FAF4C /* TableInfo.swift */,
 				FF94C75929D5CAC400BF3072 /* BookedRestaurant.swift */,
+				FFEE49DC29BDA96A003E8466 /* Book.swift */,
 			);
 			path = Booking;
 			sourceTree = "<group>";
@@ -1127,10 +1131,6 @@
 			isa = PBXGroup;
 			children = (
 				FF2CAB6029A3820100E062E1 /* Category.swift */,
-				FFAFDFA429A8B120002A000B /* RestaurantFilter.swift */,
-				FF5391BF29BCAC06004AF07D /* Userr.swift */,
-				FFEE49DC29BDA96A003E8466 /* Book.swift */,
-				FF68D24029D83FF00064ECF9 /* ReservedRestaurant.swift */,
 				FF68D26029D8B3F50064ECF9 /* PaymentCard.swift */,
 				FFA72B7529F4096C008C917B /* AccountValidationErrorModel.swift */,
 			);

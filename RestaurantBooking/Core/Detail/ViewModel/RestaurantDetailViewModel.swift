@@ -77,12 +77,12 @@ class RestaurantDetailViewModel: ObservableObject{
     
     var restaurantTitleLeftOffsetAnimation: CGFloat{
         let width = restaurant.name.widthOfString(usingFont: UIFont.preferedFont(from: .title.weight(.semibold)))
-        return width > 100 ? width * CGFloat(-4) : 0
+        return width > 180 ? width * CGFloat(-4) : 0
     }
     
     var restaurantTitleRightOffsetAnimation: CGFloat{
         let width = restaurant.name.widthOfString(usingFont: UIFont.preferedFont(from: .title.weight(.semibold)))
-        return width > 100 ? width * CGFloat(4) : 0
+        return width > 180 ? width * CGFloat(4) : 0
     }
     
     //MARK: - Networking

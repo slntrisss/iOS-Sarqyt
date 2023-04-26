@@ -13,7 +13,7 @@ class FoodDataService: ObservableObject{
     @Published var types: [FoodType] = []
     
     static let instance = FoodDataService()
-    
+    let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
     var foodTypeSubscription: AnyCancellable?
     var foodListSubscription: AnyCancellable?
     
@@ -26,7 +26,12 @@ class FoodDataService: ObservableObject{
             return
         }
         
-        foodTypeSubscription = NetworkingManager.download(url: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        foodTypeSubscription = NetworkingManager.download(request: request)
             .decode(type: [FoodType].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedTypes in
                 self?.types = fetchedTypes
@@ -51,6 +56,8 @@ class FoodDataService: ObservableObject{
             
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             
             foodListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Food].self, decoder: JSONDecoder())

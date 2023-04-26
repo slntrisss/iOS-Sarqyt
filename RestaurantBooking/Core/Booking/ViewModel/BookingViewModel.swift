@@ -76,7 +76,7 @@ extension BookingViewModel{
     
     private func requestMoreItems(for status: BookingStatus, index: Int, restaurants: [Restaurant], pageInfo: PageInfo){
         if restaurants.count - 1 == index {
-            pageInfo.offset += Constants.DEFAULT_OFFSET
+            pageInfo.offset += Constants.DEFAULT_LIMIT
             dataService.fecthRestaurants(for: status, offset: pageInfo.offset, limit: Constants.DEFAULT_LIMIT)
         }
     }

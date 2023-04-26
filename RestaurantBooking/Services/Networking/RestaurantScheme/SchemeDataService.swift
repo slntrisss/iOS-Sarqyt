@@ -11,6 +11,7 @@ import Combine
 class SchemeDataService{
     @Published var scheme: RestaurantScheme? = nil
     
+    let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
     static let instance = SchemeDataService()
     private init() { }
     
@@ -22,7 +23,13 @@ class SchemeDataService{
             print("BAD URL: \(urlString)")
             return
         }
-        schemeSubscription = NetworkingManager.download(url: url)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        schemeSubscription = NetworkingManager.download(request: request)
             .decode(type: RestaurantScheme.self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedScheme in
                 self?.scheme = fetchedScheme

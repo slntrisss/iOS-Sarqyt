@@ -18,6 +18,7 @@ class BookDataService{
     var tableInfoSubscription: AnyCancellable?
     var bookRestaurantSubscription: AnyCancellable?
     
+    let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
     static let instance = BookDataService()
     private init(){ }
     
@@ -28,7 +29,12 @@ class BookDataService{
             return
         }
         
-        bookingRestaurantSubscription = NetworkingManager.download(url: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        bookingRestaurantSubscription = NetworkingManager.download(request: request)
             .decode(type: BookingRestaurant.self, decoder: JSONDecoder.defaultDecoder)
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedBookingRestaurant in
                 self?.bookingRestaurant = fetchedBookingRestaurant
@@ -49,6 +55,8 @@ class BookDataService{
             "groupId" : groupId
         ]
         var request = URLRequest(url: url)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         //TODO: Uncomment for real data from SERVER
 //        request.httpMethod = "POST"
         request.httpMethod = "GET"
@@ -76,6 +84,8 @@ class BookDataService{
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         do{
             let encoder = JSONEncoder()

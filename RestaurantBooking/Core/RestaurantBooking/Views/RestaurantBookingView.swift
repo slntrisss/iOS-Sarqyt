@@ -82,7 +82,7 @@ extension RestaurantBookingView{
     }
     
     private var datePickerView: some View{
-        DatePicker("Select a Date", selection: $bookVM.selectedDate, in: bookVM.allowedDatesToChoose, displayedComponents: .date)
+        DatePicker("Select a Date", selection: $bookVM.selectedDate, in: Date()..., displayedComponents: .date)
             .tint(Color.theme.green)
             .foregroundColor(Color.theme.green)
             .datePickerStyle(GraphicalDatePickerStyle())

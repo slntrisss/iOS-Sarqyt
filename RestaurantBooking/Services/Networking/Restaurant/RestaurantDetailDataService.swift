@@ -14,6 +14,7 @@ class RestaurantDetailDataService{
     @Published var comments: [Comment] = []
     
     static let instance = RestaurantDetailDataService()
+    let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
     private init(){ }
     
     var commentsSubscription: AnyCancellable?
@@ -26,7 +27,12 @@ class RestaurantDetailDataService{
             return
         }
         
-        NetworkingManager.download(url: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        NetworkingManager.download(request: request)
             .decode(type: RestaurantDetails.self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedDetails in
                 self?.details = fetchedDetails
@@ -48,8 +54,12 @@ class RestaurantDetailDataService{
         
         do{
             let urlStringWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
+            
             var request = URLRequest(url: urlStringWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
             NetworkingManager.download(request: request)
                 .decode(type: [Comment].self, decoder: JSONDecoder.defaultDecoder)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedComments in
@@ -78,6 +88,9 @@ class RestaurantDetailDataService{
             let urlStringWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlStringWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
             commentsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Comment].self, decoder: JSONDecoder.defaultDecoder)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedComments in

@@ -24,6 +24,7 @@ class OrderViewModel: ObservableObject{
     @Published var showCheckmark = -60.0
     var cancellables = Set<AnyCancellable>()
     let bookDataService = BookDataService.instance
+    var processOrder = false
     
     @Published var paymentCards: [PaymentCard] = []{
         didSet{
@@ -142,10 +143,16 @@ class OrderViewModel: ObservableObject{
     
     func confirm(){
         if selectedPaymentCard == nil {
-            showPaymentMethodAlert = true
+            withAnimation(.spring()) {
+                showPaymentMethodAlert = true
+                confirmButtonTapped = true
+            }
             return
         }
         checkIdentity()
+    }
+    
+    private func bookRestaurant(){
         if let bookedRestaurant = bookVM.createBookedRestautant(){
             let orderedFoods = bookVM.wrappedOrderedFoods
             bookDataService.bookRestaurant(bookedRestaurant: bookedRestaurant, orderedFoods: orderedFoods)
@@ -154,13 +161,13 @@ class OrderViewModel: ObservableObject{
         bookDataService.$restaurantBooked
             .sink { [weak self] isBooked in
                 if isBooked != nil{
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self?.showCheckmark = 0
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
                         self?.confirmButtonTapped = false
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
                         NavigationUtil.popToRootView()
                     }
                 }
@@ -182,6 +189,7 @@ class OrderViewModel: ObservableObject{
                 if success{
                     DispatchQueue.main.async {
                         self?.confirmButtonTapped = true
+                        self?.bookRestaurant()
                     }
                 } else {
                     print("Error occured while evaluating biometrics")

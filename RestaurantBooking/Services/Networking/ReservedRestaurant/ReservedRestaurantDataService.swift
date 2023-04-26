@@ -20,6 +20,7 @@ class ReservedRestaurantDataService{
     var reservationDetailSubscription: AnyCancellable?
     var cancelBookingSubscription: AnyCancellable?
     
+    let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
     static let instance = ReservedRestaurantDataService()
     private init() { }
     
@@ -41,10 +42,19 @@ class ReservedRestaurantDataService{
             let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             
             restaurantSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedRestaurants in
+                    if fetchedRestaurants.count == 0{
+                        self?.ongoingRestaurants = []
+                        self?.completedRestaurants = []
+                        self?.cancelledRestaurants = []
+                        self?.restaurantSubscription?.cancel()
+                        return
+                    }
                     switch status{
                     case .ongoing:
                         self?.ongoingRestaurants = fetchedRestaurants
@@ -68,8 +78,12 @@ class ReservedRestaurantDataService{
             print("BAD URL: \(urlString)")
             return
         }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        reservationDetailSubscription = NetworkingManager.download(url: url)
+        reservationDetailSubscription = NetworkingManager.download(request: request)
             .decode(type: ReservedRestaurantDetail.self, decoder: JSONDecoder.defaultDecoder)
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedDetails in
                 self?.reservationDetails = fetchedDetails
@@ -86,6 +100,8 @@ class ReservedRestaurantDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
         let body = [
             "id": "\(restaurant.id)",
             "name": "\(restaurant.name)",

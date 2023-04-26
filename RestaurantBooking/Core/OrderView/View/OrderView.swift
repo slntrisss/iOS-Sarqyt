@@ -87,7 +87,7 @@ struct OrderView: View {
             if orderVM.confirmButtonTapped{
                 if orderVM.showPaymentMethodAlert{
                     paymentMethodAlert
-                }else{
+                }else {
                     Color.black.opacity(0.55).edgesIgnoringSafeArea(.all)
                     ConfirmLoadingView(showCheckmark: $orderVM.showCheckmark)
                 }
@@ -313,6 +313,7 @@ extension OrderView{
                 Divider()
                 Button{
                     orderVM.showPaymentMethodAlert = false
+                    orderVM.confirmButtonTapped = false
                 }label: {
                     Text("OK")
                         .font(.headline)

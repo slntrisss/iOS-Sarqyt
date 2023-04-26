@@ -96,7 +96,6 @@ extension FoodCardView{
             .opacity(foodCardVM.showQuantityLabel ? 1.0 : 0.0)
             .onChange(of: foodCardVM.bookVM.orderedFoods) { _ in
                 foodCardVM.hideQuantityLabel()
-                print("-1")
             }
     }
 }

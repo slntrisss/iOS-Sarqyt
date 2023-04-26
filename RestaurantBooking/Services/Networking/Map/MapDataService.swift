@@ -13,6 +13,7 @@ class MapDataService{
     
     var restaurantListSubscription: AnyCancellable?
     
+    let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
     static let instance = MapDataService()
     private init(){ }
     
@@ -32,6 +33,8 @@ class MapDataService{
             let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             
             restaurantListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
