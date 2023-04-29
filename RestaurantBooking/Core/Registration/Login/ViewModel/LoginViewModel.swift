@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import LocalAuthentication
+import SwiftUI
 
 class LoginViewModel: ObservableObject{
     @Published var credentials = Credentials(email: "", password: "")
@@ -18,7 +19,7 @@ class LoginViewModel: ObservableObject{
     
     @Published var signInButtonTapped = false
     @Published var showProcessingView = false
-    
+    @Published var showNumberPadView = false
     @Published var navigateToMainView = false
     
     var supportsBiometrics: Bool = true
@@ -28,6 +29,7 @@ class LoginViewModel: ObservableObject{
     
     let authService = AuthService.shared
     var signInSubscription : AnyCancellable?
+    var cancellables = Set<AnyCancellable>()
     
     init(){
         initBiometrics()
@@ -48,21 +50,8 @@ class LoginViewModel: ObservableObject{
     
     func authenticate(){
         if isAuthenticated{
-            let context = LAContext()
-            var error: NSError?
-            
-            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error){
-                let reason = "Allow to use \"FaceID\" information to unlock the data."
-                context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {[weak self] success, error in
-                    if success{
-                        self?.authService.authenticateUsingBiometrics()
-                        self?.addSubscription()
-                    } else {
-                        print("Error occured while evaluating biometrics")
-                    }
-                }
-            } else {
-                print("No support for biometrics...")
+            withAnimation(.spring()){
+                showNumberPadView = true
             }
         }
     }
@@ -100,6 +89,17 @@ class LoginViewModel: ObservableObject{
                     }
                 }
             }
+    }
+    
+    func authSubscription(passcodeVM: PasscodeViewModel){
+        passcodeVM.$authSuccess
+            .sink {[weak self] success in
+                if success{
+                    self?.navigateToMainView = true
+                    NavigationUtil.popToRootView()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     var showBiometricsView: Bool{

@@ -101,6 +101,8 @@
 		FF9F904229C5F68B00386B19 /* FoodCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9F904129C5F68B00386B19 /* FoodCardView.swift */; };
 		FF9F904429C5F91700386B19 /* FoodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9F904329C5F91700386B19 /* FoodType.swift */; };
 		FF9F904629C601FE00386B19 /* FoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9F904529C601FE00386B19 /* FoodView.swift */; };
+		FFA4869929FDAEC8006B8FBB /* NumberPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA4869829FDAEC8006B8FBB /* NumberPadView.swift */; };
+		FFA4869B29FDBC47006B8FBB /* PasscodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA4869A29FDBC47006B8FBB /* PasscodeViewModel.swift */; };
 		FFA72B6D29F3D7BB008C917B /* AccountSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA72B6C29F3D7BB008C917B /* AccountSetupViewModel.swift */; };
 		FFA72B7129F3E014008C917B /* ProfileDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA72B7029F3E014008C917B /* ProfileDataService.swift */; };
 		FFA72B7429F3F96D008C917B /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA72B7329F3F96D008C917B /* NavigationViewModel.swift */; };
@@ -257,6 +259,8 @@
 		FF9F904129C5F68B00386B19 /* FoodCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCardView.swift; sourceTree = "<group>"; };
 		FF9F904329C5F91700386B19 /* FoodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodType.swift; sourceTree = "<group>"; };
 		FF9F904529C601FE00386B19 /* FoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodView.swift; sourceTree = "<group>"; };
+		FFA4869829FDAEC8006B8FBB /* NumberPadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPadView.swift; sourceTree = "<group>"; };
+		FFA4869A29FDBC47006B8FBB /* PasscodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeViewModel.swift; sourceTree = "<group>"; };
 		FFA72B6C29F3D7BB008C917B /* AccountSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSetupViewModel.swift; sourceTree = "<group>"; };
 		FFA72B7029F3E014008C917B /* ProfileDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataService.swift; sourceTree = "<group>"; };
 		FFA72B7329F3F96D008C917B /* NavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
@@ -731,6 +735,7 @@
 		FF68D23629D81F320064ECF9 /* SecondaryViews */ = {
 			isa = PBXGroup;
 			children = (
+				FFA4869529FDAE97006B8FBB /* NumberPad */,
 				FF68D23829D81F5E0064ECF9 /* AddPaymentView */,
 			);
 			path = SecondaryViews;
@@ -989,6 +994,31 @@
 				FF936D4B29CB210600302F3E /* FoodDetailView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		FFA4869529FDAE97006B8FBB /* NumberPad */ = {
+			isa = PBXGroup;
+			children = (
+				FFA4869729FDAEB9006B8FBB /* ViewModel */,
+				FFA4869629FDAEB4006B8FBB /* View */,
+			);
+			path = NumberPad;
+			sourceTree = "<group>";
+		};
+		FFA4869629FDAEB4006B8FBB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FFA4869829FDAEC8006B8FBB /* NumberPadView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		FFA4869729FDAEB9006B8FBB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FFA4869A29FDBC47006B8FBB /* PasscodeViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		FFA72B6E29F3D7C1008C917B /* ViewModel */ = {
@@ -1435,6 +1465,7 @@
 				FF470E7A29A1457B00314934 /* Authentication.swift in Sources */,
 				FF41F227299CC3E1003B1745 /* ProfileSetupView.swift in Sources */,
 				FFAA49A929EE8CBA00B2561D /* JSONDecoder.swift in Sources */,
+				FFA4869B29FDBC47006B8FBB /* PasscodeViewModel.swift in Sources */,
 				FF95225F29A53781000E0F57 /* Carousel.swift in Sources */,
 				FF90C25529EC188C005FAF4C /* TableInfoView.swift in Sources */,
 				FF7F6C1229EFEC0D00649819 /* SchemeDataService.swift in Sources */,
@@ -1493,6 +1524,7 @@
 				FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */,
 				FFB6C43B29F157EE005F2346 /* ConfirmLoadingView.swift in Sources */,
 				FF2CAB5829A3744500E062E1 /* BookingView.swift in Sources */,
+				FFA4869929FDAEC8006B8FBB /* NumberPadView.swift in Sources */,
 				FF41F220299CBF2C003B1745 /* SignInWithView.swift in Sources */,
 				FFB2597829EDB01A005B679B /* RestaurantListViewModel.swift in Sources */,
 				FF470E7229A12FCA00314934 /* AuthService.swift in Sources */,
