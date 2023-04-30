@@ -95,8 +95,8 @@ class LoginViewModel: ObservableObject{
         passcodeVM.$authSuccess
             .sink {[weak self] success in
                 if success{
-                    self?.navigateToMainView = true
-                    NavigationUtil.popToRootView()
+                    self?.showProcessingView = true
+                    self?.addSubscription()
                 }
             }
             .store(in: &cancellables)

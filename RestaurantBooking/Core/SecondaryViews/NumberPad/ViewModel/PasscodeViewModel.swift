@@ -168,8 +168,8 @@ extension PasscodeViewModel{
                         return
                     }
                 }
-                
-                self.authSuccess = true
+                authSuccess = true
+                authService.authenticateUsingPasscode()
                 
             } else if type == .createdPasscode{
                 type = .passcodeVerification

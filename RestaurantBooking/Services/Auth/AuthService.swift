@@ -55,6 +55,15 @@ class AuthService{
         return getPasscodeFromKeychain()
     }
     
+    func authenticateUsingPasscode(){
+        guard let credentials = getUserCredentialsFromKeychain() else {
+            print("Error getting user credentials")
+            return
+        }
+        
+        authenticate(with: credentials)
+    }
+    
 }
 //MARK: - Networking
 
@@ -85,6 +94,7 @@ extension AuthService{
                 } receiveValue: {[weak self] fetchedAuthResponse in
                     self?.authResponse = fetchedAuthResponse
                     self?.authStatus = .ok
+                    print("Came")
                     self?.saveTokenToKeychain()
                     if !KeychainManager.itemExists(service: Constants.USER_CEREDENTIALS, account: Constants.SARQYT_ACCOUNT){
                         self?.saveUserCredentials(credentials: credentials)
