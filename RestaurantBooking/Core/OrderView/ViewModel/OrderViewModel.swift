@@ -40,6 +40,8 @@ class OrderViewModel: ObservableObject{
     @Published var selectedPaymentCard: PaymentCard? = nil
     let paymentDataService = PaymentCardDataService.instance
     
+    @Published var showPasscode = false
+    
     init(bookVM: BookViewModel){
         self.bookVM = bookVM
         addSubscribers()
@@ -196,7 +198,19 @@ class OrderViewModel: ObservableObject{
                 }
             }
         } else {
+            showPasscode = true
             print("No support for biometrics...")
         }
+    }
+    
+    func addPasscodeSubscription(passcodeVM: PasscodeViewModel){
+        passcodeVM.$authSuccess
+            .sink { [weak self] success in
+                if success{
+                    self?.confirmButtonTapped = true
+                    self?.bookRestaurant()
+                }
+            }
+            .store(in: &cancellables)
     }
 }

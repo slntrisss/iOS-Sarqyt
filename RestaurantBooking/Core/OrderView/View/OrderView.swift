@@ -10,6 +10,7 @@ import SwiftUI
 struct OrderView: View {
     @ObservedObject var bookVM: BookViewModel
     @StateObject private var orderVM: OrderViewModel
+    @StateObject private var passcodeVM = PasscodeViewModel(type: .passcode)
     @ObservedObject var schemeVM: SchemeViewModel
     @Environment(\.dismiss) private var dismiss
     let restaurant: Restaurant?
@@ -92,6 +93,12 @@ struct OrderView: View {
                     ConfirmLoadingView(showCheckmark: $orderVM.showCheckmark)
                 }
             }
+        }
+        .onAppear{
+            orderVM.addPasscodeSubscription(passcodeVM: passcodeVM)
+        }
+        .fullScreenCover(isPresented: $orderVM.showPasscode) {
+            NumberPadView(passcodeVM: passcodeVM)
         }
     }
 }
