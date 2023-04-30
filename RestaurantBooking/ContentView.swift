@@ -14,12 +14,11 @@ struct ContentView: View {
         ZStack{
             Color.theme.background
                 .ignoresSafeArea()
-//            if !authService.authenticated() || isAuthenticated{
-//                MainView()
-//            }else{
-//                SignInView(isAuthenticated: $isAuthenticated)
-//            }
-            SignInView(isAuthenticated: $isAuthenticated)
+            if isAuthenticated{
+                MainView()
+            }else{
+                SignInView(isAuthenticated: $isAuthenticated)
+            }
         }
     }
 }

@@ -8,19 +8,28 @@
 import SwiftUI
 
 struct NumberPadView: View {
-    @ObservedObject var passcodeVM = PasscodeViewModel()
+    @ObservedObject var passcodeVM = PasscodeViewModel(type: .createdPasscode)
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack{
             dismissButton
             topLabel
-            progressCircles
+            if passcodeVM.type == .passcode{
+                progressCircles
+            }else{
+                createPasscodeCirclesView
+            }
             numberPad
         }
         .alert(passcodeVM.bioAlertTile, isPresented: $passcodeVM.showBiometricsAlert, actions: {
             Button("OK"){}
         }, message: {
             Text(passcodeVM.bioAlertMessage)
+        })
+        .alert("Invalid Passcode", isPresented: $passcodeVM.passcodeNotValid, actions: {
+            Button("OK"){}
+        }, message: {
+            Text("Provided passcode is not valid. Try again.")
         })
         .onAppear{
             passcodeVM.checkBioIdentity()
@@ -44,6 +53,7 @@ struct NumberPadView: View {
             }
             Spacer()
         }
+        .opacity(passcodeVM.type == .passcode ? 1.0 : 0.0)
         .padding(.horizontal)
     }
     
@@ -80,6 +90,33 @@ struct NumberPadView: View {
         }
     }
     
+    private var createPasscodeCirclesView: some View{
+        ScrollViewReader{ val in
+            ScrollView(.horizontal, showsIndicators: false){
+                HStack{
+                    ForEach(0..<2, id: \.self){ index in
+                        HStack{
+                            ForEach(0..<4, id: \.self){ val in
+                                Circle()
+                                    .strokeBorder(Color.theme.secondaryText, lineWidth: 2)
+                                    .overlay(Circle().fill(!passcodeVM.displayCircles(index: val) ? .clear : Color.theme.green))
+                                    .frame(width: 10)
+                                    .padding(.leading, val == 0 ? 0 : 20)
+                            }
+                        }
+                        .id(index)
+                        .onChange(of: passcodeVM.type) { _ in
+                            withAnimation(.spring()){
+                                val.scrollTo(passcodeVM.scrollToIndex)
+                            }
+                        }
+                        .frame(width: UIScreen.main.bounds.width)
+                    }
+                }
+            }
+            .scrollDisabled(true)
+        }
+    }
     private var numberPad: some View{
         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 15) {
             ForEach(1...9, id: \.self){ val in
@@ -134,12 +171,12 @@ struct NumberPadView: View {
                 .fontWeight(.thin)
                 .frame(width: 40, height: 40)
         }
-        .opacity(passcodeVM.showBioIcon ? 1.0 : 0.0)
+        .opacity(passcodeVM.showBioIDIcon ? 1.0 : 0.0)
     }
 }
 
 struct NumberPadView_Previews: PreviewProvider {
     static var previews: some View {
-        NumberPadView(passcodeVM: PasscodeViewModel())
+        NumberPadView(passcodeVM: PasscodeViewModel(type: .createdPasscode))
     }
 }

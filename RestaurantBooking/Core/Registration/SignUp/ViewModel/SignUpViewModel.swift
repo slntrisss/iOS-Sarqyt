@@ -26,6 +26,9 @@ class SignUpViewModel: ObservableObject{
     var errorMessage = ""
     
     @Published var navigateToProfileSetupView = false
+    @Published var setPasscode = false
+    
+    var cancellables = Set<AnyCancellable>()
     
     func signUp(){
         if password.isEmpty || email.isEmpty{
@@ -50,12 +53,22 @@ class SignUpViewModel: ObservableObject{
                         self?.showCredentialsError = true
                         self?.errorMessage = message
                     case .ok:
-                        self?.navigateToProfileSetupView = true
+                        self?.setPasscode = true
                         self?.signUpStatusSubscription?.cancel()
                     case .credentialsError:
                         print("")
                     }
                 }
             }
+    }
+    
+    func addPasscodeSubscription(passcodeVM: PasscodeViewModel){
+        passcodeVM.$authSuccess
+            .sink { [weak self] success in
+                if success{
+                    self?.navigateToProfileSetupView = true
+                }
+            }
+            .store(in: &cancellables)
     }
 }

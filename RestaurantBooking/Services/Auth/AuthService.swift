@@ -47,6 +47,14 @@ class AuthService{
         return getEmailAddressFromKeychain()
     }
     
+    func savePasscode(passcode: [Int]){
+        savePasscodeToKeychain(passcode: passcode)
+    }
+    
+    func getPasscode() -> [Int] {
+        return getPasscodeFromKeychain()
+    }
+    
 }
 //MARK: - Networking
 
@@ -179,5 +187,26 @@ extension AuthService{
             }
         }
         return ""
+    }
+    
+    private func savePasscodeToKeychain(passcode: [Int]){
+        do {
+            let encodedPasscode = try JSONEncoder().encode(passcode)
+            KeychainManager.save(encodedPasscode, service: Constants.PASSCODE, account: Constants.SARQYT_ACCOUNT)
+        } catch let error {
+            print("Error encoding and saving passcode to Keychain: \(error.localizedDescription)")
+        }
+    }
+    
+    private func getPasscodeFromKeychain() -> [Int]{
+        if let passcodeData = KeychainManager.read(service: Constants.PASSCODE, account: Constants.SARQYT_ACCOUNT){
+            do {
+                let passcode = try JSONDecoder().decode([Int].self, from: passcodeData)
+                return passcode
+            } catch let error {
+                print("Error decoding passcode: \(error.localizedDescription)")
+            }
+        }
+        return Array(repeating: -1, count: 4)
     }
 }

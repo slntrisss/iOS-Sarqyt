@@ -13,6 +13,7 @@ class Constants{
     static let USER_CEREDENTIALS = "user-credentials"
     static let SARQYT_ACCOUNT = "Sarqyt"
     static let ACCESS_TOKEN = "jwt-token"
+    static let PASSCODE = "passcode"
     static let SIGN_IN = "/signin"
     static let SIGN_UP = "/signup"
     

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject private var signUpVM = SignUpViewModel()
+    @StateObject private var passcodeVM = PasscodeViewModel(type: .createdPasscode)
     @Binding var isAuthenticated: Bool
     var body: some View {
         ZStack{
@@ -42,8 +43,14 @@ struct SignUpView: View {
             ProcessingView(showProcessingView: $signUpVM.showProgressView)
             credentialsNotProvidedError
         }
+        .onAppear{
+            signUpVM.addPasscodeSubscription(passcodeVM: passcodeVM)
+        }
         .navigationDestination(isPresented: $signUpVM.navigateToProfileSetupView) {
             ProfileSetupView(isAuthenticated: $isAuthenticated)
+        }
+        .fullScreenCover(isPresented: $signUpVM.setPasscode) {
+            NumberPadView(passcodeVM: passcodeVM)
         }
     }
 }

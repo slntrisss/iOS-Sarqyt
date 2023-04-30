@@ -7,6 +7,7 @@
 
 import Foundation
 import LocalAuthentication
+import SwiftUI
 
 class PasscodeViewModel: ObservableObject{
     @Published var enteredNumbers: [Int] = Array(repeating: -1, count: 4)
@@ -14,11 +15,25 @@ class PasscodeViewModel: ObservableObject{
     @Published var showLockInfoLabel = false
     @Published var showBiometricsAlert = false
     @Published var authSuccess = false
+    @Published var passcodeNotValid = false
     
-    var index = 0
+    var index = -1
     var bioIdType = ""
     
-    init(){
+    @Published var topLabelText = "Enter a passcode"
+    
+    //Set new passcode
+    @Published var passcode: [Int] = Array(repeating: -1, count: 4)
+    @Published var passcodeVerification: [Int] = Array(repeating: -1, count: 4)
+    lazy var passcodeIndex = -1
+    lazy var verificationPasscodeIndex = -1
+    @Published var offset: CGFloat = 0
+    @Published var type: PasscodeType
+    var scrollToIndex = 0
+    let authService = AuthService.shared
+    
+    init(type: PasscodeType){
+        self.type = type
         switch Biometrics.biometricType(){
         case .touch:
             bioIdType = "Touch ID"
@@ -30,25 +45,43 @@ class PasscodeViewModel: ObservableObject{
     }
     
     func numberTapped(number: Int){
-        if index < 4 {
-            enteredNumbers.insert(number, at: index)
-            index += index == 3 ? 0 : 1
+        switch type{
+        case .passcode:
+            fillPasscode(number: number, passcode: &enteredNumbers, index: &index)
+        case .createdPasscode:
+            fillPasscode(number: number, passcode: &passcode, index: &passcodeIndex)
+        case .passcodeVerification:
+            fillPasscode(number: number, passcode: &passcodeVerification, index: &verificationPasscodeIndex)
         }
     }
     
     func deleteNumber(){
-        if index >= 0 {
-            enteredNumbers[index] = -1
-            index -= index == 0 ? 0 : 1
+        switch type{
+        case .passcode:
+            deletePasscodeNumber(index: &index, passcode: &enteredNumbers)
+        case .createdPasscode:
+            deletePasscodeNumber(index: &passcodeIndex, passcode: &passcode)
+        case .passcodeVerification:
+            deletePasscodeNumber(index: &verificationPasscodeIndex, passcode: &passcodeVerification)
         }
     }
     
     func displayCircles(index: Int) -> Bool{
-        return enteredNumbers[index] != -1
+        switch type{
+        case .passcode:
+            return enteredNumbers[index] != -1
+        case .createdPasscode:
+            return passcode[index] != -1
+        case .passcodeVerification:
+            return passcodeVerification[index] != -1
+        }
+        
     }
     
     func checkBioIdentity(){
-        checkIdentity()
+        if bioIdType.count != 0 && type == .passcode{
+            checkIdentity()
+        }
     }
     
     var bioImageName: String{
@@ -63,8 +96,8 @@ class PasscodeViewModel: ObservableObject{
         }
     }
     
-    var topLabelText: String {
-        return "Enter a passcode"
+    var showBioIDIcon: Bool{
+        return type == .passcode && showBioIcon
     }
     
     //MARK: Bio ID check
@@ -102,6 +135,80 @@ class PasscodeViewModel: ObservableObject{
         } else {
             self.showBiometricsAlert = true
             print("No support for biometrics...")
+        }
+    }
+    
+    enum PasscodeType{
+        case passcode
+        case createdPasscode
+        case passcodeVerification
+    }
+}
+
+//MARK: - Passcode creation
+extension PasscodeViewModel{
+    
+    func fillPasscode(number: Int, passcode: inout [Int], index: inout Int){
+        if index < 3 {
+            index += 1
+            passcode[index] = number
+        }
+        if index == 3{
+            if type == .passcode{
+                let savedPasscode = authService.getPasscode()
+                
+                for i in 0...3{
+                    if savedPasscode[i] != passcode[i]{
+                        print("Not valid passcode")
+                        authSuccess = false
+                        passcodeNotValid = true
+                        
+                        passcode = Array(repeating: -1, count: 4)
+                        index = -1
+                        return
+                    }
+                }
+                
+                self.authSuccess = true
+                
+            } else if type == .createdPasscode{
+                type = .passcodeVerification
+                scrollToIndex = 1
+                topLabelText = "Verify passcode"
+                
+            } else if type == .passcodeVerification{
+                var isValidPasscode = true
+                
+                for i in 0...3{
+                    if passcode[i] != self.passcode[i]{
+                        isValidPasscode = false
+                    }
+                }
+                
+                if !isValidPasscode{
+                    type = .createdPasscode
+                    scrollToIndex = 0
+                    topLabelText = "Passcode did not match. Try again."
+                    
+                    self.passcodeIndex = -1
+                    self.verificationPasscodeIndex = -1
+                    self.passcode = Array(repeating: -1, count: 4)
+                    self.passcodeVerification = Array(repeating: -1, count: 4)
+                    
+                    index = -1
+                    passcode = Array(repeating: -1, count: 4)
+                } else {
+                    authService.savePasscode(passcode: self.passcode)
+                    authSuccess = true
+                }
+            }
+        }
+    }
+    
+    func deletePasscodeNumber(index: inout Int, passcode: inout [Int]){
+        if index >= 0 {
+            passcode[index] = -1
+            index -= 1
         }
     }
 }

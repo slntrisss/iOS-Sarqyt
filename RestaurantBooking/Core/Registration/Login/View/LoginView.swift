@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var vm = LoginViewModel()
-    @StateObject private var passcodeVM = PasscodeViewModel()
+    @StateObject private var passcodeVM = PasscodeViewModel(type: .passcode)
     @State private var rememberMe = false
     @State private var forgotPasswordButtonClicked = false
     @State private var showPassword = false
