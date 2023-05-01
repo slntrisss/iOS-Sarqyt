@@ -23,6 +23,9 @@ class ProfileViewModel: ObservableObject{
     let userDataService = ProfileDataService.instance
     var cancellables = Set<AnyCancellable>()
     
+    //MARK: Loading view
+    @Published var isLoading = true
+    let placeholder = DeveloperPreview.instance.user
     init(){
         addSubscribers()
     }
@@ -74,7 +77,10 @@ class ProfileViewModel: ObservableObject{
     private func addSubscribers(){
         userDataService.$user
             .sink { [weak self] fetchedUser in
-                self?.user = fetchedUser
+                if let user = fetchedUser{
+                    self?.isLoading = false
+                    self?.user = user
+                }
             }
             .store(in: &cancellables)
     }

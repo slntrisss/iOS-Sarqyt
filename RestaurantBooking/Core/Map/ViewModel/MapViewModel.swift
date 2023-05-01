@@ -24,6 +24,9 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     let pageInfo = PageInfo(itemsLoaded: 0)
     var cancellables = Set<AnyCancellable>()
     
+    //MARK: Loading view
+    @Published var isListLoading = true
+    let placeholder = DeveloperPreview.instance.restaurants
     override init(){
         super.init()
         addSubscribers()
@@ -111,7 +114,10 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     private func addSubscribers(){
         dataService.$restaurants
             .sink { [weak self] fetchedRestaurants in
-                self?.restaurants.append(contentsOf: fetchedRestaurants)
+                if let fetchedRestaurants = fetchedRestaurants{
+                    self?.isListLoading = false
+                    self?.restaurants.append(contentsOf: fetchedRestaurants)
+                }
             }
             .store(in: &cancellables)
     }
@@ -126,8 +132,9 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     }
     
     func refreshItems(){
+        isListLoading = true
         restaurants.removeAll()
         pageInfo.offset = 0
-        dataService.fetchRestaurants(offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+        dataService.fetchRestaurants(offset: Constants.DEFAULT_OFFSET + 5, limit: Constants.DEFAULT_LIMIT)
     }
 }

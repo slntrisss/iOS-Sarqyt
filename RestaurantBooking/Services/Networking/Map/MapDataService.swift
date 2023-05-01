@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class MapDataService{
-    @Published var restaurants: [Restaurant] = []
+    @Published var restaurants: [Restaurant]? = nil
     
     var restaurantListSubscription: AnyCancellable?
     
@@ -39,9 +39,11 @@ class MapDataService{
             restaurantListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedRestaurants in
-                    self?.restaurants = fetchedRestaurants
-                    if fetchedRestaurants.count == 0{
-                        self?.restaurantListSubscription?.cancel()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                        self?.restaurants = fetchedRestaurants
+                        if fetchedRestaurants.count == 0{
+                            self?.restaurantListSubscription?.cancel()
+                        }
                     }
                 }
         }catch let error{

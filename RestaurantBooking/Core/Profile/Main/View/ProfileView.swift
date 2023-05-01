@@ -13,11 +13,11 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack{
             ScrollView(.vertical, showsIndicators: false) {
-                ProfileImageView(image: profileVM.profileImage)
+                ProfileImageView(image: profileVM.isLoading ? UIImage(named: profileVM.placeholder.profileImage) : profileVM.profileImage)
                     .padding(.vertical)
-                Text(profileVM.name)
+                Text(profileVM.isLoading ? profileVM.placeholder.firstName + profileVM.placeholder.lastName : profileVM.name)
                     .font(.title2.weight(.semibold))
-                Text(profileVM.email)
+                Text(profileVM.isLoading ? profileVM.placeholder.email : profileVM.email)
                     .font(.subheadline.weight(.medium))
                 Divider()
                 VStack(spacing: 30){
@@ -25,21 +25,26 @@ struct ProfileView: View {
                         .onTapGesture {
                             profileVM.navigateToEditProfileView = true
                         }
+                        .disabled(profileVM.isLoading)
                     createNavLinkField(iconName: "creditcard", text: "Payment", fontColor: Color.theme.accent)
                         .onTapGesture {
                             profileVM.navigateToPaymentView = true
                         }
+                        .disabled(profileVM.isLoading)
                     createNavLinkField(iconName: "bell", text: "Notifications", fontColor: Color.theme.accent)
                         .onTapGesture {
                             profileVM.openSettings()
                         }
+                        .disabled(profileVM.isLoading)
                     createNavLinkField(iconName: "lock.shield", text: "Security", fontColor: Color.theme.accent)
                         .onTapGesture {
                             profileVM.navigateToSecurityView = true
                         }
+                        .disabled(profileVM.isLoading)
                 }
                 .padding([.horizontal, .vertical])
             }
+            .redacted(reason: profileVM.isLoading ? .placeholder : [])
             .navigationDestination(isPresented: $profileVM.navigateToEditProfileView, destination: {
                 EditProfileView(user: profileVM.user, parentVM: profileVM)
             })

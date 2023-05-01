@@ -62,8 +62,10 @@ class ProfileDataService{
         getUserSubscription = NetworkingManager.download(request: request)
             .decode(type: Userr.self, decoder: JSONDecoder.decoder)
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedUser in
-                self?.user = fetchedUser
-                self?.getUserSubscription?.cancel()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                    self?.user = fetchedUser
+                    self?.getUserSubscription?.cancel()
+                }
             })
     }
 }

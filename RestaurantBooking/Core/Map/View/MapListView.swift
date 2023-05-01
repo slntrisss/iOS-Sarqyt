@@ -11,15 +11,19 @@ struct MapListView: View {
     @EnvironmentObject private var mapVM: MapViewModel
     var body: some View {
         List{
-            ForEach(mapVM.restaurants.indices, id: \.self){ index in
+            ForEach(mapVM.isListLoading ? mapVM.placeholder.indices : mapVM.restaurants.indices, id: \.self){ index in
                 Button {
                     mapVM.showNextRestaurant(restaurant: mapVM.restaurants[index])
                 } label: {
-                    listRowView(restaurant: mapVM.restaurants[index])
+                    listRowView(restaurant: mapVM.isListLoading ? mapVM.placeholder[index] : mapVM.restaurants[index])
+                        .redacted(reason: mapVM.isListLoading ? .placeholder : [])
                         .onAppear{
-                            mapVM.fetchRestaurants(index: index)
+                            if !mapVM.isListLoading{
+                                mapVM.fetchRestaurants(index: index)
+                            }
                         }
                 }
+                .disabled(mapVM.isListLoading)
                 .padding(.vertical, 4)
                 .listRowBackground(Color.clear)
             }

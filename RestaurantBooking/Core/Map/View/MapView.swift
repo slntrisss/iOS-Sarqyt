@@ -28,7 +28,7 @@ struct MapView: View {
                         mapVM.checkIfLocationServiceIsEnabled()
                         mapVM.fetchRestaurants()
                     }
-                    .ignoresSafeArea()
+                    .edgesIgnoringSafeArea([.top, .leading, .trailing])
                 VStack(spacing: 0) {
                     
                     header
