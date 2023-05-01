@@ -10,9 +10,9 @@ import Combine
 
 class ReservedRestaurantDataService{
     
-    @Published var ongoingRestaurants: [Restaurant] = []
-    @Published var cancelledRestaurants: [Restaurant] = []
-    @Published var completedRestaurants: [Restaurant] = []
+    @Published var ongoingRestaurants: [Restaurant]? = nil
+    @Published var cancelledRestaurants: [Restaurant]? = nil
+    @Published var completedRestaurants: [Restaurant]? = nil
     @Published var cancellBookingSuccess = false
     
     @Published var reservationDetails: ReservedRestaurantDetail? = nil
@@ -50,19 +50,22 @@ class ReservedRestaurantDataService{
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedRestaurants in
                     if fetchedRestaurants.count == 0{
-                        self?.ongoingRestaurants = []
-                        self?.completedRestaurants = []
-                        self?.cancelledRestaurants = []
                         self?.restaurantSubscription?.cancel()
                         return
                     }
                     switch status{
                     case .ongoing:
-                        self?.ongoingRestaurants = fetchedRestaurants
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                            self?.ongoingRestaurants = fetchedRestaurants
+                        }
                     case .completed:
-                        self?.completedRestaurants = fetchedRestaurants
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                            self?.completedRestaurants = fetchedRestaurants
+                        }
                     default:
-                        self?.cancelledRestaurants = fetchedRestaurants
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                            self?.cancelledRestaurants = fetchedRestaurants
+                        }
                     }
                     self?.restaurantSubscription?.cancel()
                 }

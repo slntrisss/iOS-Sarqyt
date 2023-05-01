@@ -29,30 +29,44 @@ class BookingViewModel: ObservableObject{
     
     let dataService = ReservedRestaurantDataService.instance
     var cancellables = Set<AnyCancellable>()
-    init(){
-        addSubscriptions()
-    }
+    
+    //MARK: Loading view
+    @Published var ongoingRestaurantsPlacholder = DeveloperPreview.instance.ongoingRestaurants
+    @Published var completedRestaurantsPlacholder = DeveloperPreview.instance.completedRestaurants
+    @Published var cancelledRestaurantsPlacholder = DeveloperPreview.instance.cancelledRestaurants
+    @Published var isOngoingRestaurantsLoading = true
+    @Published var isCompletedRestaurantsLoading = true
+    @Published var isCancelledRestaurantsLoading = true
     
     func viewTicketButtonTapped(restaurantId: String){
         
     }
     
-    private func addSubscriptions(){
+    func addSubscriptions(){
         dataService.$ongoingRestaurants
             .sink { [weak self] fetchedRestaurants in
-                self?.ongoingBookings.append(contentsOf: fetchedRestaurants)
+                if let fetchedRestaurants = fetchedRestaurants{
+                    self?.isOngoingRestaurantsLoading = false
+                    self?.ongoingBookings.append(contentsOf: fetchedRestaurants)
+                }
             }
             .store(in: &cancellables)
         
         dataService.$completedRestaurants
             .sink { [weak self] fetchedRestaurants in
-                self?.completedBookings.append(contentsOf: fetchedRestaurants)
+                if let fetchedRestaurants = fetchedRestaurants{
+                    self?.isCompletedRestaurantsLoading = false
+                    self?.completedBookings.append(contentsOf: fetchedRestaurants)
+                }
             }
             .store(in: &cancellables)
         
         dataService.$cancelledRestaurants
             .sink { [weak self] fetchedRestaurants in
-                self?.cancelledBookings.append(contentsOf: fetchedRestaurants)
+                if let fetchedRestaurants = fetchedRestaurants{
+                    self?.isCancelledRestaurantsLoading = false
+                    self?.cancelledBookings.append(contentsOf: fetchedRestaurants)
+                }
             }
             .store(in: &cancellables)
         
@@ -81,6 +95,24 @@ class BookingViewModel: ObservableObject{
 extension BookingViewModel{
     func fetchInitialData(for status: BookingStatus){
         print("Loading: \(status)")
+        switch status{
+        case .ongoing :
+            print("\(ongoingBookings.count)")
+            if (ongoingBookings.isEmpty || ongoingBookings.count == 0){
+                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+            }
+        case .completed:
+            if (completedBookings.isEmpty || completedBookings.count == 0){
+                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+            }
+        case .cancelled:
+            if (cancelledBookings.isEmpty || cancelledBookings.count == 0){
+                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+            }
+        default:
+            print("")
+        }
+
         dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
     }
     
@@ -101,9 +133,15 @@ extension BookingViewModel{
     
     func refreshItems(for status: BookingStatus){
         switch status{
-        case .ongoing: refreshItems(for: status, restaurants: &ongoingBookings, pageInfo: ongoingPageInfo)
-        case .completed: refreshItems(for: status, restaurants: &completedBookings, pageInfo: completedPageInfo)
-        default: refreshItems(for: status, restaurants: &cancelledBookings, pageInfo: cancelledPageInfo)
+        case .ongoing:
+            isOngoingRestaurantsLoading = true
+            refreshItems(for: status, restaurants: &ongoingBookings, pageInfo: ongoingPageInfo)
+        case .completed:
+            isCompletedRestaurantsLoading = true
+            refreshItems(for: status, restaurants: &completedBookings, pageInfo: completedPageInfo)
+        default:
+            isCancelledRestaurantsLoading = true
+            refreshItems(for: status, restaurants: &cancelledBookings, pageInfo: cancelledPageInfo)
         }
     }
     

@@ -18,15 +18,18 @@ struct BookingView: View {
                         .padding(.vertical)
                     
                     TabView(selection: $currentTab){
-                        BookingListView(bookingVM: bookingVM, bookingList: $bookingVM.ongoingBookings, status: .ongoing)
+                        BookingListView(bookingVM: bookingVM, bookingList: bookingVM.isOngoingRestaurantsLoading ? $bookingVM.ongoingRestaurantsPlacholder : $bookingVM.ongoingBookings, status: .ongoing)
                             .environmentObject(bookingVM)
                             .tag(0)
-                        BookingListView(bookingVM: bookingVM, bookingList: $bookingVM.completedBookings, status: .completed)
+                            .redacted(reason: bookingVM.isOngoingRestaurantsLoading ? .placeholder : [])
+                        BookingListView(bookingVM: bookingVM, bookingList: bookingVM.isCompletedRestaurantsLoading ? $bookingVM.completedRestaurantsPlacholder : $bookingVM.completedBookings, status: .completed)
                             .environmentObject(bookingVM)
                             .tag(1)
-                        BookingListView(bookingVM: bookingVM, bookingList: $bookingVM.cancelledBookings, status: .cancelled)
+                            .redacted(reason: bookingVM.isCompletedRestaurantsLoading ? .placeholder : [])
+                        BookingListView(bookingVM: bookingVM, bookingList: bookingVM.isCancelledRestaurantsLoading ? $bookingVM.cancelledRestaurantsPlacholder : $bookingVM.cancelledBookings, status: .cancelled)
                             .environmentObject(bookingVM)
                             .tag(2)
+                            .redacted(reason: bookingVM.isCancelledRestaurantsLoading ? .placeholder : [])
                     }
                     .padding()
                     .tabViewStyle(.page(indexDisplayMode: .never))
@@ -37,6 +40,9 @@ struct BookingView: View {
                 Color.black.opacity(0.55).edgesIgnoringSafeArea(.all)
                 ConfirmLoadingView(showCheckmark: $bookingVM.showCheckmark)
             }
+        }
+        .onAppear{
+            bookingVM.addSubscriptions()
         }
     }
 }

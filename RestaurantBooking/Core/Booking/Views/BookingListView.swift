@@ -30,9 +30,7 @@ struct BookingListView: View {
             }
         }
         .onAppear{
-            if bookingList.isEmpty || bookingList.count == 0{
-                bookingVM.fetchInitialData(for: status)
-            }
+            bookingVM.fetchInitialData(for: status)
         }
         .refreshable {
             bookingVM.refreshItems(for: status)

@@ -45,7 +45,7 @@ struct BookingCardView: View {
                 Spacer()
             }
             
-            if restaurant.bookingStatus == .ongoing{
+            if restaurant.bookingStatus == .ongoing && !bookingVM.isOngoingRestaurantsLoading{
                 Divider()
                     .padding(.vertical, 5)
                 ongoingActionButtons
