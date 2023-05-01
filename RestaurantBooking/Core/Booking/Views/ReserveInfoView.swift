@@ -18,36 +18,42 @@ struct ReserveInfoView: View {
         bookingVM.getReservedRestaurantDetail(for: restaurantId)
     }
     var body: some View {
-        ScrollView(.vertical){
-            LazyVStack(alignment: .leading){
-                Image(uiImage: bookingVM.bookingDetail?.wrappedRestaurantImage ?? UIImage(systemName: "photo.fill")!)
-                    .resizable()
-                    .scaledToFit()
-                
-                LazyVStack{
-                    VStack(alignment: .leading){
-                        spacer
-                        Group{
-                            restaurantInfoView
-                            spacer
-                            tableInfoView
-                            spacer
-                            if !(bookingVM.bookingDetail?.specialWishes.isEmpty ?? true){ specialWishesView }
-                            spacer
-                            orderedFoods
-                        }.padding(.horizontal)
+        ZStack{
+            if bookingVM.reservationDetailsLoading{
+                ProgressView()
+            }else{
+                ScrollView(.vertical){
+                    LazyVStack(alignment: .leading){
+                        Image(uiImage: bookingVM.bookingDetail?.wrappedRestaurantImage ?? UIImage(systemName: "photo.fill")!)
+                            .resizable()
+                            .scaledToFit()
+                        
+                        LazyVStack{
+                            VStack(alignment: .leading){
+                                spacer
+                                Group{
+                                    restaurantInfoView
+                                    spacer
+                                    tableInfoView
+                                    spacer
+                                    if !(bookingVM.bookingDetail?.specialWishes.isEmpty ?? true){ specialWishesView }
+                                    spacer
+                                    orderedFoods
+                                }.padding(.horizontal)
+                            }
+                            .background(Color.theme.background)
+                            summaryView
+                                .ignoresSafeArea(.all, edges: .bottom)
+                        }
                     }
-                    .background(Color.theme.background)
-                    summaryView
-                        .ignoresSafeArea(.all, edges: .bottom)
+                }
+                .navigationTitle("Reserve Info")
+                .navigationBarTitleDisplayMode(.inline)
+                .ignoresSafeArea(.all, edges: .bottom)
+                .toolbar{
+                    ToolbarItem(placement: .navigationBarTrailing) { dismissButton }
                 }
             }
-        }
-        .navigationTitle("Reserve Info")
-        .navigationBarTitleDisplayMode(.inline)
-        .ignoresSafeArea(.all, edges: .bottom)
-        .toolbar{
-            ToolbarItem(placement: .navigationBarTrailing) { dismissButton }
         }
     }
 }

@@ -37,7 +37,7 @@ class BookingViewModel: ObservableObject{
     @Published var isOngoingRestaurantsLoading = true
     @Published var isCompletedRestaurantsLoading = true
     @Published var isCancelledRestaurantsLoading = true
-    
+    @Published var reservationDetailsLoading = true
     func viewTicketButtonTapped(restaurantId: String){
         
     }
@@ -72,7 +72,10 @@ class BookingViewModel: ObservableObject{
         
         dataService.$reservationDetails
             .sink { [weak self] fetchedDetail in
-                self?.bookingDetail = fetchedDetail
+                if let fetchedDetail = fetchedDetail{
+                    self?.reservationDetailsLoading = false
+                    self?.bookingDetail = fetchedDetail
+                }
             }
             .store(in: &cancellables)
         

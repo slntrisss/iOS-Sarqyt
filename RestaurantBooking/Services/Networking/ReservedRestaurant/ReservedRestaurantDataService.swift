@@ -90,7 +90,9 @@ class ReservedRestaurantDataService{
         reservationDetailSubscription = NetworkingManager.download(request: request)
             .decode(type: ReservedRestaurantDetail.self, decoder: JSONDecoder.defaultDecoder)
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedDetails in
-                self?.reservationDetails = fetchedDetails
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                    self?.reservationDetails = fetchedDetails
+                }
             }
     }
     
