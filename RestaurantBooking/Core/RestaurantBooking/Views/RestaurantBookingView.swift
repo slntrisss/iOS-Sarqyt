@@ -17,43 +17,47 @@ struct RestaurantBookingView: View {
     }
     var body: some View {
         ZStack{
-            ScrollView(.vertical){
-                LazyVStack {
-                    Group{
-                        dateAndTimeLabel
-                        datePickerView
+            if !bookVM.isLoading{
+                ScrollView(.vertical){
+                    LazyVStack {
+                        Group{
+                            dateAndTimeLabel
+                            datePickerView
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
+                        reserveTableView
+                        specialWishLabel
+                        specialWishesView
+                        footerView
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 5)
-                    reserveTableView
-                    specialWishLabel
-                    specialWishesView
-                    footerView
                 }
-            }
-            .navigationTitle("Book")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(isPresented: $bookVM.navigateToOrderView, destination: {
-                OrderView(bookVM: bookVM, schemeVM: schemeVM)
-            })
-            .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
-                FoodView(bookVM: bookVM, schemeVM: schemeVM)
-            })
-            .alert("", isPresented: $bookVM.showOrderFoodAlertView) {
-                Button("OK"){
-                    bookVM.navigateToFoodView = true
+                .navigationTitle("Book")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationDestination(isPresented: $bookVM.navigateToOrderView, destination: {
+                    OrderView(bookVM: bookVM, schemeVM: schemeVM)
+                })
+                .navigationDestination(isPresented: $bookVM.navigateToFoodView, destination: {
+                    FoodView(bookVM: bookVM, schemeVM: schemeVM)
+                })
+                .alert("", isPresented: $bookVM.showOrderFoodAlertView) {
+                    Button("OK"){
+                        bookVM.navigateToFoodView = true
+                    }
+                    Button("Cancel"){
+                        bookVM.showOrderFoodAlertView = false
+                        bookVM.navigateToOrderView = true
+                    }
+                } message: {
+                    Text("You have not ordered a food. Would you like to order a food?")
                 }
-                Button("Cancel"){
-                    bookVM.showOrderFoodAlertView = false
-                    bookVM.navigateToOrderView = true
+                .alert("", isPresented: $bookVM.showRequiredFieldsMissedAlertView) {
+                    Button("Dismiss"){}
+                } message: {
+                    Text("Please, choose an appropriate time for booking.")
                 }
-            } message: {
-                Text("You have not ordered a food. Would you like to order a food?")
-            }
-            .alert("", isPresented: $bookVM.showRequiredFieldsMissedAlertView) {
-                Button("Dismiss"){}
-            } message: {
-                Text("Please, choose an appropriate time for booking.")
+            } else{
+                ProgressView()
             }
         }
         .onAppear{

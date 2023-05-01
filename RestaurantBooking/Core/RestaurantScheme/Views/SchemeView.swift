@@ -47,12 +47,16 @@ struct SchemeView: View {
             }
             .padding(.horizontal)
             ZStack{
-                ZStack{ scheme }
-                .offset(currentOffset)
-                .scaleEffect(1 + currentAmount + lastAmount)
-                .contentShape(Rectangle())
-                .gesture(dragGesture)
-                .gesture(magnificationGesture)
+                if schemeVM.schemeIsLoading{
+                    ProgressView()
+                }else{
+                    ZStack{ scheme }
+                        .offset(currentOffset)
+                        .scaleEffect(1 + currentAmount + lastAmount)
+                        .contentShape(Rectangle())
+                        .gesture(dragGesture)
+                        .gesture(magnificationGesture)
+                }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 380)

@@ -32,8 +32,10 @@ class SchemeDataService{
         schemeSubscription = NetworkingManager.download(request: request)
             .decode(type: RestaurantScheme.self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedScheme in
-                self?.scheme = fetchedScheme
-                self?.schemeSubscription?.cancel()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+                    self?.scheme = fetchedScheme
+                    self?.schemeSubscription?.cancel()
+                }
             }
     }
 }

@@ -41,6 +41,9 @@ class BookViewModel: ObservableObject{
     @Published var foodPrice = 0.0
     @Published var reservePrice = 0.0
     
+    //Loading view
+    @Published var isLoading = true
+    
     init(restaurant: Restaurant){
         self.restaurant = restaurant
     }
@@ -127,8 +130,10 @@ class BookViewModel: ObservableObject{
             .store(in: &cancellables)
         bookingService.$bookingRestaurant
             .sink { [weak self] fetchedResult in
-                self?.bookingRestaurant = fetchedResult
-                
+                if let fetchedResult = fetchedResult{
+                    self?.isLoading = false
+                    self?.bookingRestaurant = fetchedResult
+                }
             }
             .store(in: &cancellables)
         $orderedFoods

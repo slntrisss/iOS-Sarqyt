@@ -45,9 +45,9 @@ class RestaurantDataService{
         NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 3){
                     self?.recommendedRestaurantsPreviewList = restaurants
-                }
+//                }
             })
             .store(in: &cancellables)
 

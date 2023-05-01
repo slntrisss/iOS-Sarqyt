@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class FoodDataService: ObservableObject{
-    @Published var foods: [Food] = []
+    @Published var foods: [Food]? = nil
     @Published var types: [FoodType] = []
     
     static let instance = FoodDataService()
@@ -62,9 +62,11 @@ class FoodDataService: ObservableObject{
             foodListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Food].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedFoods in
-                    self?.foods = fetchedFoods
-                    if fetchedFoods.count == 0{
-                        self?.foodListSubscription?.cancel()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+                        self?.foods = fetchedFoods
+                        if fetchedFoods.count == 0{
+                            self?.foodListSubscription?.cancel()
+                        }
                     }
                 })
         }catch let error{

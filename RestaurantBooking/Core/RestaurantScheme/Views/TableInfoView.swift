@@ -41,6 +41,8 @@ struct TableInfoView: View {
             .safeAreaInset(edge: .bottom) {
                 addButton
             }
+        } else{
+            ProgressView()
         }
     }
 }

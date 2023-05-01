@@ -31,13 +31,17 @@ class RestaurantDetailViewModel: ObservableObject{
     let detailsDataService = RestaurantDetailDataService.instance
     
     var cancellables = Set<AnyCancellable>()
+    
+    //MARK: Loading view
+    @Published var isDetailsLoading = true
+    @Published var isCommentListLoading = true
+    
     init(restaurant: Restaurant){
         
         self._restaurant = Published(initialValue: restaurant)
         let coordinates = restaurant.address.coordinates
         mapRegion = MKCoordinateRegion(center: coordinates, span: mapSpan)
-        
-        getRestaurantDetails(for: restaurant.id)
+
     }
     
     var topSafeAreaInset: CGFloat? {
@@ -86,20 +90,26 @@ class RestaurantDetailViewModel: ObservableObject{
     }
     
     //MARK: - Networking
-    private func getRestaurantDetails(for id: String){
+    func getRestaurantDetails(for id: String){
         print("Getting detail data...")
         detailsDataService.fetchDetail(for: id)
         detailsDataService.fetchPreviewComments(for: id, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
         
         detailsDataService.$details
             .sink { [weak self] fetchedDetails in
-                self?.details = fetchedDetails
+                if let fetchedDetails = fetchedDetails{
+                    self?.isDetailsLoading = false
+                    self?.details = fetchedDetails
+                }
             }
             .store(in: &cancellables)
         
         detailsDataService.$previewComments
             .sink { [weak self] fetchedPreviewComments in
-                self?.comments = fetchedPreviewComments
+                if let fetchedPreviewComments = fetchedPreviewComments{
+                    self?.isCommentListLoading = false
+                    self?.comments = fetchedPreviewComments
+                }
             }
             .store(in: &cancellables)
     }

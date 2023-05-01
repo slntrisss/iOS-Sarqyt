@@ -24,7 +24,11 @@ struct CommentView: View {
                 progressViews
             }
             .padding(.bottom)
-            comments
+            if commentVM.isLoading{
+                ProgressView()
+            }else{
+                comments
+            }
         }
         .refreshable {
             commentVM.refreshComments()

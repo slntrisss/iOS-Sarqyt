@@ -82,12 +82,15 @@ extension FoodView{
     private var contentView: some View{
         Section(header: tabBarView) {
             LazyVGrid(columns: columns) {
-                ForEach(foodVM.foods.indices, id: \.self) { index in
-                    FoodCardView(food: foodVM.foods[index], bookVM: bookVM)
+                ForEach(foodVM.foodIsLoading ? foodVM.foodPlaceholder.indices : foodVM.foods.indices, id: \.self) { index in
+                    FoodCardView(food: foodVM.foodIsLoading ? foodVM.foodPlaceholder[index] : foodVM.foods[index], bookVM: bookVM)
                         .padding(10)
                         .onAppear{
-                            foodVM.requestMoreFoods(index: index)
+                            if !foodVM.foodIsLoading{
+                                foodVM.requestMoreFoods(index: index)
+                            }
                         }
+                        .redacted(reason: foodVM.foodIsLoading ? .placeholder : [])
                 }
             }
             .padding()

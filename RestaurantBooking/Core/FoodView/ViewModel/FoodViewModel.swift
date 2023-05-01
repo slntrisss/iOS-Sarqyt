@@ -26,6 +26,11 @@ class FoodViewModel: ObservableObject{
     
     var cancellables = Set<AnyCancellable>()
     
+    //MARK: Loading View
+    @Published var isLoading = true
+    @Published var foodIsLoading = true
+    @Published var foodPlaceholder = DeveloperPreview.instance.foods
+    
     init(bookVM: BookViewModel){
         self.bookVM = bookVM
         print("Started downloading...")
@@ -123,7 +128,10 @@ class FoodViewModel: ObservableObject{
         
         foodDataService.$foods
             .sink { [weak self] fetchedFoods in
-                self?.foods.append(contentsOf: fetchedFoods)
+                if let fetchedFoods = fetchedFoods{
+                    self?.foodIsLoading = false
+                    self?.foods.append(contentsOf: fetchedFoods)
+                }
             }
             .store(in: &cancellables)
     }
@@ -142,6 +150,7 @@ class FoodViewModel: ObservableObject{
     
     func refreshFoods(){
         if let restaurant = bookVM.restaurant{
+            foodIsLoading = true
             foods.removeAll()
             pageInfo.offset = 0
             foodDataService.fetchFoods(for: restaurant.id,

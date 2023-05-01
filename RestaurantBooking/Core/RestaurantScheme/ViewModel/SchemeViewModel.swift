@@ -31,6 +31,9 @@ class SchemeViewModel: ObservableObject{
     
     var cancellables = Set<AnyCancellable>()
     
+    //MARK: Loading view
+    @Published var schemeIsLoading = true
+    
     init(restaurantId: String){
         self.restaurantId = restaurantId
     }
@@ -138,9 +141,12 @@ class SchemeViewModel: ObservableObject{
         schemeDataService.fetchRestaurantScheme(for: restaurantId)
         schemeDataService.$scheme
             .sink { [weak self] fetchedScheme in
-                self?.scheme = fetchedScheme
-                if ((self?.mapItemGroupSelectOptions.count ?? 0 == 0)){
-                    self?.mapItemGroupSelectOptions = Array(repeating: false, count: fetchedScheme?.floors[self?.selectedFloor ?? 0].groups.count ?? 0)
+                if let fetchedScheme = fetchedScheme{
+                    self?.schemeIsLoading = false
+                    self?.scheme = fetchedScheme
+                    if ((self?.mapItemGroupSelectOptions.count ?? 0 == 0)){
+                        self?.mapItemGroupSelectOptions = Array(repeating: false, count: fetchedScheme.floors[self?.selectedFloor ?? 0].groups.count )
+                    }
                 }
             }
             .store(in: &cancellables)

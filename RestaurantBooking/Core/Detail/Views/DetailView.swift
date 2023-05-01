@@ -44,6 +44,7 @@ struct DetailView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear{
             detailVM.animateRestaurantTitleScroll.toggle()
+            detailVM.getRestaurantDetails(for: restaurant.id)
         }
         .sheet(isPresented: $detailVM.showRateView, content: {
             RateRestaurantView(restaurant: restaurant, selectedStars: $detailVM.selectedStars, comment: $detailVM.comment, rate: $detailVM.rate, cancelRating: $detailVM.showRateView)
@@ -138,12 +139,17 @@ extension DetailView{
                 self.generateContent(in: proxy)
             }
             .frame(height: totalHeightForCategoriesList)
-            descriptionView
-            DetailMapView()
-                .environmentObject(detailVM)
-            contactsView
-                .padding(.vertical)
-            reviewsView
+            if detailVM.isDetailsLoading || detailVM.isCommentListLoading{
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }else{
+                descriptionView
+                DetailMapView()
+                    .environmentObject(detailVM)
+                contactsView
+                    .padding(.vertical)
+                reviewsView
+            }
         }
         .padding(.horizontal)
     }
@@ -313,6 +319,7 @@ extension DetailView{
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 20).fill(.thinMaterial))
+        .opacity(detailVM.isDetailsLoading ? 0.0 : 1.0)
     }
     
     private func generateContent(in g: GeometryProxy) -> some View {

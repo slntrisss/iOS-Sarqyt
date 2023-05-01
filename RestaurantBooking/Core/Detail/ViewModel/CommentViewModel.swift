@@ -15,6 +15,10 @@ class CommentViewModel: ObservableObject{
     let pageInfo = PageInfo(itemsLoaded: 0)
     let detailDataService = RestaurantDetailDataService.instance
     var cancellables = Set<AnyCancellable>()
+    
+    //MARK: Loading view
+    @Published var isLoading = true
+    
     init(restaurant: Restaurant, commentRatingStatus: [Double]){
         self.restaurant = restaurant
         self.commentRatingStatus = commentRatingStatus
@@ -60,7 +64,10 @@ class CommentViewModel: ObservableObject{
         detailDataService.fetchComments(for: restaurant.id, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
         detailDataService.$comments
             .sink { [weak self] fetchedComments in
-                self?.comments.append(contentsOf: fetchedComments)
+                if let fetchedComments = fetchedComments{
+                    self?.isLoading = false
+                    self?.comments.append(contentsOf: fetchedComments)
+                }
             }
             .store(in: &cancellables)
     }

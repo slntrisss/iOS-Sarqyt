@@ -10,8 +10,8 @@ import Combine
 
 class RestaurantDetailDataService{
     @Published var details: RestaurantDetails? = nil
-    @Published var previewComments: [Comment] = []
-    @Published var comments: [Comment] = []
+    @Published var previewComments: [Comment]? = nil
+    @Published var comments: [Comment]? = nil
     
     static let instance = RestaurantDetailDataService()
     let token = AuthService.shared.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
@@ -35,7 +35,9 @@ class RestaurantDetailDataService{
         NetworkingManager.download(request: request)
             .decode(type: RestaurantDetails.self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedDetails in
-                self?.details = fetchedDetails
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                    self?.details = fetchedDetails
+                }
             }
             .store(in: &cancellables)
     }
@@ -63,7 +65,9 @@ class RestaurantDetailDataService{
             NetworkingManager.download(request: request)
                 .decode(type: [Comment].self, decoder: JSONDecoder.defaultDecoder)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedComments in
-                    self?.previewComments = fetchedComments
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                        self?.previewComments = fetchedComments
+                    }
                 }
                 .store(in: &cancellables)
             
@@ -94,9 +98,11 @@ class RestaurantDetailDataService{
             commentsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Comment].self, decoder: JSONDecoder.defaultDecoder)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedComments in
-                    self?.comments = fetchedComments
-                    if fetchedComments.count == 0{
-                        self?.commentsSubscription?.cancel()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                        self?.comments = fetchedComments
+                        if fetchedComments.count == 0{
+                            self?.commentsSubscription?.cancel()
+                        }
                     }
                 }
             
