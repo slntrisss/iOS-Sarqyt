@@ -13,8 +13,8 @@ class RestaurantDataService{
     @Published var recommendedRestaurantsPreviewList: [Restaurant]? = nil
     @Published var promotedRestaurantsPreviewList: [Restaurant]? = nil
     @Published var restaurantList: [Restaurant]? = nil
-    @Published var recommendedRestaurants: [Restaurant] = []
-    @Published var promotedRestaurants: [Restaurant] = []
+    @Published var recommendedRestaurants: [Restaurant]? = nil
+    @Published var promotedRestaurants: [Restaurant]? = nil
     var cancellables = Set<AnyCancellable>()
     
     var restaurantListSubscription: AnyCancellable?
@@ -153,9 +153,11 @@ class RestaurantDataService{
             recommendedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] restaurants in
-                    self?.recommendedRestaurants = restaurants
-                    if restaurants.count == 0{
-                        self?.recommendedRestaurantsSubscription?.cancel()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                        self?.recommendedRestaurants = restaurants
+                        if restaurants.count == 0{
+                            self?.recommendedRestaurantsSubscription?.cancel()
+                        }
                     }
                 }
         }catch let error{
@@ -185,9 +187,11 @@ class RestaurantDataService{
             promotedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] restaurants in
-                    self?.promotedRestaurants = restaurants
-                    if restaurants.count == 0{
-                        self?.promotedRestaurantsSubscription?.cancel()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                        self?.promotedRestaurants = restaurants
+                        if restaurants.count == 0{
+                            self?.promotedRestaurantsSubscription?.cancel()
+                        }
                     }
                 }
         }catch let error{

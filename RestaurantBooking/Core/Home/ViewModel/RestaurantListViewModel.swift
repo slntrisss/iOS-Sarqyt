@@ -14,12 +14,18 @@ class RestaurantListViewModel: ObservableObject{
     let pageInfo = PageInfo(itemsLoaded: 0)
     var cancellables = Set<AnyCancellable>()
     let listType: RestaurantListType
+    
+    //MARK: Loading View
+    @Published var placheholderArray = DeveloperPreview.instance.restaurants
+    @Published var isLoading = true
+    
     init(listType: RestaurantListType){
         self.listType = listType
         addSubscribers()
     }
     
     func refreshList(){
+        isLoading = true
         restaurants.removeAll()
         pageInfo.offset = 0
         switch listType{
@@ -63,8 +69,11 @@ extension RestaurantListViewModel{
         restaurantDataService.getRecommendedRestaurants(offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
         restaurantDataService.$recommendedRestaurants
             .sink { [weak self] fetchedRestaurants in
-                self?.restaurants.append(contentsOf: fetchedRestaurants)
-                self?.pageInfo.itemsLoaded = self?.restaurants.count ?? 0
+                if let fetchedRestaurants = fetchedRestaurants{
+                    self?.isLoading = false
+                    self?.restaurants.append(contentsOf: fetchedRestaurants)
+                    self?.pageInfo.itemsLoaded = self?.restaurants.count ?? 0
+                }
             }
             .store(in: &cancellables)
     }
@@ -73,8 +82,11 @@ extension RestaurantListViewModel{
         restaurantDataService.getPromotedRestaurants(offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
         restaurantDataService.$promotedRestaurants
             .sink { [weak self] fetchedRestaurants in
-                self?.restaurants.append(contentsOf: fetchedRestaurants)
-                self?.pageInfo.itemsLoaded = self?.restaurants.count ?? 0
+                if let fetchedRestaurants = fetchedRestaurants{
+                    self?.isLoading = false
+                    self?.restaurants.append(contentsOf: fetchedRestaurants)
+                    self?.pageInfo.itemsLoaded = self?.restaurants.count ?? 0
+                }
             }
             .store(in: &cancellables)
     }

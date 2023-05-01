@@ -18,15 +18,24 @@ struct RestaurantListView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: true){
             LazyVStack{
-                ForEach(listVM.restaurants.indices, id: \.self) { index in
-                    RestaurantCardView(restaurant: $listVM.restaurants[index])
-                        .environmentObject(homeVM)
-                        .padding(.vertical, 5)
-                        .padding(.horizontal)
-                        .transition(.move(edge: .leading))
-                        .onAppear{
-                            listVM.requestMoreItems(index: index)
-                        }
+                ForEach(listVM.isLoading ? listVM.placheholderArray.indices : listVM.restaurants.indices, id: \.self) { index in
+                    if listVM.isLoading{
+                        RestaurantCardView(restaurant: $listVM.placheholderArray[index])
+                            .environmentObject(homeVM)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal)
+                            .transition(.move(edge: .leading))
+                            .redacted(reason: .placeholder)
+                    } else {
+                        RestaurantCardView(restaurant: $listVM.restaurants[index])
+                            .environmentObject(homeVM)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal)
+                            .transition(.move(edge: .leading))
+                            .onAppear{
+                                listVM.requestMoreItems(index: index)
+                            }
+                    }
                 }
             }
             .animation(.easeOut, value: homeVM.restaurants)
