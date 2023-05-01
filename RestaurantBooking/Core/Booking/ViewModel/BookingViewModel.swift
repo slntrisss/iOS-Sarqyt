@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class BookingViewModel: ObservableObject{
     @Published var cancelledBookings: [Restaurant] = []
@@ -21,6 +22,10 @@ class BookingViewModel: ObservableObject{
     
     @Published var cancelBooking = false
     @Published var viewTicket = false
+    
+    @Published var showCheckmark = -60.0
+    @Published var showPasscodeView = false
+    @Published var showProgressView = false
     
     let dataService = ReservedRestaurantDataService.instance
     var cancellables = Set<AnyCancellable>()
@@ -54,6 +59,19 @@ class BookingViewModel: ObservableObject{
         dataService.$reservationDetails
             .sink { [weak self] fetchedDetail in
                 self?.bookingDetail = fetchedDetail
+            }
+            .store(in: &cancellables)
+        
+        dataService.$cancellBookingSuccess
+            .sink { [weak self] success in
+                if success{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self?.showCheckmark = 0
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+                        self?.showProgressView = false
+                    }
+                }
             }
             .store(in: &cancellables)
     }
@@ -101,6 +119,25 @@ extension BookingViewModel{
     
     func cancelBooking(for restaurant: Restaurant){
         dataService.cancelBookingRestaurant(restaurant: restaurant)
+    }
+    
+    func addPasscodeSubscription(passcodeVM: PasscodeViewModel, for restaurant: Restaurant){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){ [weak self] in
+            withAnimation(.spring()){
+                self?.showPasscodeView = true
+            }
+        }
+        passcodeVM.$authSuccess
+            .sink { [weak self] success in
+                if success {
+                    withAnimation(.spring()){
+                        self?.showPasscodeView = false
+                        self?.showProgressView = true
+                    }
+                    self?.cancelBooking(for: restaurant)
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 

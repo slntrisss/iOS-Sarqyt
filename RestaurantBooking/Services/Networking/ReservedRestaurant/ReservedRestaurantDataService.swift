@@ -13,6 +13,7 @@ class ReservedRestaurantDataService{
     @Published var ongoingRestaurants: [Restaurant] = []
     @Published var cancelledRestaurants: [Restaurant] = []
     @Published var completedRestaurants: [Restaurant] = []
+    @Published var cancellBookingSuccess = false
     
     @Published var reservationDetails: ReservedRestaurantDetail? = nil
     
@@ -113,10 +114,11 @@ class ReservedRestaurantDataService{
             request.httpBody = jsonData
             
             cancelBookingSubscription = URLSession.shared.dataTaskPublisher(for: request)
-                .sink { completion in
+                .sink {[weak self] completion in
                     switch completion{
                     case .finished:
                         print("POST, Cancel booking Success")
+                        self?.cancellBookingSuccess = true
                     case .failure(let error):
                         print("Error cancel booking: \(error.localizedDescription)")
                     }

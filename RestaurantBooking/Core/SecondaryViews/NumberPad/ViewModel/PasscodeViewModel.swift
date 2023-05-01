@@ -46,7 +46,7 @@ class PasscodeViewModel: ObservableObject{
     
     func numberTapped(number: Int){
         switch type{
-        case .passcode:
+        case .passcode, .verifyIdentity:
             fillPasscode(number: number, passcode: &enteredNumbers, index: &index)
         case .createdPasscode:
             fillPasscode(number: number, passcode: &passcode, index: &passcodeIndex)
@@ -57,7 +57,7 @@ class PasscodeViewModel: ObservableObject{
     
     func deleteNumber(){
         switch type{
-        case .passcode:
+        case .passcode, .verifyIdentity:
             deletePasscodeNumber(index: &index, passcode: &enteredNumbers)
         case .createdPasscode:
             deletePasscodeNumber(index: &passcodeIndex, passcode: &passcode)
@@ -68,7 +68,7 @@ class PasscodeViewModel: ObservableObject{
     
     func displayCircles(index: Int) -> Bool{
         switch type{
-        case .passcode:
+        case .passcode, .verifyIdentity:
             return enteredNumbers[index] != -1
         case .createdPasscode:
             return passcode[index] != -1
@@ -79,7 +79,7 @@ class PasscodeViewModel: ObservableObject{
     }
     
     func checkBioIdentity(){
-        if bioIdType.count != 0 && type == .passcode{
+        if bioIdType.count != 0 && (type == .passcode || type == .verifyIdentity) {
             checkIdentity()
         }
     }
@@ -97,7 +97,7 @@ class PasscodeViewModel: ObservableObject{
     }
     
     var showBioIDIcon: Bool{
-        return type == .passcode && showBioIcon
+        return (type == .passcode || type == .verifyIdentity) && showBioIcon
     }
     
     //MARK: Bio ID check
@@ -140,6 +140,7 @@ class PasscodeViewModel: ObservableObject{
     
     enum PasscodeType{
         case passcode
+        case verifyIdentity
         case createdPasscode
         case passcodeVerification
     }
@@ -154,7 +155,7 @@ extension PasscodeViewModel{
             passcode[index] = number
         }
         if index == 3{
-            if type == .passcode{
+            if type == .passcode || type == .verifyIdentity {
                 let savedPasscode = authService.getPasscode()
                 
                 for i in 0...3{
@@ -169,7 +170,9 @@ extension PasscodeViewModel{
                     }
                 }
                 authSuccess = true
-                authService.authenticateUsingPasscode()
+                if type == .passcode{
+                    authService.authenticateUsingPasscode()
+                }
                 
             } else if type == .createdPasscode{
                 type = .passcodeVerification

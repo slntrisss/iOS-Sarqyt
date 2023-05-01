@@ -10,7 +10,7 @@ import SwiftUI
 struct OrderView: View {
     @ObservedObject var bookVM: BookViewModel
     @StateObject private var orderVM: OrderViewModel
-    @StateObject private var passcodeVM = PasscodeViewModel(type: .passcode)
+    @StateObject private var passcodeVM = PasscodeViewModel(type: .verifyIdentity)
     @ObservedObject var schemeVM: SchemeViewModel
     @Environment(\.dismiss) private var dismiss
     let restaurant: Restaurant?

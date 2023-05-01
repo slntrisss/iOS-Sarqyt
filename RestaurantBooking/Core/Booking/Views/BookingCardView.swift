@@ -10,6 +10,7 @@ import SwiftUI
 struct BookingCardView: View {
     let restaurant: Restaurant
     @EnvironmentObject private var bookingVM : BookingViewModel
+    @StateObject private var passcodeVM = PasscodeViewModel(type: .verifyIdentity)
     @State private var cancelBookingTapped = false
     @State private var viewTicketTapped = false
     
@@ -61,7 +62,7 @@ struct BookingCardView: View {
                 if cancelBooking{
                     cancelBooking.toggle()
                     cancelBookingTapped.toggle()
-                    bookingVM.cancelBooking(for: restaurant)
+                    bookingVM.addPasscodeSubscription(passcodeVM: passcodeVM, for: restaurant)
                 }
             }
         })
@@ -69,6 +70,9 @@ struct BookingCardView: View {
             NavigationStack{
                 ReserveInfoView(bookingVM: bookingVM, restaurantId: restaurant.id)
             }
+        }
+        .fullScreenCover(isPresented: $bookingVM.showPasscodeView) {
+            NumberPadView(passcodeVM: passcodeVM)
         }
     }
 }
