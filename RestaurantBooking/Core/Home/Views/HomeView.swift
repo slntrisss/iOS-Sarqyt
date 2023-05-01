@@ -57,6 +57,9 @@ struct HomeView: View {
                 FilterView()
                     .environmentObject(homeVM.filterVM)
             }
+            .onAppear{
+                homeVM.addSubscribers()
+            }
         }
     }
 }
@@ -149,7 +152,7 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.recommendedRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
+            Carousel(list: homeVM.isRecommendedRestaurantsLoading ? homeVM.placeHolderArray : homeVM.recommendedRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
                 RestaurantBannerView(restaurant: restaurant)
                     .onTapGesture {
                         homeVM.showRestaurantDetailView = true
@@ -157,6 +160,8 @@ extension HomeView{
                     }
             }
             .frame(height: UIScreen.main.bounds.height * 0.51)
+            .redacted(reason: homeVM.isRecommendedRestaurantsLoading ? .placeholder : [])
+            
         }
     }
     
@@ -178,12 +183,13 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.promotedRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
+            Carousel(list: homeVM.isPromotedRestaurantsLoading ? homeVM.placeHolderArray : homeVM.promotedRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
                 RestaurantPromotionsView(restaurant: restaurant)
                     .onTapGesture {
                         homeVM.showRestaurantDetailView = true
                         homeVM.selectedRestaurant = restaurant
                     }
+                    .redacted(reason: homeVM.isPromotedRestaurantsLoading ? .placeholder : [])
             }
             .frame(height: 200)
             .padding(.bottom)
@@ -191,13 +197,20 @@ extension HomeView{
     }
     
     private var listOfRestaurants: some View{
-        ForEach(homeVM.allRestaurants.indices, id: \.self){ index in
-            RestaurantCardView(restaurant: $homeVM.allRestaurants[index])
-                .environmentObject(homeVM)
-                .padding(.vertical, 5)
-                .onAppear{
-                    homeVM.requestMoreItems(index: index)
-                }
+        ForEach(homeVM.isRestaurantListLoading ? homeVM.placeHolderArray.indices : homeVM.allRestaurants.indices, id: \.self){ index in
+            if homeVM.isRestaurantListLoading{
+                RestaurantCardView(restaurant: $homeVM.placeHolderArray[index])
+                    .environmentObject(homeVM)
+                    .padding(.vertical, 5)
+                    .redacted(reason: .placeholder)
+            }else{
+                RestaurantCardView(restaurant: $homeVM.allRestaurants[index])
+                    .environmentObject(homeVM)
+                    .padding(.vertical, 5)
+                    .onAppear{
+                        homeVM.requestMoreItems(index: index)
+                    }
+            }
         }
         .padding(.horizontal)
     }

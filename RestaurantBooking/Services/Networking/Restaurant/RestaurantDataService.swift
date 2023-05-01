@@ -10,9 +10,9 @@ import Foundation
 
 class RestaurantDataService{
     
-    @Published var recommendedRestaurantsPreviewList: [Restaurant] = []
-    @Published var promotedRestaurantsPreviewList: [Restaurant] = []
-    @Published var restaurantList: [Restaurant] = []
+    @Published var recommendedRestaurantsPreviewList: [Restaurant]? = nil
+    @Published var promotedRestaurantsPreviewList: [Restaurant]? = nil
+    @Published var restaurantList: [Restaurant]? = nil
     @Published var recommendedRestaurants: [Restaurant] = []
     @Published var promotedRestaurants: [Restaurant] = []
     var cancellables = Set<AnyCancellable>()
@@ -45,7 +45,9 @@ class RestaurantDataService{
         NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                self?.recommendedRestaurantsPreviewList = restaurants
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+                    self?.recommendedRestaurantsPreviewList = restaurants
+                }
             })
             .store(in: &cancellables)
 
@@ -66,7 +68,9 @@ class RestaurantDataService{
         NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                self?.promotedRestaurantsPreviewList = restaurants
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4){
+                    self?.promotedRestaurantsPreviewList = restaurants
+                }
             })
             .store(in: &cancellables)
     }
@@ -86,7 +90,9 @@ class RestaurantDataService{
         NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                self?.restaurantList = restaurants
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+                    self?.restaurantList = restaurants
+                }
             })
             .store(in: &cancellables)
     }
@@ -112,9 +118,11 @@ class RestaurantDataService{
             restaurantListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                    self?.restaurantList = restaurants
-                    if restaurants.count == 0{
-                        self?.restaurantListSubscription?.cancel()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+                        self?.restaurantList = restaurants
+                        if restaurants.count == 0{
+                            self?.restaurantListSubscription?.cancel()
+                        }
                     }
                 })
         }catch let error{

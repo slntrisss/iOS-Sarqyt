@@ -34,9 +34,14 @@ class HomeViewModel: ObservableObject{
     @Published var isLoading = true
     var cancellables = Set<AnyCancellable>()
     
+    //MARK: For Loading view
+    @Published var placeHolderArray = DeveloperPreview.instance.restaurants
+    @Published var isRecommendedRestaurantsLoading = true
+    @Published var isPromotedRestaurantsLoading = true
+    @Published var isRestaurantListLoading = true
+    
     init(){
         recentSearchHistory = DeveloperPreview.instance.restaurants
-        addSubscribers()
     }
     
     func deleteSearchHistory(at offsets: IndexSet){
@@ -71,31 +76,43 @@ class HomeViewModel: ObservableObject{
     }
     
     //MARK: - Networking
-    private func addSubscribers(){
+    func addSubscribers(){
         restaurantDataService.getAllRestaurants()
         
         restaurantDataService.$recommendedRestaurantsPreviewList
             .sink { [weak self] restaurants in
-                self?.recommendedRestaurants = restaurants
+                if let restaurants = restaurants{
+                    self?.isRecommendedRestaurantsLoading = false
+                    self?.recommendedRestaurants = restaurants
+                }
             }
             .store(in: &cancellables)
         
         restaurantDataService.$promotedRestaurantsPreviewList
             .sink { [weak self] restaurants in
-                self?.promotedRestaurants = restaurants
+                if let restaurants = restaurants{
+                    self?.isPromotedRestaurantsLoading = false
+                    self?.promotedRestaurants = restaurants
+                }
             }
             .store(in: &cancellables)
         
         
         restaurantDataService.$restaurantList
             .sink { [weak self] restaurants in
-                self?.allRestaurants.append(contentsOf: restaurants)
-                self?.pageInfo.itemsLoaded = self?.allRestaurants.count ?? 0
+                if let restaurants = restaurants{
+                    self?.isRestaurantListLoading = false
+                    self?.allRestaurants.append(contentsOf: restaurants)
+                    self?.pageInfo.itemsLoaded = self?.allRestaurants.count ?? 0
+                }
             }
             .store(in: &cancellables)
     }
     
     func refreshHomeViewData(){
+        isRestaurantListLoading = true
+        isRecommendedRestaurantsLoading = true
+        isPromotedRestaurantsLoading = true
         allRestaurants.removeAll()
         recommendedRestaurants.removeAll()
         promotedRestaurants.removeAll()
