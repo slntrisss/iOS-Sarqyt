@@ -120,6 +120,9 @@ class PasscodeViewModel: ObservableObject{
                 if success{
                     DispatchQueue.main.async {
                         self?.authSuccess = true
+                        if self?.type == .passcode{
+                            self?.authService.authenticateUsingBiometrics()
+                        }
                     }
                 } else {
                     if let error = error as? LAError{
