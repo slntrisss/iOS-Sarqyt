@@ -84,4 +84,9 @@ class ProfileViewModel: ObservableObject{
             }
             .store(in: &cancellables)
     }
+    
+    //MARK: Logout
+    func logoutButtonTapped(){
+        NavigationUtil.popToRootView()
+    }
 }

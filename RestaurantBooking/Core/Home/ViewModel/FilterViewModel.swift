@@ -13,30 +13,24 @@ class FilterViewModel: ObservableObject{
     @Published var selectedCategory = ""
     @Published var selectedPrice = ""
     @Published var selectedRating: Int = 0
-    @Published var selectedFacilities: [Bool]
-    @Published var selectedAccomodationTypes: [Bool]
+    @Published var selectedFacilities: [Bool] = []
+    @Published var selectedAccomodationTypes: [Bool] = []
     
-    @Published var fromPriceAmount: Int
-    @Published var tillPriceAmount: Int
+    @Published var fromPriceAmount: Int = 0
+    @Published var tillPriceAmount: Int = 0
     
-    let minPriceAmount: Int
-    let maxPriceAmount: Int
+    var minPriceAmount: Int = 0
+    var maxPriceAmount: Int = 0
     
+    @Published var filterData: FilterData? = nil
     var cancellables = Set<AnyCancellable>()
+    let dataService = FilterDataService.instance
+    
+    //MARK: Loadin view
+    @Published var isLoading = true
     
     init(){
-        let facilitiesCount = DeveloperPreview.FilterProvider.shared.availableFacilities.count
-        selectedFacilities = Array<Bool>(repeating: false, count: facilitiesCount)
-        
-        let accomodationTypeCount = DeveloperPreview.FilterProvider.shared.accomodationTypes.count
-        selectedAccomodationTypes = Array<Bool>(repeating: false, count: accomodationTypeCount)
-        
-        minPriceAmount = 2_300
-        maxPriceAmount = 145_700
-        
-        fromPriceAmount = minPriceAmount
-        tillPriceAmount = maxPriceAmount
-        
+        addSubscriptions()
     }
     
     func validateRange(){
@@ -48,5 +42,38 @@ class FilterViewModel: ObservableObject{
         }else if tillPriceAmount > maxPriceAmount{
             tillPriceAmount = maxPriceAmount
         }
+    }
+    
+    //MARK: Networking
+    func getFilterData(){
+        dataService.getFilterData()
+    }
+    
+    private func addSubscriptions(){
+        dataService.$filterData
+            .sink { [weak self] fetchedFilterData in
+                if let fetchedFilterData = fetchedFilterData{
+                    self?.isLoading = false
+                    self?.filterData = fetchedFilterData
+                    
+                    self?.initData()
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func initData(){
+        guard let filterData = filterData else{ return }
+        let facilitiesCount = filterData.facilities.count
+        selectedFacilities = Array<Bool>(repeating: false, count: facilitiesCount)
+        
+        let accomodationTypeCount = filterData.accomodationTypes.count
+        selectedAccomodationTypes = Array<Bool>(repeating: false, count: accomodationTypeCount)
+        
+        minPriceAmount = Int(filterData.minPrice)
+        maxPriceAmount = Int(filterData.maxPrice)
+        
+        fromPriceAmount = minPriceAmount
+        tillPriceAmount = maxPriceAmount
     }
 }

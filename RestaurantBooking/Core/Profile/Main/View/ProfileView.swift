@@ -43,6 +43,8 @@ struct ProfileView: View {
                         .disabled(profileVM.isLoading)
                 }
                 .padding([.horizontal, .vertical])
+                logoutButton
+                    .unredacted()
             }
             .redacted(reason: profileVM.isLoading ? .placeholder : [])
             .navigationDestination(isPresented: $profileVM.navigateToEditProfileView, destination: {
@@ -56,8 +58,10 @@ struct ProfileView: View {
             })
             .sheet(isPresented: $profileVM.showLogoutView, content: {
                 LogoutView(logout: $profileVM.logout, cancel: $profileVM.showLogoutView)
+                    .onChange(of: profileVM.logout) { newValue in
+                        profileVM.logoutButtonTapped()
+                    }
             })
-            .safeAreaInset(edge: .bottom) { logoutButton }
             .onAppear{
                 profileVM.getUser()
             }

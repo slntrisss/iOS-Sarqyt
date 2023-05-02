@@ -161,6 +161,7 @@ class FoodViewModel: ObservableObject{
     }
     
     private func fetchFoods(for restaurant: Restaurant, of foodType: FoodType){
+        foodIsLoading = true
         foods.removeAll()
         pageInfo.offset = 0
         foodDataService.fetchFoods(for: restaurant.id,

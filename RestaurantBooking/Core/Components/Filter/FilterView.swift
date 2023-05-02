@@ -23,39 +23,46 @@ struct FilterView: View {
     
     var body: some View {
         NavigationStack{
-            ScrollView(.vertical, showsIndicators: false){
-                header
-                    .padding(.top)
-                
-                VStack{
-                    cityView
-                    categoryView
-                    FilterPriceRangeView(paddingAmount: paddingAmount)
-                        .environmentObject(filterVM)
-                    starRatingView
-                    facilitiesView
-                    accomodationTypeView
-                }
-                .padding(.bottom)
-                Divider()
-                
-                HStack{
-                    SecondaryButton(buttonLabel: "Reset", buttonClicked: $resetButtonTapped)
-                    PrimaryButton(buttonLabel: "Apply", buttonClicked: $applyButtonTapped)
-                }
-                .padding(paddingAmount)
-            }
-            .toolbar{
-                ToolbarItem(placement: .keyboard) {
+            if filterVM.isLoading{
+                ProgressView()
+            } else {
+                ScrollView(.vertical, showsIndicators: false){
+                    header
+                        .padding(.top)
+                    
+                    VStack{
+                        cityView
+                        categoryView
+                        FilterPriceRangeView(paddingAmount: paddingAmount)
+                            .environmentObject(filterVM)
+                        starRatingView
+                        facilitiesView
+                        accomodationTypeView
+                    }
+                    .padding(.bottom)
+                    Divider()
+                    
                     HStack{
-                        Button("Done"){
-                            filterVM.validateRange()
-                            UIApplication.shared.endEditing()
+                        SecondaryButton(buttonLabel: "Reset", buttonClicked: $resetButtonTapped)
+                        PrimaryButton(buttonLabel: "Apply", buttonClicked: $applyButtonTapped)
+                    }
+                    .padding(paddingAmount)
+                }
+                .toolbar{
+                    ToolbarItem(placement: .keyboard) {
+                        HStack{
+                            Button("Done"){
+                                filterVM.validateRange()
+                                UIApplication.shared.endEditing()
+                            }
+                            Spacer()
                         }
-                        Spacer()
                     }
                 }
             }
+        }
+        .onAppear{
+            filterVM.getFilterData()
         }
     }
 }
@@ -88,7 +95,9 @@ extension FilterView{
         VStack{
             FilterSectionHeaderView(label: "City", buttonLabel: "See All", buttonTapped: $seeAllCountries)
                 .padding(paddingAmount)
-            CategoryCollectionView(collections: filterData.availableCities, selectedCollection: $filterVM.selectedCity, leadingSpacing: paddingAmount)
+            if let filterData = filterVM.filterData{
+                CategoryCollectionView(collections: filterData.cities, selectedCollection: $filterVM.selectedCity, leadingSpacing: paddingAmount)
+            }
         }
     }
     
@@ -96,7 +105,9 @@ extension FilterView{
         VStack{
             FilterSectionHeaderView(label: "Category", buttonLabel: "See All", buttonTapped: $seeAllCategories)
                 .padding(paddingAmount)
-            CategoryCollectionView(collections: filterData.categories, selectedCollection: $filterVM.selectedCategory, leadingSpacing: paddingAmount)
+            if let filterData = filterVM.filterData{
+                CategoryCollectionView(collections: filterData.categories, selectedCollection: $filterVM.selectedCategory, leadingSpacing: paddingAmount)
+            }
         }
     }
     
@@ -104,7 +115,9 @@ extension FilterView{
         VStack{
             FilterSectionHeaderView(label: "Star Rating")
                 .padding(paddingAmount)
-            StarRatingCollectionView(ratings: filterData.availableRatings, selectedRating: $filterVM.selectedRating, leadingSpacing: paddingAmount)
+            if let filterData = filterVM.filterData{
+                StarRatingCollectionView(ratings: filterData.ratings, selectedRating: $filterVM.selectedRating, leadingSpacing: paddingAmount)
+            }
         }
     }
     
@@ -114,10 +127,12 @@ extension FilterView{
                 .padding(paddingAmount)
             ScrollView(.horizontal, showsIndicators: false){
                 HStack{
-                    ForEach(filterData.accomodationTypes.indices , id: \.self) { index in
-                        FilterCheckBox(isOn: $filterVM.selectedFacilities[index], text: filterData.availableFacilities[index])
-                        .offset(x: paddingAmount)
-                        .padding(.trailing, index == filterData.availableFacilities.count - 1 ? paddingAmount : 0)
+                    if let filterData = filterVM.filterData{
+                        ForEach(filterData.accomodationTypes.indices , id: \.self) { index in
+                            FilterCheckBox(isOn: $filterVM.selectedFacilities[index], text: filterData.facilities[index])
+                                .offset(x: paddingAmount)
+                                .padding(.trailing, index == filterData.facilities.count - 1 ? paddingAmount : 0)
+                        }
                     }
                 }
             }
@@ -130,10 +145,12 @@ extension FilterView{
                 .padding(paddingAmount)
             ScrollView(.horizontal, showsIndicators: false){
                 HStack{
-                    ForEach(filterData.accomodationTypes.indices , id: \.self) { index in
-                        FilterCheckBox(isOn: $filterVM.selectedAccomodationTypes[index], text: filterData.accomodationTypes[index])
-                        .offset(x: paddingAmount)
-                        .padding(.trailing, index == filterData.availableFacilities.count - 1 ? paddingAmount : 0)
+                    if let filterData = filterVM.filterData{
+                        ForEach(filterData.accomodationTypes.indices , id: \.self) { index in
+                            FilterCheckBox(isOn: $filterVM.selectedAccomodationTypes[index], text: filterData.accomodationTypes[index])
+                                .offset(x: paddingAmount)
+                                .padding(.trailing, index == filterData.facilities.count - 1 ? paddingAmount : 0)
+                        }
                     }
                 }
             }

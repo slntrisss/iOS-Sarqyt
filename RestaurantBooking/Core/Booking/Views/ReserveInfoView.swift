@@ -12,10 +12,10 @@ struct ReserveInfoView: View {
     let maxHeight: CGFloat = UIScreen.main.bounds.height * 0.35
     @State private var show = false
     @Environment(\.dismiss) private var dismiss
-    
+    let restaurantId: String
     init(bookingVM: BookingViewModel, restaurantId: String){
+        self.restaurantId = restaurantId
         self._bookingVM = ObservedObject(wrappedValue: bookingVM)
-        bookingVM.getReservedRestaurantDetail(for: restaurantId)
     }
     var body: some View {
         ZStack{
@@ -54,6 +54,9 @@ struct ReserveInfoView: View {
                     ToolbarItem(placement: .navigationBarTrailing) { dismissButton }
                 }
             }
+        }
+        .onAppear{
+            bookingVM.getReservedRestaurantDetail(for: restaurantId)
         }
     }
 }
