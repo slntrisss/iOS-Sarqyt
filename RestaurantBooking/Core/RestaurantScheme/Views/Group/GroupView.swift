@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GroupView: View {
-    let mapItemGroup: MapItemGroup
+    let mapItemGroup: SchemeItemGroup
     @Binding var isSelected: Bool
     var body: some View {
         ZStack{

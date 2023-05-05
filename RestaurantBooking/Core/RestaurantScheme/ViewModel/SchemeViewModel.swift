@@ -12,7 +12,7 @@ class SchemeViewModel: ObservableObject{
     @Published var scheme: RestaurantScheme? = nil
     @Published var selectedFloor = 0
     @Published var mapItemGroupSelectOptions: [Bool] = []
-    @Published var selectedGroupItem: MapItemGroup? = nil
+    @Published var selectedGroupItem: SchemeItemGroup? = nil
     @Published var showTableInfoSheet = false
     var restaurantId = ""
     var selectedIndex = -1

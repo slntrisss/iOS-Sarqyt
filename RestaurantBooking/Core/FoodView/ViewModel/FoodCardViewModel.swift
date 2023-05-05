@@ -13,7 +13,7 @@ class FoodCardViewModel: ObservableObject{
     @Published private(set) var showQuantityLabel: Bool = false
     @Published var showDetail = false
     @Published var specialWishes = ""
-    let food: Food
+    @Published var food: Food
     
     //FoodDetailView parameters
     @Published var detailFoodCount = 1

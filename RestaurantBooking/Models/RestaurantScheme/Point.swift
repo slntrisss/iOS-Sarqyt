@@ -16,22 +16,20 @@ struct RestaurantScheme: Codable{
 
 struct Floor: Codable{
     let id: String
-    let groups: [MapItemGroup]
-    let walls: [Point]
-    let map: [[String]]
+    let groups: [SchemeItemGroup]
 }
 
-struct MapItemGroup: Codable, Identifiable{
+struct SchemeItemGroup: Codable, Identifiable{
     let id: String
     let reserved: Bool
-    let tableItem: [MapItem]
-    let chairItems: [MapItem]
-    let sofaItems: [MapItem]
+    let tableItem: [SchemeItem]
+    let chairItems: [SchemeItem]
+    let sofaItems: [SchemeItem]
 }
 
-struct MapItem: Codable, Identifiable{
+struct SchemeItem: Codable, Identifiable{
     var id: String
-    var type: MapItemType
+    var type: SchemeItemType
     let items: [Point]
 }
 
@@ -40,10 +38,10 @@ struct Point: Codable{
     let y: Int
 }
 
-enum MapItemType: Character, Codable{
-    case TABLE = "t"
-    case CHAIR = "c"
-    case SOFA = "s"
-    case WALL = "w"
-    case empty = "*"
+enum SchemeItemType: Codable{
+    case TABLE
+    case CHAIR
+    case SOFA
+    case WALL
+    case empty
 }

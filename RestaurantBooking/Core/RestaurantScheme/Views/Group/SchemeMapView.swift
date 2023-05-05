@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SchemeMapView: View {
-    let mapItem: MapItem
+    let mapItem: SchemeItem
     @Binding var isSelected: Bool
     let disabled: Bool
     var body: some View {

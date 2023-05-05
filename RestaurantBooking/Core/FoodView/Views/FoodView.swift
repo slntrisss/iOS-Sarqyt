@@ -83,14 +83,20 @@ extension FoodView{
         Section(header: tabBarView) {
             LazyVGrid(columns: columns) {
                 ForEach(foodVM.foodIsLoading ? foodVM.foodPlaceholder.indices : foodVM.foods.indices, id: \.self) { index in
-                    FoodCardView(food: foodVM.foodIsLoading ? foodVM.foodPlaceholder[index] : foodVM.foods[index], bookVM: bookVM)
-                        .padding(10)
-                        .onAppear{
-                            if !foodVM.foodIsLoading{
-                                foodVM.requestMoreFoods(index: index)
+                    if foodVM.foodIsLoading{
+                        FoodCardView(food: foodVM.foodIsLoading ? foodVM.foodPlaceholder[index] : foodVM.foods[index], bookVM: bookVM)
+                            .padding(10)
+                            .redacted(reason: .placeholder)
+                    }else{
+                        FoodCardView(food: foodVM.foods[index], bookVM: bookVM)
+                            .padding(10)
+                            .onAppear{
+                                if !foodVM.foodIsLoading{
+                                    foodVM.requestMoreFoods(index: index)
+                                }
                             }
-                        }
-                        .redacted(reason: foodVM.foodIsLoading ? .placeholder : [])
+                            .redacted(reason: foodVM.foodIsLoading ? .placeholder : [])
+                    }
                 }
             }
             .padding()

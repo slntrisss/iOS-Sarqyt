@@ -489,16 +489,16 @@ class DeveloperPreview{
             Floor(
                 id: "1",
                 groups:
-                    [MapItemGroup(
+                    [SchemeItemGroup(
                         id: "1",
                         reserved: false,
-                        tableItem: [MapItem(id: UUID().uuidString, type: .TABLE, items: [Point(x: 1, y: 1)])],
-                        chairItems: [MapItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 1, y: 2)]), MapItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 2, y: 1)])],
-                        sofaItems: [MapItem(id: UUID().uuidString, type: .SOFA, items: [Point(x: 0, y: 1), Point(x: 0, y: 0), Point(x: 1, y: 0)])]),
-                     MapItemGroup(id: "2",
+                        tableItem: [SchemeItem(id: UUID().uuidString, type: .TABLE, items: [Point(x: 1, y: 1)])],
+                        chairItems: [SchemeItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 1, y: 2)]), SchemeItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 2, y: 1)])],
+                        sofaItems: [SchemeItem(id: UUID().uuidString, type: .SOFA, items: [Point(x: 0, y: 1), Point(x: 0, y: 0), Point(x: 1, y: 0)])]),
+                     SchemeItemGroup(id: "2",
                                   reserved: true,
                                    tableItem: [
-                                     MapItem(id: UUID().uuidString,
+                                     SchemeItem(id: UUID().uuidString,
                                                        type: .TABLE,
                                                        items: [
                                                          Point(x: 3, y: 4),
@@ -508,18 +508,18 @@ class DeveloperPreview{
                                                        ])
                                    ],
                                    chairItems: [
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 3)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 3)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 7, y: 4)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 2, y: 4)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 5)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 5)])
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 3)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 3)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 7, y: 4)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 2, y: 4)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 5)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 5)])
                                    ],
                                    sofaItems: []),
-                     MapItemGroup(id: "3",
+                     SchemeItemGroup(id: "3",
                                   reserved: false,
                                    tableItem: [
-                                     MapItem(id: UUID().uuidString,
+                                     SchemeItem(id: UUID().uuidString,
                                                        type: .TABLE,
                                                        items: [
                                                          Point(x: 8, y: 1),
@@ -536,10 +536,10 @@ class DeveloperPreview{
                                    ],
                                    chairItems: [],
                                    sofaItems: []),
-                     MapItemGroup(id: "4",
+                     SchemeItemGroup(id: "4",
                                   reserved: false,
                                    tableItem: [
-                                     MapItem(id: UUID().uuidString,
+                                     SchemeItem(id: UUID().uuidString,
                                                        type: .TABLE,
                                                        items: [
                                                          Point(x: 7, y: 7),
@@ -557,35 +557,21 @@ class DeveloperPreview{
                                                        ])
                                    ],
                                    chairItems: [],
-                                   sofaItems: [])],
-                walls: [],
-                map: [
-//                    0    1    2    3    4    5    6    7    8    9   10    11
-                    ["s", "s", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w"], // 0
-                    ["s", "t", "c", "*", "*", "*", "*", "*", "t", "t", "t", "t"], // 1
-                    ["w", "c", "*", "*", "*", "*", "*", "*", "t", "*", "*", "t"], // 2
-                    ["w", "*", "*", "*", "c", "c", "*", "*", "t", "t", "t", "t"], // 3
-                    ["w", "*", "c", "t", "t", "t", "t", "c", "*", "*", "*", "w"], // 4
-                    ["w", "*", "*", "*", "c", "c", "*", "*", "*", "*", "*", "w"], // 5
-                    ["w", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "w"], // 6
-                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"], // 7
-                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"], // 8
-                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"]  // 9
-                ]
+                                   sofaItems: [])]
             ),
             Floor(
                 id: "2",
                 groups:
-                    [MapItemGroup(
+                    [SchemeItemGroup(
                         id: "7",
                         reserved: false,
-                        tableItem: [MapItem(id: UUID().uuidString, type: .TABLE, items: [Point(x: 1, y: 1)])],
-                        chairItems: [MapItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 1, y: 2)]), MapItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 2, y: 1)])],
-                        sofaItems: [MapItem(id: UUID().uuidString, type: .SOFA, items: [Point(x: 0, y: 1), Point(x: 0, y: 0), Point(x: 1, y: 0)])]),
-                     MapItemGroup(id: "8",
+                        tableItem: [SchemeItem(id: UUID().uuidString, type: .TABLE, items: [Point(x: 1, y: 1)])],
+                        chairItems: [SchemeItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 1, y: 2)]), SchemeItem(id: UUID().uuidString, type: .CHAIR, items: [Point(x: 2, y: 1)])],
+                        sofaItems: [SchemeItem(id: UUID().uuidString, type: .SOFA, items: [Point(x: 0, y: 1), Point(x: 0, y: 0), Point(x: 1, y: 0)])]),
+                     SchemeItemGroup(id: "8",
                                   reserved: true,
                                    tableItem: [
-                                     MapItem(id: UUID().uuidString,
+                                     SchemeItem(id: UUID().uuidString,
                                                        type: .TABLE,
                                                        items: [
                                                          Point(x: 3, y: 4),
@@ -595,18 +581,18 @@ class DeveloperPreview{
                                                        ])
                                    ],
                                    chairItems: [
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 3)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 3)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 7, y: 4)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 2, y: 4)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 5)]),
-                                     MapItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 5)])
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 3)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 3)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 7, y: 4)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 2, y: 4)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 4, y: 5)]),
+                                     SchemeItem(id: UUID().uuidString,type: .CHAIR, items: [Point(x: 5, y: 5)])
                                    ],
                                    sofaItems: []),
-                     MapItemGroup(id: "9",
+                     SchemeItemGroup(id: "9",
                                   reserved: false,
                                    tableItem: [
-                                     MapItem(id: UUID().uuidString,
+                                     SchemeItem(id: UUID().uuidString,
                                                        type: .TABLE,
                                                        items: [
                                                          Point(x: 8, y: 1),
@@ -622,21 +608,7 @@ class DeveloperPreview{
                                                        ])
                                    ],
                                    chairItems: [],
-                                   sofaItems: [])],
-                walls: [],
-                map: [
-//                    0    1    2    3    4    5    6    7    8    9   10    11
-                    ["s", "s", "w", "w", "w", "w", "w", "w", "w", "w", "w", "w"], // 0
-                    ["s", "t", "c", "*", "*", "*", "*", "*", "t", "t", "t", "t"], // 1
-                    ["w", "c", "*", "*", "*", "*", "*", "*", "t", "*", "*", "t"], // 2
-                    ["w", "*", "*", "*", "c", "c", "*", "*", "t", "t", "t", "t"], // 3
-                    ["w", "*", "c", "t", "t", "t", "t", "c", "*", "*", "*", "w"], // 4
-                    ["w", "*", "*", "*", "c", "c", "*", "*", "*", "*", "*", "w"], // 5
-                    ["w", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "w"], // 6
-                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"], // 7
-                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"], // 8
-                    ["w", "s", "*", "*", "*", "*", "*", "t", "t", "t", "t", "w"]  // 9
-                ]
+                                   sofaItems: [])]
             )
         ]
     )
