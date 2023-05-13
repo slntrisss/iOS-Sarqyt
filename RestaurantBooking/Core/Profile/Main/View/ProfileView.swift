@@ -13,12 +13,16 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack{
             ScrollView(.vertical, showsIndicators: false) {
-                ProfileImageView(image: profileVM.isLoading ? UIImage(named: profileVM.placeholder.profileImage) : profileVM.profileImage)
-                    .padding(.vertical)
-                Text(profileVM.isLoading ? profileVM.placeholder.firstName + profileVM.placeholder.lastName : profileVM.name)
-                    .font(.title2.weight(.semibold))
-                Text(profileVM.isLoading ? profileVM.placeholder.email : profileVM.email)
-                    .font(.subheadline.weight(.medium))
+                Group{
+                    ProfileImageView(image: profileVM.isLoading ? UIImage(named: profileVM.placeholder.profileImage) : profileVM.profileImage)
+                        .padding(.vertical)
+                    Text(profileVM.isLoading ? profileVM.placeholder.firstName + profileVM.placeholder.lastName : profileVM.name)
+                        .font(.title2.weight(.semibold))
+                    Text(profileVM.isLoading ? profileVM.placeholder.email : profileVM.email)
+                        .font(.subheadline.weight(.medium))
+                }
+                .redacted(reason: profileVM.isLoading ? .placeholder : [])
+                .shimmering(active: profileVM.isLoading)
                 Divider()
                 VStack(spacing: 30){
                     createNavLinkField(iconName: "person", text: "Edit Profile", fontColor: Color.theme.accent)
@@ -43,10 +47,10 @@ struct ProfileView: View {
                         .disabled(profileVM.isLoading)
                 }
                 .padding([.horizontal, .vertical])
+                .disabled(profileVM.isLoading)
                 logoutButton
                     .unredacted()
             }
-            .redacted(reason: profileVM.isLoading ? .placeholder : [])
             .navigationDestination(isPresented: $profileVM.navigateToEditProfileView, destination: {
                 EditProfileView(user: profileVM.user, parentVM: profileVM)
             })
