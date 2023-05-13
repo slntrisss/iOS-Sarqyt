@@ -32,7 +32,9 @@ struct NumberPadView: View {
             Text("Provided passcode is not valid. Try again.")
         })
         .onAppear{
-            passcodeVM.checkBioIdentity()
+            if !passcodeVM.authSuccess{
+                passcodeVM.checkBioIdentity()
+            }
         }
         .onChange(of: passcodeVM.authSuccess) { newValue in
             if passcodeVM.authSuccess{

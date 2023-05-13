@@ -151,7 +151,7 @@ class OrderViewModel: ObservableObject{
             }
             return
         }
-        checkIdentity()
+        showPasscode = true
     }
     
     private func bookRestaurant(){
@@ -179,28 +179,6 @@ class OrderViewModel: ObservableObject{
     
     private func getPaymentCards(){
         paymentDataService.getPaymentCards()
-    }
-    
-    private func checkIdentity(){
-        let context = LAContext()
-        var error: NSError?
-        
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error){
-            let reason = "Allow to use \"FaceID\" information to unlock the data."
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {[weak self] success, error in
-                if success{
-                    DispatchQueue.main.async {
-                        self?.confirmButtonTapped = true
-                        self?.bookRestaurant()
-                    }
-                } else {
-                    print("Error occured while evaluating biometrics")
-                }
-            }
-        } else {
-            showPasscode = true
-            print("No support for biometrics...")
-        }
     }
     
     func addPasscodeSubscription(passcodeVM: PasscodeViewModel){
