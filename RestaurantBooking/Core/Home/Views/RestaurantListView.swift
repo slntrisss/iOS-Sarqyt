@@ -26,6 +26,7 @@ struct RestaurantListView: View {
                             .padding(.horizontal)
                             .transition(.move(edge: .leading))
                             .redacted(reason: .placeholder)
+                            .shimmering()
                     } else {
                         RestaurantCardView(restaurant: $listVM.restaurants[index])
                             .environmentObject(homeVM)
@@ -41,6 +42,9 @@ struct RestaurantListView: View {
             .animation(.easeOut, value: homeVM.restaurants)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .onAppear{
+            listVM.addSubscribers()
         }
         .refreshable {
             listVM.refreshList()

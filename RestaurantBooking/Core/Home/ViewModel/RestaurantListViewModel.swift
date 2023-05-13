@@ -21,7 +21,6 @@ class RestaurantListViewModel: ObservableObject{
     
     init(listType: RestaurantListType){
         self.listType = listType
-        addSubscribers()
     }
     
     func refreshList(){
@@ -57,7 +56,7 @@ class RestaurantListViewModel: ObservableObject{
 
 extension RestaurantListViewModel{
     
-    private func addSubscribers(){
+    func addSubscribers(){
         switch listType{
         case .bookmarked: print("...")
         case .promoted: addPromotedRestaurantsSubscription()
