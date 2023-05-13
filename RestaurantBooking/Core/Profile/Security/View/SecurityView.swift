@@ -13,20 +13,6 @@ struct SecurityView: View {
         VStack(spacing: 20){
             createNavLinkField(text: "Change password")
             Divider()
-            if securityVM.supportsFaceID{
-                HStack{
-                    Text("Face ID")
-                    Toggle("", isOn: $securityVM.faceIdEnbaled)
-                }
-                Divider()
-            }
-            if securityVM.supportsTouchID{
-                HStack{
-                    Text("Touch ID")
-                    Toggle("", isOn: $securityVM.touchIdEnabled)
-                }
-                Divider()
-            }
             Spacer()
         }
         .font(.headline)
