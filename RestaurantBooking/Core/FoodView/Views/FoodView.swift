@@ -46,6 +46,9 @@ struct FoodView: View {
                 OrderView(bookVM: bookVM, schemeVM: schemeVM)
             }
         }
+        .onAppear{
+            foodVM.fetchInitialData()
+        }
     }
 }
 
@@ -84,18 +87,16 @@ extension FoodView{
             LazyVGrid(columns: columns) {
                 ForEach(foodVM.foodIsLoading ? foodVM.foodPlaceholder.indices : foodVM.foods.indices, id: \.self) { index in
                     if foodVM.foodIsLoading{
-                        FoodCardView(food: foodVM.foodIsLoading ? foodVM.foodPlaceholder[index] : foodVM.foods[index], bookVM: bookVM)
+                        FoodCardView(food: foodVM.foodPlaceholder[index], bookVM: bookVM)
                             .padding(10)
                             .redacted(reason: .placeholder)
+                            .shimmering()
                     }else{
                         FoodCardView(food: foodVM.foods[index], bookVM: bookVM)
                             .padding(10)
                             .onAppear{
-                                if !foodVM.foodIsLoading{
-                                    foodVM.requestMoreFoods(index: index)
-                                }
+                                foodVM.requestMoreFoods(index: index)
                             }
-                            .redacted(reason: foodVM.foodIsLoading ? .placeholder : [])
                     }
                 }
             }

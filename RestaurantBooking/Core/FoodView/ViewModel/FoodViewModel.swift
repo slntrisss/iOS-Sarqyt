@@ -35,7 +35,6 @@ class FoodViewModel: ObservableObject{
         self.bookVM = bookVM
         print("Started downloading...")
         addSubscribers()
-        fetchInitialData()
     }
     
     
@@ -107,7 +106,7 @@ class FoodViewModel: ObservableObject{
     }
     
     //MARK: - Networking
-    private func fetchInitialData(){
+    func fetchInitialData(){
         if let restaurant = bookVM.restaurant{
             foodDataService.fetchFoodTitles(for: restaurant.id)
         }
