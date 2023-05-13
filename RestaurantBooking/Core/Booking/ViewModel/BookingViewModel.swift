@@ -108,15 +108,13 @@ extension BookingViewModel{
             if (completedBookings.isEmpty || completedBookings.count == 0){
                 dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
             }
-        case .cancelled:
+        default :
             if (cancelledBookings.isEmpty || cancelledBookings.count == 0){
                 dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
             }
-        default:
-            print("")
         }
 
-        dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+//        dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
     }
     
     func requestMoreItems(for status: BookingStatus, index: Int){

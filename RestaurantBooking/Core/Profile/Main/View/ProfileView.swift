@@ -10,6 +10,7 @@ import UIKit
 
 struct ProfileView: View {
     @StateObject private var profileVM = ProfileViewModel()
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         NavigationStack{
             ScrollView(.vertical, showsIndicators: false) {
@@ -63,7 +64,18 @@ struct ProfileView: View {
             .sheet(isPresented: $profileVM.showLogoutView, content: {
                 LogoutView(logout: $profileVM.logout, cancel: $profileVM.showLogoutView)
                     .onChange(of: profileVM.logout) { newValue in
-                        profileVM.logoutButtonTapped()
+//                        profileVM.logoutButtonTapped()
+                        let window = UIApplication.shared.connectedScenes
+                            .flatMap{ ($0 as? UIWindowScene)?.windows ?? [] }
+                            .first{ $0.isKeyWindow}
+                        let newRootView = ContentView() // Create the new root view
+
+                        let transition = UIView.AnimationOptions.transitionFlipFromLeft // Set the transition animation
+
+                        UIView.transition(with: window!, duration: 0.5, options: transition, animations: {
+                            window?.rootViewController = UIHostingController(rootView: newRootView) // Set the new root view controller
+                        }, completion: nil)
+
                     }
             })
             .onAppear{

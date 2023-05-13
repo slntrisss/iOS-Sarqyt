@@ -87,6 +87,6 @@ class ProfileViewModel: ObservableObject{
     
     //MARK: Logout
     func logoutButtonTapped(){
-        NavigationUtil.popToRootView()
+        AuthService.shared.signOut()
     }
 }

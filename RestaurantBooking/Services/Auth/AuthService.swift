@@ -18,6 +18,7 @@ class AuthService{
     
     var signInSubscription: AnyCancellable?
     var signUpSubscription: AnyCancellable?
+    var signOutSubscription: AnyCancellable?
     
     func authenticate(with credentials: Credentials){
         signIn(credentials: credentials)
@@ -105,6 +106,24 @@ extension AuthService{
         }catch let error{
             print("Error occured: \(error.localizedDescription)")
         }
+    }
+    
+    func signOut(){
+        let urlString = Constants.BASE_URL + Constants.SIGN_OUT
+        let token = getToken().trimmingCharacters(in: .whitespacesAndNewlines)
+        guard var request = AuthManager.constructRequest(for: urlString) else {
+            print("Error creating request")
+            return
+        }
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        signOutSubscription = NetworkingManager.post(request: request)
+            .sink(receiveCompletion: NetworkingManager.handleCompletion) {[weak self] _ in
+                print("Signed out")
+                self?.signOutSubscription?.cancel()
+            }
     }
     
     func signUp(credentials: Credentials) {

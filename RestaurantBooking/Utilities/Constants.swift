@@ -16,6 +16,7 @@ class Constants{
     static let PASSCODE = "passcode"
     static let SIGN_IN = "/signin"
     static let SIGN_UP = "/signup"
+    static let SIGN_OUT = "/signout"
     
     //MARK: - Network Calls
     static let BASE_URL = "http://localhost:3000"
