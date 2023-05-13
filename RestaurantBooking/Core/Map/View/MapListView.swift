@@ -17,6 +17,7 @@ struct MapListView: View {
                 } label: {
                     listRowView(restaurant: mapVM.isListLoading ? mapVM.placeholder[index] : mapVM.restaurants[index])
                         .redacted(reason: mapVM.isListLoading ? .placeholder : [])
+                        .shimmering(active: mapVM.isListLoading)
                         .onAppear{
                             if !mapVM.isListLoading{
                                 mapVM.fetchRestaurants(index: index)
