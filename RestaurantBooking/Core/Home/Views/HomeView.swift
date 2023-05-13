@@ -152,15 +152,23 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.isRecommendedRestaurantsLoading ? homeVM.placeHolderArray : homeVM.recommendedRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
-                RestaurantBannerView(restaurant: restaurant)
-                    .onTapGesture {
-                        homeVM.showRestaurantDetailView = true
-                        homeVM.selectedRestaurant = restaurant
-                    }
+            if homeVM.isRecommendedRestaurantsLoading{
+                Carousel(list: homeVM.placeHolderArray, spacing: 20, trailingSpacing: 80) { restaurant in
+                    RestaurantBannerView(restaurant: restaurant)
+                }
+                .frame(height: UIScreen.main.bounds.height * 0.51)
+                .redacted(reason: .placeholder)
+                .shimmering()
+            }else{
+                Carousel(list: homeVM.recommendedRestaurants, spacing: 20, trailingSpacing: 80) { restaurant in
+                    RestaurantBannerView(restaurant: restaurant)
+                        .onTapGesture {
+                            homeVM.showRestaurantDetailView = true
+                            homeVM.selectedRestaurant = restaurant
+                        }
+                }
+                .frame(height: UIScreen.main.bounds.height * 0.51)
             }
-            .frame(height: UIScreen.main.bounds.height * 0.51)
-            .redacted(reason: homeVM.isRecommendedRestaurantsLoading ? .placeholder : [])
             
         }
     }
@@ -183,16 +191,25 @@ extension HomeView{
                 }
             }
             .padding(.horizontal)
-            Carousel(list: homeVM.isPromotedRestaurantsLoading ? homeVM.placeHolderArray : homeVM.promotedRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
-                RestaurantPromotionsView(restaurant: restaurant)
-                    .onTapGesture {
-                        homeVM.showRestaurantDetailView = true
-                        homeVM.selectedRestaurant = restaurant
-                    }
-                    .redacted(reason: homeVM.isPromotedRestaurantsLoading ? .placeholder : [])
+            if homeVM.isPromotedRestaurantsLoading{
+                Carousel(list: homeVM.placeHolderArray, spacing: 5, trailingSpacing: 55) { restaurant in
+                    RestaurantPromotionsView(restaurant: restaurant)
+                        .redacted(reason: .placeholder)
+                        .shimmering()
+                }
+                .frame(height: 200)
+                .padding(.bottom)
+            }else{
+                Carousel(list: homeVM.promotedRestaurants, spacing: 5, trailingSpacing: 55) { restaurant in
+                    RestaurantPromotionsView(restaurant: restaurant)
+                        .onTapGesture {
+                            homeVM.showRestaurantDetailView = true
+                            homeVM.selectedRestaurant = restaurant
+                        }
+                }
+                .frame(height: 200)
+                .padding(.bottom)
             }
-            .frame(height: 200)
-            .padding(.bottom)
         }
     }
     
@@ -203,6 +220,7 @@ extension HomeView{
                     .environmentObject(homeVM)
                     .padding(.vertical, 5)
                     .redacted(reason: .placeholder)
+                    .shimmering()
             }else{
                 RestaurantCardView(restaurant: $homeVM.allRestaurants[index])
                     .environmentObject(homeVM)

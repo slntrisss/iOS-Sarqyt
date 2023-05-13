@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
 
 class HomeViewModel: ObservableObject{
@@ -82,7 +83,9 @@ class HomeViewModel: ObservableObject{
         restaurantDataService.$recommendedRestaurantsPreviewList
             .sink { [weak self] restaurants in
                 if let restaurants = restaurants{
-                    self?.isRecommendedRestaurantsLoading = false
+                    withAnimation {
+                        self?.isRecommendedRestaurantsLoading = false
+                    }
                     self?.recommendedRestaurants = restaurants
                 }
             }
@@ -91,7 +94,9 @@ class HomeViewModel: ObservableObject{
         restaurantDataService.$promotedRestaurantsPreviewList
             .sink { [weak self] restaurants in
                 if let restaurants = restaurants{
-                    self?.isPromotedRestaurantsLoading = false
+                    withAnimation {
+                        self?.isPromotedRestaurantsLoading = false
+                    }
                     self?.promotedRestaurants = restaurants
                 }
             }
@@ -101,7 +106,9 @@ class HomeViewModel: ObservableObject{
         restaurantDataService.$restaurantList
             .sink { [weak self] restaurants in
                 if let restaurants = restaurants{
-                    self?.isRestaurantListLoading = false
+                    withAnimation {
+                        self?.isRestaurantListLoading = false
+                    }
                     self?.allRestaurants.append(contentsOf: restaurants)
                     self?.pageInfo.itemsLoaded = self?.allRestaurants.count ?? 0
                 }
