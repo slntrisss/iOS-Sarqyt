@@ -150,6 +150,7 @@
 		FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FF9299FA92E0061771C /* Notification.swift */; };
 		FFBB2FFD299FB0B80061771C /* ResetTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB2FFC299FB0B80061771C /* ResetTypeView.swift */; };
 		FFBB3001299FF10C0061771C /* CodeVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBB3000299FF10C0061771C /* CodeVerificationView.swift */; };
+		FFC1CCC72A10D13A00BFAB7C /* EmptyResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC1CCC62A10D13A00BFAB7C /* EmptyResultView.swift */; };
 		FFDF071229B3972F00AB0173 /* BookingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDF071129B3972F00AB0173 /* BookingStatus.swift */; };
 		FFDF071529B3B4F400AB0173 /* BookingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDF071429B3B4F400AB0173 /* BookingViewModel.swift */; };
 		FFDF071729B3C1D100AB0173 /* CancelBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDF071629B3C1D100AB0173 /* CancelBookingView.swift */; };
@@ -310,6 +311,7 @@
 		FFBB2FF9299FA92E0061771C /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		FFBB2FFC299FB0B80061771C /* ResetTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTypeView.swift; sourceTree = "<group>"; };
 		FFBB3000299FF10C0061771C /* CodeVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeVerificationView.swift; sourceTree = "<group>"; };
+		FFC1CCC62A10D13A00BFAB7C /* EmptyResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResultView.swift; sourceTree = "<group>"; };
 		FFDF071129B3972F00AB0173 /* BookingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingStatus.swift; sourceTree = "<group>"; };
 		FFDF071429B3B4F400AB0173 /* BookingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingViewModel.swift; sourceTree = "<group>"; };
 		FFDF071629B3C1D100AB0173 /* CancelBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBookingView.swift; sourceTree = "<group>"; };
@@ -738,6 +740,7 @@
 		FF68D23629D81F320064ECF9 /* SecondaryViews */ = {
 			isa = PBXGroup;
 			children = (
+				FFC1CCC52A10D11D00BFAB7C /* EmptyResultView */,
 				FFA4869529FDAE97006B8FBB /* NumberPad */,
 				FF68D23829D81F5E0064ECF9 /* AddPaymentView */,
 			);
@@ -1288,6 +1291,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		FFC1CCC52A10D11D00BFAB7C /* EmptyResultView */ = {
+			isa = PBXGroup;
+			children = (
+				FFC1CCC62A10D13A00BFAB7C /* EmptyResultView.swift */,
+			);
+			path = EmptyResultView;
+			sourceTree = "<group>";
+		};
 		FFDF071329B3B4DD00AB0173 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1521,6 +1532,7 @@
 				FF90C25729EC1A55005FAF4C /* TableInfo.swift in Sources */,
 				FF1E49A829A3EA03004B6FE1 /* RestaurantBannerView.swift in Sources */,
 				FF5391C229BCB72A004AF07D /* CommentView.swift in Sources */,
+				FFC1CCC72A10D13A00BFAB7C /* EmptyResultView.swift in Sources */,
 				FFA72B7A29F4794D008C917B /* FilterDataService.swift in Sources */,
 				FF53992C29C8D2E800CA0F89 /* FoodViewModel.swift in Sources */,
 				FFBB2FFA299FA92E0061771C /* Notification.swift in Sources */,

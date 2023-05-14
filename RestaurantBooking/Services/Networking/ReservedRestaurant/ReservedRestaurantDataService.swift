@@ -51,7 +51,7 @@ class ReservedRestaurantDataService{
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedRestaurants in
                     if fetchedRestaurants.count == 0{
                         self?.restaurantSubscription?.cancel()
-                        return
+//                        return
                     }
                     switch status{
                     case .ongoing:

@@ -38,6 +38,9 @@ class BookingViewModel: ObservableObject{
     @Published var isCompletedRestaurantsLoading = true
     @Published var isCancelledRestaurantsLoading = true
     @Published var reservationDetailsLoading = true
+    @Published var isOngoingListEmpty = false
+    @Published var isCompletedListEmpty = false
+    @Published var isCancelledListEmpty = false
     func viewTicketButtonTapped(restaurantId: String){
         
     }
@@ -48,6 +51,11 @@ class BookingViewModel: ObservableObject{
                 if let fetchedRestaurants = fetchedRestaurants{
                     self?.isOngoingRestaurantsLoading = false
                     self?.ongoingBookings.append(contentsOf: fetchedRestaurants)
+                    
+                    if let ongoingBookings = self?.ongoingBookings,
+                       (ongoingBookings.isEmpty || ongoingBookings.count == 0){
+                        self?.isOngoingListEmpty = true
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -57,6 +65,11 @@ class BookingViewModel: ObservableObject{
                 if let fetchedRestaurants = fetchedRestaurants{
                     self?.isCompletedRestaurantsLoading = false
                     self?.completedBookings.append(contentsOf: fetchedRestaurants)
+                    
+                    if let completedBookings = self?.completedBookings,
+                       (completedBookings.isEmpty || completedBookings.count == 0){
+                        self?.isCompletedListEmpty = true
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -66,6 +79,11 @@ class BookingViewModel: ObservableObject{
                 if let fetchedRestaurants = fetchedRestaurants{
                     self?.isCancelledRestaurantsLoading = false
                     self?.cancelledBookings.append(contentsOf: fetchedRestaurants)
+                    
+                    if let cancelledBookings = self?.cancelledBookings,
+                       (cancelledBookings.isEmpty || cancelledBookings.count == 0){
+                        self?.isCancelledListEmpty = true
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -91,6 +109,19 @@ class BookingViewModel: ObservableObject{
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    func showEmptyPlaceholder(status: BookingStatus) -> Bool {
+        switch status{
+        case .ongoing:
+            return isOngoingListEmpty
+        case .completed:
+            return isCompletedListEmpty
+        case .cancelled:
+            return isCancelledListEmpty
+        default:
+            return false
+        }
     }
 }
 
@@ -136,12 +167,15 @@ extension BookingViewModel{
         switch status{
         case .ongoing:
             isOngoingRestaurantsLoading = true
+            isOngoingListEmpty = false
             refreshItems(for: status, restaurants: &ongoingBookings, pageInfo: ongoingPageInfo)
         case .completed:
             isCompletedRestaurantsLoading = true
+            isCompletedListEmpty = false
             refreshItems(for: status, restaurants: &completedBookings, pageInfo: completedPageInfo)
         default:
             isCancelledRestaurantsLoading = true
+            isCancelledListEmpty = false
             refreshItems(for: status, restaurants: &cancelledBookings, pageInfo: cancelledPageInfo)
         }
     }

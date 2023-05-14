@@ -18,15 +18,21 @@ struct BookingListView: View {
     }
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
-            LazyVStack{
-                ForEach(bookingList.indices, id: \.self) { index in
-                    BookingCardView(restaurant: bookingList[index])
-                        .environmentObject(bookingVM)
-                        .padding(.bottom, 40)
-                        .onAppear{
-                            bookingVM.requestMoreItems(for: status, index: index)
-                        }
+            ZStack(alignment: .center){
+                LazyVStack{
+                    ForEach(bookingList.indices, id: \.self) { index in
+                        BookingCardView(restaurant: bookingList[index])
+                            .environmentObject(bookingVM)
+                            .padding(.bottom, 40)
+                            .onAppear{
+                                bookingVM.requestMoreItems(for: status, index: index)
+                            }
+                    }
                 }
+                .opacity(bookingVM.showEmptyPlaceholder(status: status) ? 0.0 : 1.0)
+                EmptyResultView(title: "No results found")
+                    .frame(height: UIScreen.main.bounds.height * 0.5)
+                    .opacity(bookingVM.showEmptyPlaceholder(status: status) ? 1.0 : 0.0)
             }
         }
         .onAppear{
