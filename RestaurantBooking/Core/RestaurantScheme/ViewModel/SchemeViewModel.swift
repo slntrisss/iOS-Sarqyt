@@ -28,6 +28,7 @@ class SchemeViewModel: ObservableObject{
     @Published var numberOfGuests = -1
     @Published var selectedTime: String = ""
     @Published var saveChanges = false
+    @Published var currentScaleAmount: CGFloat = 0
     
     var cancellables = Set<AnyCancellable>()
     
@@ -103,6 +104,23 @@ class SchemeViewModel: ObservableObject{
         return Color.theme.secondaryText.opacity(0.15)
     }
     
+    private func computeInitialScaleEffect(){
+        if let scheme = scheme{
+            let width = 30 * scheme.numberOfRows
+            let height = 30 * scheme.numberOfColumns
+            
+            let frameWidth = UIScreen.main.bounds.width - 40
+            let frameHeight:CGFloat = 380
+            
+            let schemeScale = CGFloat(max(width, height) + 30)
+            let frameScale = min(frameWidth, frameHeight)
+            
+            if schemeScale > frameScale{
+                currentScaleAmount = 1 - (schemeScale / frameScale)
+            }
+        }
+    }
+    
     //MARK: TimePicker
     
     func setSelectedTimeInterval(index: Int){
@@ -144,6 +162,7 @@ class SchemeViewModel: ObservableObject{
                 if let fetchedScheme = fetchedScheme{
                     self?.schemeIsLoading = false
                     self?.scheme = fetchedScheme
+                    self?.computeInitialScaleEffect()
                     if ((self?.mapItemGroupSelectOptions.count ?? 0 == 0)){
                         self?.mapItemGroupSelectOptions = Array(repeating: false, count: fetchedScheme.floors[self?.selectedFloor ?? 0].groups.count )
                     }

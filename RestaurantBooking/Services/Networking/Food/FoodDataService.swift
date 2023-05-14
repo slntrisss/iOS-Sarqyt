@@ -40,6 +40,7 @@ class FoodDataService: ObservableObject{
     }
     
     func fetchFoods(for restaurantId: String, of typeId: String, offset: Int, limit: Int){
+        self.foodListSubscription?.cancel()
         let urlString = Constants.BASE_URL + "/\(restaurantId)" + Constants.FOOD_BASE_URL + "/\(typeId)" + Constants.FOOD_LIST
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
@@ -62,12 +63,12 @@ class FoodDataService: ObservableObject{
             foodListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Food].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedFoods in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
                         self?.foods = fetchedFoods
                         if fetchedFoods.count == 0{
                             self?.foodListSubscription?.cancel()
                         }
-                    }
+//                    }
                 })
         }catch let error{
             print("Error occured: \(error.localizedDescription)")

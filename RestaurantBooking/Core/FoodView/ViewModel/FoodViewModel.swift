@@ -108,6 +108,7 @@ class FoodViewModel: ObservableObject{
     //MARK: - Networking
     func fetchInitialData(){
         if let restaurant = bookVM.restaurant{
+            foodIsLoading = true
             foodDataService.fetchFoodTitles(for: restaurant.id)
         }
     }

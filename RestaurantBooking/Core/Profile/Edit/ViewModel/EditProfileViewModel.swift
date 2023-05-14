@@ -41,7 +41,7 @@ class EditProfileViewModel: ObservableObject{
             self.email = user.email
             self.phoneNumber = user.phoneNumber
             self.selectedGender = user.gender
-            self.selectedImage = UIImage(named: user.profileImage)
+            self.selectedImage = ImageService.convertBase64ToImage(base64: user.profileImage)
         }
     }
     

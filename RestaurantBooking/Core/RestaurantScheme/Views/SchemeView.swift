@@ -52,7 +52,7 @@ struct SchemeView: View {
                 }else{
                     ZStack{ scheme }
                         .offset(currentOffset)
-                        .scaleEffect(1 + currentAmount + lastAmount)
+                        .scaleEffect(1 + schemeVM.currentScaleAmount + lastAmount)
                         .contentShape(Rectangle())
                         .gesture(dragGesture)
                         .gesture(magnificationGesture)
@@ -65,7 +65,7 @@ struct SchemeView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .strokeBorder(Color.theme.secondaryText.opacity(0.5), lineWidth: 3)
             )
-            .padding(.horizontal)
+            .padding(.horizontal, 20)
             .sheet(isPresented: $schemeVM.showTableInfoSheet) {
                 TableInfoView(schemeVM: schemeVM, selectedTime: $selectedTimeInterval, numberOfGuests: $numberOfGuests)
                     .presentationDetents([.fraction(0.8), .large])
