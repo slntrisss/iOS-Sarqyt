@@ -16,6 +16,9 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
     
     @Published var showListView: Bool = false
     @Published var navigateToDetailView = false
+    @Published var showUserLocationDeniedAlert = false
+    var locationAlertMessage = ""
+    var locationAlertTitle = ""
     
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     var locationManager: CLLocationManager?
@@ -95,9 +98,15 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
         case .restricted:
             //TODO: alert
             print("Your location is restricted.")
+            locationAlertTitle = "Location restricted"
+            locationAlertMessage = "Your location is restricted. Please, got settings and enable location."
+            showUserLocationDeniedAlert = true
         case .denied:
             //TODO: alert
             print("Your location is denied. Go to settings and enable location")
+            locationAlertTitle = "Location denied"
+            locationAlertMessage = "Your location is denied. Go to settings and enable location"
+            showUserLocationDeniedAlert = true
         case .authorizedAlways, .authorizedWhenInUse:
             mapRegion = MKCoordinateRegion(center: locationManager.location?.coordinate ?? mapRegion.center, span: mapSpan)
         @unknown default:

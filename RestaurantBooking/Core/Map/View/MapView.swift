@@ -57,6 +57,12 @@ struct MapView: View {
                 }
             }
         }
+        .alert(mapVM.locationAlertTitle, isPresented: $mapVM.showUserLocationDeniedAlert) {
+            Button("OK"){}
+        } message: {
+            Text(mapVM.locationAlertMessage)
+        }
+
     }
 }
 struct MapView_Previews: PreviewProvider {
