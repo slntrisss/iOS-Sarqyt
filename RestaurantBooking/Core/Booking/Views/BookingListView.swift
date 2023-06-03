@@ -28,6 +28,13 @@ struct BookingListView: View {
                                 bookingVM.requestMoreItems(for: status, index: index)
                             }
                     }
+                    if bookingVM.isRequestingMoreOngoingListData{
+                        ProgressView()
+                    } else if bookingVM.isRequestingMoreCompletedListData{
+                        ProgressView()
+                    } else if bookingVM.isRequestingMoreCancelledListData{
+                        ProgressView()
+                    }
                 }
                 .opacity(bookingVM.showEmptyPlaceholder(status: status) ? 0.0 : 1.0)
                 EmptyResultView(title: "No results found")
@@ -40,6 +47,9 @@ struct BookingListView: View {
         }
         .refreshable {
             bookingVM.refreshItems(for: status)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.EmptyLazyLoadData)) { _ in
+            bookingVM.hideProgressView(status: status)
         }
     }
 }

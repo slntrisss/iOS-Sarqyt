@@ -41,6 +41,9 @@ class BookingViewModel: ObservableObject{
     @Published var isOngoingListEmpty = false
     @Published var isCompletedListEmpty = false
     @Published var isCancelledListEmpty = false
+    @Published var isRequestingMoreOngoingListData = false
+    @Published var isRequestingMoreCompletedListData = false
+    @Published var isRequestingMoreCancelledListData = false
     func viewTicketButtonTapped(restaurantId: String){
         
     }
@@ -57,6 +60,7 @@ class BookingViewModel: ObservableObject{
                         self?.isOngoingListEmpty = true
                     }
                 }
+                self?.isRequestingMoreOngoingListData = false
             }
             .store(in: &cancellables)
         
@@ -71,6 +75,7 @@ class BookingViewModel: ObservableObject{
                         self?.isCompletedListEmpty = true
                     }
                 }
+                self?.isRequestingMoreCompletedListData = false
             }
             .store(in: &cancellables)
         
@@ -85,6 +90,7 @@ class BookingViewModel: ObservableObject{
                         self?.isCancelledListEmpty = true
                     }
                 }
+                self?.isRequestingMoreCancelledListData = false
             }
             .store(in: &cancellables)
         
@@ -159,7 +165,34 @@ extension BookingViewModel{
     private func requestMoreItems(for status: BookingStatus, index: Int, restaurants: [Restaurant], pageInfo: PageInfo){
         if restaurants.count - 1 == index {
             pageInfo.offset += Constants.DEFAULT_LIMIT
+            showProgressView(status: status)
             dataService.fecthRestaurants(for: status, offset: pageInfo.offset, limit: Constants.DEFAULT_LIMIT)
+        }
+    }
+    
+    func hideProgressView(status: BookingStatus){
+        switch status {
+        case .ongoing:
+            isRequestingMoreOngoingListData = false
+        case .completed:
+            isRequestingMoreCompletedListData = false
+        case .cancelled:
+            isRequestingMoreCancelledListData = false
+        case .none:
+            print("")
+        }
+    }
+    
+    private func showProgressView(status: BookingStatus){
+        switch status {
+        case .ongoing:
+            isRequestingMoreOngoingListData = true
+        case .completed:
+            isRequestingMoreCompletedListData = true
+        case .cancelled:
+            isRequestingMoreCancelledListData = true
+        case .none:
+            print("")
         }
     }
     
