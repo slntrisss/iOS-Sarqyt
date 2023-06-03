@@ -63,5 +63,5 @@ class Constants{
     
     //MARK: Pagination
     static let DEFAULT_OFFSET = 0
-    static let DEFAULT_LIMIT = 5
+    static let DEFAULT_LIMIT = 10
 }

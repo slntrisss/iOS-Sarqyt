@@ -38,6 +38,10 @@ struct RestaurantListView: View {
                             }
                     }
                 }
+                if listVM.isRequestMoreDataList{
+                    ProgressView()
+                        .padding(.vertical)
+                }
             }
             .animation(.easeOut, value: homeVM.restaurants)
             .navigationTitle(title)
@@ -48,6 +52,9 @@ struct RestaurantListView: View {
         }
         .refreshable {
             listVM.refreshList()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.EmptyLazyLoadData)) { _ in
+            listVM.isRequestMoreDataList = false
         }
     }
 }

@@ -18,6 +18,7 @@ class RestaurantListViewModel: ObservableObject{
     //MARK: Loading View
     @Published var placheholderArray = DeveloperPreview.instance.restaurants
     @Published var isLoading = true
+    @Published var isRequestMoreDataList = false
     
     init(listType: RestaurantListType){
         self.listType = listType
@@ -37,6 +38,7 @@ class RestaurantListViewModel: ObservableObject{
     
     func requestMoreItems(index: Int){
         if index == restaurants.count - 1{
+            isRequestMoreDataList = true
             print("More items in \(listType)...")
             pageInfo.offset += Constants.DEFAULT_LIMIT
             switch listType{
@@ -73,6 +75,7 @@ extension RestaurantListViewModel{
                     self?.restaurants.append(contentsOf: fetchedRestaurants)
                     self?.pageInfo.itemsLoaded = self?.restaurants.count ?? 0
                 }
+                self?.isRequestMoreDataList = false
             }
             .store(in: &cancellables)
     }
@@ -86,6 +89,7 @@ extension RestaurantListViewModel{
                     self?.restaurants.append(contentsOf: fetchedRestaurants)
                     self?.pageInfo.itemsLoaded = self?.restaurants.count ?? 0
                 }
+                self?.isRequestMoreDataList = false
             }
             .store(in: &cancellables)
     }

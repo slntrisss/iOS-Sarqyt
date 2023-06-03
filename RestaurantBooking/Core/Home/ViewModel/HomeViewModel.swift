@@ -40,6 +40,7 @@ class HomeViewModel: ObservableObject{
     @Published var isRecommendedRestaurantsLoading = true
     @Published var isPromotedRestaurantsLoading = true
     @Published var isRestaurantListLoading = true
+    @Published var isRequestingMoreListOfRestaurants = false
     
     init(){
         recentSearchHistory = DeveloperPreview.instance.restaurants
@@ -112,6 +113,7 @@ class HomeViewModel: ObservableObject{
                     self?.allRestaurants.append(contentsOf: restaurants)
                     self?.pageInfo.itemsLoaded = self?.allRestaurants.count ?? 0
                 }
+                self?.isRequestingMoreListOfRestaurants = false
             }
             .store(in: &cancellables)
     }
@@ -130,6 +132,7 @@ class HomeViewModel: ObservableObject{
     func requestMoreItems(index: Int) {
         if index == allRestaurants.count - 1{
             print("More items in home_view...")
+            isRequestingMoreListOfRestaurants = true
             pageInfo.offset += Constants.DEFAULT_LIMIT
             restaurantDataService.getRestaurantList(
                 offset: pageInfo.offset,

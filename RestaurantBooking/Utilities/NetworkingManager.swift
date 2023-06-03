@@ -48,6 +48,7 @@ class NetworkingManager{
             break
         case .failure(let error):
             print(error.localizedDescription)
+            NotificationCenter.default.post(name: Notification.EmptyLazyLoadData, object: nil)
         }
     }
     

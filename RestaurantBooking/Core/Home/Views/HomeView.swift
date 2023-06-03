@@ -60,6 +60,11 @@ struct HomeView: View {
             .onAppear{
                 homeVM.addSubscribers()
             }
+            .onReceive(NotificationCenter.default.publisher(for: Notification.EmptyLazyLoadData)) { _ in
+                withAnimation(.spring()) {
+                    homeVM.isRequestingMoreListOfRestaurants = false
+                }
+            }
         }
     }
 }
@@ -183,7 +188,7 @@ extension HomeView{
                 Button{
                     //Do something
                     homeVM.getRecommnededRestaurants()
-                    homeVM.showRecommended.toggle()
+                    homeVM.showPromoted.toggle()
                 }label: {
                     Text("See all")
                         .foregroundColor(Color.theme.green)
@@ -214,22 +219,29 @@ extension HomeView{
     }
     
     private var listOfRestaurants: some View{
-        ForEach(homeVM.isRestaurantListLoading ? homeVM.placeHolderArray.indices : homeVM.allRestaurants.indices, id: \.self){ index in
-            if homeVM.isRestaurantListLoading{
-                RestaurantCardView(restaurant: $homeVM.placeHolderArray[index])
-                    .environmentObject(homeVM)
-                    .padding(.vertical, 5)
-                    .redacted(reason: .placeholder)
-                    .shimmering()
-            }else{
-                RestaurantCardView(restaurant: $homeVM.allRestaurants[index])
-                    .environmentObject(homeVM)
-                    .padding(.vertical, 5)
-                    .onAppear{
-                        homeVM.requestMoreItems(index: index)
-                    }
+        LazyVStack{
+            ForEach(homeVM.isRestaurantListLoading ? homeVM.placeHolderArray.indices : homeVM.allRestaurants.indices, id: \.self){ index in
+                if homeVM.isRestaurantListLoading{
+                    RestaurantCardView(restaurant: $homeVM.placeHolderArray[index])
+                        .environmentObject(homeVM)
+                        .padding(.vertical, 5)
+                        .redacted(reason: .placeholder)
+                        .shimmering()
+                }else{
+                    RestaurantCardView(restaurant: $homeVM.allRestaurants[index])
+                        .environmentObject(homeVM)
+                        .padding(.vertical, 5)
+                        .onAppear{
+                            homeVM.requestMoreItems(index: index)
+                        }
+                }
+            }
+            if homeVM.isRequestingMoreListOfRestaurants{
+                ProgressView()
+                    .padding(.vertical)
             }
         }
         .padding(.horizontal)
+            
     }
 }

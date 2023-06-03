@@ -8,4 +8,5 @@
 import Foundation
 
 extension Notification{
+    static let EmptyLazyLoadData = Notification.Name.init(rawValue: "com.RestaurantBooking.EmptyLazyLoadData")
 }
