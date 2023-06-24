@@ -20,7 +20,7 @@ class FoodDataService: ObservableObject{
     private init() { }
     
     func fetchFoodTitles(for restaurantId: String){
-        let urlString = Constants.BASE_URL + "/\(restaurantId)" + Constants.FOOD_TYPES
+        let urlString = Constants.BASE_URL + Constants.FOOD_TYPES + "/\(restaurantId)"
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -29,7 +29,7 @@ class FoodDataService: ObservableObject{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         foodTypeSubscription = NetworkingManager.download(request: request)
             .decode(type: [FoodType].self, decoder: JSONDecoder())
@@ -41,7 +41,7 @@ class FoodDataService: ObservableObject{
     
     func fetchFoods(for restaurantId: String, of typeId: String, offset: Int, limit: Int){
         self.foodListSubscription?.cancel()
-        let urlString = Constants.BASE_URL + "/\(restaurantId)" + Constants.FOOD_BASE_URL + "/\(typeId)" + Constants.FOOD_LIST
+        let urlString = Constants.BASE_URL + Constants.FOOD_BASE_URL + "/\(restaurantId)" + "/\(typeId)" + Constants.FOOD_LIST
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -58,7 +58,7 @@ class FoodDataService: ObservableObject{
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
             
             foodListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Food].self, decoder: JSONDecoder())

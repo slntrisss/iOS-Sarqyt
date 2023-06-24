@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BookingCardView: View {
-    let restaurant: Restaurant
+    let restaurant: ReservedRestaurant
     @EnvironmentObject private var bookingVM : BookingViewModel
     @StateObject private var passcodeVM = PasscodeViewModel(type: .verifyIdentity)
     @State private var cancelBookingTapped = false
@@ -28,7 +28,7 @@ struct BookingCardView: View {
                     Text(restaurant.name)
                         .foregroundColor(Color.theme.accent)
                         .font(.title3.bold())
-                    Text("\(restaurant.address.city), \(restaurant.address.location)")
+                    Text("\(restaurant.address.city), \(restaurant.address.address)")
                         .foregroundColor(Color.theme.secondaryText)
                         .font(.caption)
                         .lineLimit(2)
@@ -55,40 +55,27 @@ struct BookingCardView: View {
                     }
             }
         }
-        .sheet(isPresented: $cancelBookingTapped, content: {
-            CancelBookingView(dismissButtonTapped: $dismissCancelBookingDialogTapped,
-                              cancelButtonTapped: $cancelBooking)
-            .onChange(of: cancelBooking) { _ in
-                if cancelBooking{
-                    cancelBooking.toggle()
-                    cancelBookingTapped.toggle()
-                    bookingVM.addPasscodeSubscription(passcodeVM: passcodeVM, for: restaurant)
-                }
-            }
-        })
+//        .sheet(isPresented: $cancelBookingTapped, content: {
+//            CancelBookingView(dismissButtonTapped: $dismissCancelBookingDialogTapped,
+//                              cancelButtonTapped: $cancelBooking)
+//            .onChange(of: cancelBooking) { _ in
+//                if cancelBooking{
+//                    cancelBooking.toggle()
+//                    cancelBookingTapped.toggle()
+//                    bookingVM.addPasscodeSubscription(passcodeVM: passcodeVM, for: restaurant)
+//                }
+//            }
+//        })
         .sheet(isPresented: $viewTicketTapped) {
             NavigationStack{
-                ReserveInfoView(bookingVM: bookingVM, restaurantId: restaurant.id)
+                ReserveInfoView(bookingVM: bookingVM, restaurantId: restaurant.id, orderItemId: restaurant.orderItemId)
             }
         }
-        .fullScreenCover(isPresented: $bookingVM.showPasscodeView) {
+        .onChange(of: cancelBookingTapped, perform: { newValue in
+            bookingVM.addPasscodeSubscription(passcodeVM: passcodeVM, for: restaurant)
+        })
+        .fullScreenCover(isPresented: $cancelBookingTapped) {
             NumberPadView(passcodeVM: passcodeVM)
-        }
-    }
-}
-
-struct BookingCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            BookingCardView(restaurant: dev.restaurant)
-                .previewLayout(.sizeThatFits)
-                .preferredColorScheme(.light)
-                .padding()
-            
-            BookingCardView(restaurant: dev.restaurant)
-                .previewLayout(.sizeThatFits)
-                .preferredColorScheme(.dark)
-                .padding()
         }
     }
 }

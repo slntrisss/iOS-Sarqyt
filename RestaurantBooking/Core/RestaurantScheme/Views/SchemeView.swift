@@ -72,6 +72,7 @@ struct SchemeView: View {
             }
         }
         .onAppear{
+            schemeVM.schemeIsLoading = true
             schemeVM.setupRestaurantScheme()
         }
     }
@@ -92,15 +93,17 @@ extension SchemeView{
                 ForEach(0..<scheme.floors[schemeVM.selectedFloor].groups.count, id: \.self) { index in
                     GroupView(
                         mapItemGroup:scheme.floors[schemeVM.selectedFloor].groups[index],
-                        isSelected: $schemeVM.mapItemGroupSelectOptions[index]
+                        isSelected: $schemeVM.selectedGroup[schemeVM.selectedFloor][index]
                     )
                     .onTapGesture {
-                        let groupId = scheme.floors[schemeVM.selectedFloor].groups[index].id
-                        if schemeVM.selectedIndex != index{
-                            numberOfGuests = 1
-                            selectedTimeInterval = ""
+                        if !scheme.floors[schemeVM.selectedFloor].groups[index].reserved{
+                            let groupId = scheme.floors[schemeVM.selectedFloor].groups[index].id
+                            if schemeVM.selectedIndex != index{
+                                numberOfGuests = 1
+                                selectedTimeInterval = ""
+                            }
+                            schemeVM.getTablePhotos(with: restaurantId, selectedDate: selectedDate, groupId: groupId, index: index)
                         }
-                        schemeVM.getTablePhotos(with: restaurantId, selectedDate: selectedDate, groupId: groupId, index: index)
                     }
                 }
             }else{

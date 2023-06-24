@@ -9,16 +9,16 @@ import SwiftUI
 
 struct BookingListView: View {
     @ObservedObject var bookingVM: BookingViewModel
-    @Binding var bookingList: [Restaurant]
+    @Binding var bookingList: [ReservedRestaurant]
     let status: BookingStatus
-    init(bookingVM: BookingViewModel, bookingList: Binding<[Restaurant]>, status: BookingStatus) {
+    init(bookingVM: BookingViewModel, bookingList: Binding<[ReservedRestaurant]>, status: BookingStatus) {
         self._bookingVM = ObservedObject(wrappedValue: bookingVM)
         self._bookingList = bookingList
         self.status = status
     }
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
-            ZStack(alignment: .center){
+            ZStack(alignment: .top){
                 LazyVStack{
                     ForEach(bookingList.indices, id: \.self) { index in
                         BookingCardView(restaurant: bookingList[index])

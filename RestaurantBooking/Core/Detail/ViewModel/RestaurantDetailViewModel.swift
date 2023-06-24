@@ -113,4 +113,17 @@ class RestaurantDetailViewModel: ObservableObject{
             }
             .store(in: &cancellables)
     }
+    
+    func rateRestaurant(){
+        let ratedRestaurant = RatedRestaurantData(id: UUID().uuidString, restaurantId: restaurant.id, selectedStars: selectedStars, comment: comment)
+        detailsDataService.rateRestaurant(for: restaurant.id, ratedRestaurantData: ratedRestaurant)
+        detailsDataService.$ratedRestaurant
+            .sink { [weak self] fetchedRatedRestaurant in
+                if fetchedRatedRestaurant != nil{
+                    self?.rate.toggle()
+                    self?.showRateView.toggle()
+                }
+            }
+            .store(in: &cancellables)
+    }
 }

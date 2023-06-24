@@ -38,10 +38,10 @@ struct Point: Codable{
     let y: Int
 }
 
-enum SchemeItemType: Codable{
-    case TABLE
-    case CHAIR
-    case SOFA
-    case WALL
-    case empty
+enum SchemeItemType: String, Codable{
+    case TABLE = "TABLE"
+    case CHAIR = "CHAIR"
+    case SOFA = "SOFA"
+    case WALL = "WALL"
+    case empty = "empty"
 }

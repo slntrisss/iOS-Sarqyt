@@ -15,6 +15,14 @@ extension JSONDecoder{
         return decoder
     }
     
+    static var DaurbeksDatesFormatter: JSONDecoder{
+        let decoder = JSONDecoder()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        decoder.dateDecodingStrategy = .formatted(dateFormatter)
+        return decoder
+    }
+    
     static var decoder: JSONDecoder{
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601

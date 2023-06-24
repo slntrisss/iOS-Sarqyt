@@ -15,25 +15,29 @@ struct RateRestaurantView: View {
     @Binding var cancelRating: Bool
     var body: some View {
         ScrollView(.vertical){
-            VStack{
-                Capsule().fill(Color.theme.secondaryText.opacity(0.5))
-                    .frame(width: 40, height: 5)
-                    .padding(.vertical)
-                Text("Rate the Restaurant")
-                    .font(.title3.weight(.semibold))
-                Divider()
-                restaurantCardView
-                Spacer().frame(height: 30)
-                ratedStarsView
-                Spacer().frame(height: 30)
-                commentView
-                Spacer().frame(height: 30)
-                VStack(spacing: 20){
-                    PrimaryButton(buttonLabel: "Rate now", buttonClicked: $rate)
-                    SecondaryButton(buttonLabel: "Later", buttonClicked: $cancelRating)
+            if !rate{
+                VStack{
+                    Capsule().fill(Color.theme.secondaryText.opacity(0.5))
+                        .frame(width: 40, height: 5)
+                        .padding(.vertical)
+                    Text("Rate the Restaurant")
+                        .font(.title3.weight(.semibold))
+                    Divider()
+                    restaurantCardView
+                    Spacer().frame(height: 30)
+                    ratedStarsView
+                    Spacer().frame(height: 30)
+                    commentView
+                    Spacer().frame(height: 30)
+                    VStack(spacing: 20){
+                        PrimaryButton(buttonLabel: "Rate now", buttonClicked: $rate)
+                        SecondaryButton(buttonLabel: "Later", buttonClicked: $cancelRating)
+                    }
                 }
+                .padding(.horizontal)
+            } else{
+                ProgressView()
             }
-            .padding(.horizontal)
         }
     }
 }
@@ -80,7 +84,7 @@ extension RateRestaurantView{
         }
     }
     private var cardImage: some View{
-        Image(restaurant.image)
+        Image(uiImage: restaurant.wrappedImage)
             .resizable()
             .frame(width: 80, height: 80)
             .clipShape(RoundedRectangle(cornerRadius: 20))

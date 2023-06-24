@@ -71,8 +71,7 @@ class AccountSetupViewModel: ObservableObject{
     private func addSubscribers(){
         dataService.$user
             .sink { [weak self] fetchedUser in
-                if let user = self?.user, let fetchedUser = fetchedUser,
-                   user.id == fetchedUser.id{
+                if let _ = fetchedUser{
                     print("User saved to DB")
                     DispatchQueue.main.async {
                         self?.userSaved = true

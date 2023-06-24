@@ -13,8 +13,10 @@ struct ReserveInfoView: View {
     @State private var show = false
     @Environment(\.dismiss) private var dismiss
     let restaurantId: String
-    init(bookingVM: BookingViewModel, restaurantId: String){
+    let orderItemId: String
+    init(bookingVM: BookingViewModel, restaurantId: String, orderItemId: String){
         self.restaurantId = restaurantId
+        self.orderItemId = orderItemId
         self._bookingVM = ObservedObject(wrappedValue: bookingVM)
     }
     var body: some View {
@@ -56,7 +58,8 @@ struct ReserveInfoView: View {
             }
         }
         .onAppear{
-            bookingVM.getReservedRestaurantDetail(for: restaurantId)
+            bookingVM.reservationDetailsLoading = true
+            bookingVM.getReservedRestaurantDetail(for: restaurantId, orderItemId: orderItemId)
         }
     }
 }
@@ -64,7 +67,7 @@ struct ReserveInfoView: View {
 struct ReserveInfo_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            ReserveInfoView(bookingVM: BookingViewModel(), restaurantId: "")
+            ReserveInfoView(bookingVM: BookingViewModel(), restaurantId: "", orderItemId: "")
         }
     }
 }

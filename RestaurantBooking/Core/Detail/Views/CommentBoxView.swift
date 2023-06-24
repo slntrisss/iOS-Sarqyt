@@ -12,13 +12,13 @@ struct CommentBoxView: View {
     @State private var showFullComment = false
     let comment: Comment
     var body: some View {
-        VStack{
+        VStack(alignment: .leading){
             HStack{
                 VStack(alignment: .leading, spacing: 5){
                     Text(comment.user.firstName + " " + comment.user.lastName)
                         .font(.headline)
                     Text(comment.date)
-                        .font(.callout)
+                        .font(.caption.weight(.medium))
                         .foregroundColor(Color.theme.secondaryText)
                 }
                 Spacer()
@@ -27,6 +27,7 @@ struct CommentBoxView: View {
             VStack(alignment: .leading){
                 Text(comment.text)
                     .font(.callout)
+                    .multilineTextAlignment(.leading)
                     .foregroundColor(Color.theme.secondaryText)
                     .lineLimit(showFullComment ? nil : 1)
                 Button{

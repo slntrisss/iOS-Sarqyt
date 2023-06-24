@@ -13,10 +13,12 @@ class RestaurantDataService{
     @Published var recommendedRestaurantsPreviewList: [Restaurant]? = nil
     @Published var promotedRestaurantsPreviewList: [Restaurant]? = nil
     @Published var restaurantList: [Restaurant]? = nil
+    @Published var searchedRestaurants: [Restaurant]? = nil
     @Published var recommendedRestaurants: [Restaurant]? = nil
     @Published var promotedRestaurants: [Restaurant]? = nil
     var cancellables = Set<AnyCancellable>()
     
+    var searchedRestaurantListSubscription: AnyCancellable?
     var restaurantListSubscription: AnyCancellable?
     var recommendedRestaurantsSubscription: AnyCancellable?
     var promotedRestaurantsSubscription: AnyCancellable?
@@ -41,7 +43,7 @@ class RestaurantDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
@@ -63,7 +65,7 @@ class RestaurantDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         NetworkingManager.download(request: request)
             .decode(type: [Restaurant].self, decoder: JSONDecoder())
@@ -114,16 +116,16 @@ class RestaurantDataService{
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
             restaurantListSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] restaurants in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 5){
                         self?.restaurantList = restaurants
                         if restaurants.count == 0{
                             self?.restaurantListSubscription?.cancel()
                         }
-                    }
+//                    }
                 })
         }catch let error{
             print(error.localizedDescription)
@@ -148,7 +150,7 @@ class RestaurantDataService{
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
             
             recommendedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
@@ -182,7 +184,7 @@ class RestaurantDataService{
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
             
             promotedRestaurantsSubscription = NetworkingManager.download(request: request)
                 .decode(type: [Restaurant].self, decoder: JSONDecoder())
@@ -210,7 +212,7 @@ class RestaurantDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         do{
             let jsonData = try JSONSerialization.data(withJSONObject: json)
             request.httpBody = jsonData
@@ -235,5 +237,39 @@ class RestaurantDataService{
             print("Error occured: \(error.localizedDescription)")
         }
         return restaurant
+    }
+    
+    public func searchRestaurants(name: String, limit: Int, offset: Int){
+        let urlString = Constants.BASE_URL + Constants.SEARCH_RESTAURANTS
+        guard let url = URL(string: urlString) else {
+            print("BAD URL: \(urlString)")
+            return
+        }
+        
+        let parameters = [
+            URLQueryItem(name: "offset", value: "\(offset)"),
+            URLQueryItem(name: "limit", value: "\(limit)"),
+            URLQueryItem(name: "name", value: "\(name)")
+        ]
+        
+        do{
+            let urlWithParameters = try NetworkingManager.constructURLWith(parameters: parameters, url: url)
+            var request = URLRequest(url: urlWithParameters)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
+            
+            searchedRestaurantListSubscription = NetworkingManager.download(request: request)
+                .decode(type: [Restaurant].self, decoder: JSONDecoder())
+                .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] restaurants in
+                    self?.searchedRestaurants = restaurants
+                    if restaurants.count == 0{
+                        self?.searchedRestaurantListSubscription?.cancel()
+                        
+                    }
+                }
+        }catch let error{
+            print("Error occured: \(error.localizedDescription)")
+        }
     }
 }

@@ -30,7 +30,7 @@ struct Restaurant: Codable, Identifiable, Equatable, Hashable{
 
 struct Address: Codable, Hashable{
     let city: String
-    let location: String
+    let address: String
     let latitude: Double
     let longitude: Double
     

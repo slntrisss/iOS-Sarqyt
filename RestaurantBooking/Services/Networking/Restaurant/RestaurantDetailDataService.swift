@@ -10,6 +10,7 @@ import Combine
 
 class RestaurantDetailDataService{
     @Published var details: RestaurantDetails? = nil
+    @Published var ratedRestaurant: RatedRestaurantData? = nil
     @Published var previewComments: [Comment]? = nil
     @Published var comments: [Comment]? = nil
     
@@ -18,6 +19,7 @@ class RestaurantDetailDataService{
     private init(){ }
     
     var commentsSubscription: AnyCancellable?
+    var rateRestaurantSubscription: AnyCancellable?
     var cancellables = Set<AnyCancellable>()
     
     func fetchDetail(for id: String){
@@ -30,7 +32,7 @@ class RestaurantDetailDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         NetworkingManager.download(request: request)
             .decode(type: RestaurantDetails.self, decoder: JSONDecoder())
@@ -60,13 +62,19 @@ class RestaurantDetailDataService{
             var request = URLRequest(url: urlStringWithParameters)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
             
             NetworkingManager.download(request: request)
-                .decode(type: [Comment].self, decoder: JSONDecoder.defaultDecoder)
+                .decode(type: [Comment].self, decoder: JSONDecoder.DaurbeksDatesFormatter)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedComments in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-                        self?.previewComments = fetchedComments
+                        self?.previewComments = []
+                        for i in fetchedComments.indices{
+                            self?.previewComments?.append(fetchedComments[i])
+                            if i == 2{
+                                break
+                            }
+                        }
                     }
                 }
                 .store(in: &cancellables)
@@ -93,10 +101,10 @@ class RestaurantDetailDataService{
             var request = URLRequest(url: urlStringWithParameters)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
             
             commentsSubscription = NetworkingManager.download(request: request)
-                .decode(type: [Comment].self, decoder: JSONDecoder.defaultDecoder)
+                .decode(type: [Comment].self, decoder: JSONDecoder.DaurbeksDatesFormatter)
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedComments in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                         self?.comments = fetchedComments
@@ -109,5 +117,34 @@ class RestaurantDetailDataService{
         }catch let error{
             print("Error occured: \(error.localizedDescription)")
         }
+    }
+    
+    func rateRestaurant(for id: String, ratedRestaurantData: RatedRestaurantData){
+        let urlString = Constants.BASE_URL + Constants.DETAILS + Constants.RATE_RESTAURANT
+        guard let url = URL(string: urlString) else{
+            print("BAD URL: \(urlString)")
+            return
+        }
+        print(ratedRestaurantData)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        
+        do{
+            let jsonData = try JSONEncoder().encode(ratedRestaurantData)
+            request.httpBody = jsonData
+            
+            rateRestaurantSubscription = NetworkingManager.post(request: request)
+                .decode(type: RatedRestaurantData.self, decoder: JSONDecoder.defaultDecoder)
+                .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedRatedRestaurant in
+                    self?.ratedRestaurant = fetchedRatedRestaurant
+                    
+                }
+        }catch let error{
+            print("Error occured while encoding data: \(error)")
+        }
+        
+        
     }
 }

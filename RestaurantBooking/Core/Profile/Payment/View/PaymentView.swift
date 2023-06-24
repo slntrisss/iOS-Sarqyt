@@ -12,31 +12,37 @@ struct PaymentView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                List{
-                    ForEach(paymentVM.paymentCards) { card in
-                        HStack{
-                            Image(systemName: "creditcard")
-                            Text(paymentVM.getFormattedCardNumber(cardNumber: card.cardNumber))
-                                .font(.headline)
-                                .foregroundColor(Color.theme.accent)
-                            Spacer()
-                            Image(systemName: card.inUse ? "circle.circle.fill" : "circle.circle")
-                                .foregroundColor(Color.theme.green)
+                if !paymentVM.paymentCards.isEmpty{
+                    List{
+                        ForEach(paymentVM.paymentCards) { card in
+                            HStack{
+                                Image(systemName: "creditcard")
+                                Text(paymentVM.getFormattedCardNumber(cardNumber: card.cardNumber))
+                                    .font(.headline)
+                                    .foregroundColor(Color.theme.accent)
+                                Spacer()
+                                Image(systemName: card.inUse ? "circle.circle.fill" : "circle.circle")
+                                    .foregroundColor(Color.theme.green)
+                            }
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                paymentVM.changeDefaultPaymentCard(card: card)
+                            }
                         }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            paymentVM.changeDefaultPaymentCard(card: card)
-                        }
+                        .onDelete(perform: paymentVM.delete)
                     }
-                    .onDelete(perform: paymentVM.delete)
+                    .listStyle(.inset)
+                }else{
+                    EmptyResultView(title: "No results")
                 }
-                .listStyle(.inset)
-                .toolbar{
-                    ToolbarItem(placement:.navigationBarTrailing){
-                        HStack{
+            }
+            .toolbar{
+                ToolbarItem(placement:.navigationBarTrailing){
+                    HStack{
+                        if paymentVM.paymentCards.isEmpty{
                             addButton
-                            EditButton().foregroundColor(.blue)
                         }
+                        EditButton().foregroundColor(.blue)
                     }
                 }
             }

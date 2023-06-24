@@ -17,9 +17,17 @@ struct HomeView: View {
                 SearchFieldView(searchQuery: $homeVM.searchQuery, searchFieldInFocus: $searchFieldInFocus, showFilterView: $showFilterView)
                     .padding()
                 ZStack{
-                    if searchFieldInFocus && !homeVM.recentSearchHistory.isEmpty{
-                        seacrhResultView
-                    }else{
+                    if homeVM.searchingRestaurants{
+                        if homeVM.searching{
+                            ProgressView()
+                        }else if homeVM.searchedRestaurantsAreEmpty{
+                            EmptyResultView(title: "No Results")
+                        } else {
+                            searchedRestaurants
+                        }
+                    } else if homeVM.filterenabled{
+                        listOfRestaurants
+                    } else{
                         LazyVStack{
                             recommendedRestaurantsView
                             promotedRestaurantsView
@@ -120,7 +128,7 @@ extension HomeView{
                         VStack(alignment: .leading, spacing: 5){
                             Text(restaurant.name)
                                 .foregroundColor(Color.theme.accent.opacity(0.95))
-                            Text(restaurant.address.location)
+                            Text(restaurant.address.address)
                                 .font(.caption2)
                                 .foregroundColor(Color.theme.secondaryText)
                         }
@@ -216,6 +224,34 @@ extension HomeView{
                 .padding(.bottom)
             }
         }
+    }
+    
+    private var searchedRestaurants: some View{
+        LazyVStack{
+            ForEach(homeVM.searchedRestaurants.indices, id: \.self){ index in
+                RestaurantCardView(restaurant: $homeVM.searchedRestaurants[index])
+                    .environmentObject(homeVM)
+                    .padding(.vertical, 5)
+//                    .onAppear{
+//                        homeVM.requestMoreItems(index: index)
+//                    }
+            }
+        }
+        .padding(.horizontal)
+    }
+    
+    private var filteredRestaurants: some View{
+        LazyVStack{
+            ForEach(homeVM.filterVM.filteredRestaurants.indices, id: \.self){ index in
+                RestaurantCardView(restaurant: $homeVM.filterVM.filteredRestaurants[index])
+                    .environmentObject(homeVM)
+                    .padding(.vertical, 5)
+//                    .onAppear{
+//                        homeVM.requestMoreItems(index: index)
+//                    }
+            }
+        }
+        .padding(.horizontal)
     }
     
     private var listOfRestaurants: some View{

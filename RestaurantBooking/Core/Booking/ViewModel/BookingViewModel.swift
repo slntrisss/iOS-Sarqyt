@@ -10,9 +10,9 @@ import Combine
 import SwiftUI
 
 class BookingViewModel: ObservableObject{
-    @Published var cancelledBookings: [Restaurant] = []
-    @Published var completedBookings: [Restaurant] = []
-    @Published var ongoingBookings: [Restaurant] = []
+    @Published var cancelledBookings: [ReservedRestaurant] = []
+    @Published var completedBookings: [ReservedRestaurant] = []
+    @Published var ongoingBookings: [ReservedRestaurant] = []
     
     var bookingDetail: ReservedRestaurantDetail? = nil
     
@@ -53,7 +53,7 @@ class BookingViewModel: ObservableObject{
             .sink { [weak self] fetchedRestaurants in
                 if let fetchedRestaurants = fetchedRestaurants{
                     self?.isOngoingRestaurantsLoading = false
-                    self?.ongoingBookings.append(contentsOf: fetchedRestaurants)
+                    self?.ongoingBookings = fetchedRestaurants
                     
                     if let ongoingBookings = self?.ongoingBookings,
                        (ongoingBookings.isEmpty || ongoingBookings.count == 0){
@@ -68,7 +68,7 @@ class BookingViewModel: ObservableObject{
             .sink { [weak self] fetchedRestaurants in
                 if let fetchedRestaurants = fetchedRestaurants{
                     self?.isCompletedRestaurantsLoading = false
-                    self?.completedBookings.append(contentsOf: fetchedRestaurants)
+                    self?.completedBookings = fetchedRestaurants
                     
                     if let completedBookings = self?.completedBookings,
                        (completedBookings.isEmpty || completedBookings.count == 0){
@@ -83,7 +83,7 @@ class BookingViewModel: ObservableObject{
             .sink { [weak self] fetchedRestaurants in
                 if let fetchedRestaurants = fetchedRestaurants{
                     self?.isCancelledRestaurantsLoading = false
-                    self?.cancelledBookings.append(contentsOf: fetchedRestaurants)
+                    self?.cancelledBookings = fetchedRestaurants
                     
                     if let cancelledBookings = self?.cancelledBookings,
                        (cancelledBookings.isEmpty || cancelledBookings.count == 0){
@@ -139,15 +139,15 @@ extension BookingViewModel{
         case .ongoing :
             print("\(ongoingBookings.count)")
             if (ongoingBookings.isEmpty || ongoingBookings.count == 0){
-                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: 100)
             }
         case .completed:
             if (completedBookings.isEmpty || completedBookings.count == 0){
-                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: 100)
             }
         default :
             if (cancelledBookings.isEmpty || cancelledBookings.count == 0){
-                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
+                dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: 100)
             }
         }
 
@@ -162,12 +162,12 @@ extension BookingViewModel{
         }
     }
     
-    private func requestMoreItems(for status: BookingStatus, index: Int, restaurants: [Restaurant], pageInfo: PageInfo){
-        if restaurants.count - 1 == index {
-            pageInfo.offset += Constants.DEFAULT_LIMIT
-            showProgressView(status: status)
-            dataService.fecthRestaurants(for: status, offset: pageInfo.offset, limit: Constants.DEFAULT_LIMIT)
-        }
+    private func requestMoreItems(for status: BookingStatus, index: Int, restaurants: [ReservedRestaurant], pageInfo: PageInfo){
+//        if restaurants.count - 1 == index {
+//            pageInfo.offset += Constants.DEFAULT_LIMIT + Constants.DEFAULT_LIMIT
+//            showProgressView(status: status)
+//            dataService.fecthRestaurants(for: status, offset: pageInfo.offset, limit: Constants.DEFAULT_LIMIT)
+//        }
     }
     
     func hideProgressView(status: BookingStatus){
@@ -213,21 +213,21 @@ extension BookingViewModel{
         }
     }
     
-    private func refreshItems(for status: BookingStatus, restaurants: inout [Restaurant], pageInfo: PageInfo){
+    private func refreshItems(for status: BookingStatus, restaurants: inout [ReservedRestaurant], pageInfo: PageInfo){
         restaurants.removeAll()
         pageInfo.offset = 0
         dataService.fecthRestaurants(for: status, offset: Constants.DEFAULT_OFFSET, limit: Constants.DEFAULT_LIMIT)
     }
     
-    func getReservedRestaurantDetail(for restaurantId: String){
-        dataService.fetchReservedRestaurantDetail(for: restaurantId)
+    func getReservedRestaurantDetail(for restaurantId: String, orderItemId: String){
+        dataService.fetchReservedRestaurantDetail(for: restaurantId, orderItemId: orderItemId)
     }
     
-    func cancelBooking(for restaurant: Restaurant){
+    func cancelBooking(for restaurant: ReservedRestaurant){
         dataService.cancelBookingRestaurant(restaurant: restaurant)
     }
     
-    func addPasscodeSubscription(passcodeVM: PasscodeViewModel, for restaurant: Restaurant){
+    func addPasscodeSubscription(passcodeVM: PasscodeViewModel, for restaurant: ReservedRestaurant){
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){ [weak self] in
             withAnimation(.spring()){
                 self?.showPasscodeView = true
@@ -235,8 +235,10 @@ extension BookingViewModel{
         }
         passcodeVM.$authSuccess
             .sink { [weak self] success in
+                print("success \(success)")
                 if success {
                     withAnimation(.spring()){
+                        print("Dumb")
                         self?.showPasscodeView = false
                         self?.showProgressView = true
                     }

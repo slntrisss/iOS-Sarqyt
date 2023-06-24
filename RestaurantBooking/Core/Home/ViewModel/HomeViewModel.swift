@@ -17,9 +17,14 @@ class HomeViewModel: ObservableObject{
     @Published var allRestaurants: [Restaurant] = []
     @Published var promotedRestaurants: [Restaurant] = []
     @Published var recommendedRestaurants: [Restaurant] = []
+    @Published var searchedRestaurants: [Restaurant] = []
     
     @Published var recentSearchHistory: [Restaurant] = []
     
+    @Published var searchingRestaurants = false
+    @Published var searchedRestaurantsAreEmpty = false
+    @Published var filterenabled = false
+    @Published var searching = false
     @Published var showRecommended = false
     @Published var showPromoted = false
     @Published var showBookmarked = false
@@ -116,9 +121,47 @@ class HomeViewModel: ObservableObject{
                 self?.isRequestingMoreListOfRestaurants = false
             }
             .store(in: &cancellables)
+        
+        $searchQuery
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .sink {[weak self] searchQuery in
+                if searchQuery.count > 0{
+                    self?.searchingRestaurants = true
+                    self?.searching = true
+                    self?.restaurantDataService.searchRestaurants(name: searchQuery, limit: 100, offset: 0)
+                } else{
+                    self?.searchingRestaurants = false
+                }
+            }
+            .store(in: &cancellables)
+        
+        restaurantDataService.$searchedRestaurants
+            .sink { [weak self] fetchedResults in
+                if let restaurants = fetchedResults{
+                    self?.searchedRestaurants = restaurants
+                    self?.searching = false
+                }
+                if self?.searchQuery.count ?? 0 > 0 && ((fetchedResults?.isEmpty) != nil){
+                    self?.searchedRestaurantsAreEmpty = false
+                } else {
+                    self?.searchedRestaurantsAreEmpty = true
+                }
+            }
+            .store(in: &cancellables)
+        
+        filterVM.$filtering
+            .sink {[weak self] filtering in
+                if filtering{
+                    self?.filterenabled = true
+                    self?.allRestaurants.shuffle()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     func refreshHomeViewData(){
+        filterenabled = false
+        filterVM.filteringRestaurants = false
         isRestaurantListLoading = true
         isRecommendedRestaurantsLoading = true
         isPromotedRestaurantsLoading = true

@@ -12,6 +12,7 @@ class SchemeViewModel: ObservableObject{
     @Published var scheme: RestaurantScheme? = nil
     @Published var selectedFloor = 0
     @Published var mapItemGroupSelectOptions: [Bool] = []
+    @Published var selectedGroup: [[Bool]] = []
     @Published var selectedGroupItem: SchemeItemGroup? = nil
     @Published var showTableInfoSheet = false
     var restaurantId = ""
@@ -49,12 +50,21 @@ class SchemeViewModel: ObservableObject{
                 return
             }
             if selectedIndex >= 0{
+                
+                for i in selectedGroup.indices{
+                    selectedGroup[i][selectedIndex] = false
+                }
+                
+                selectedGroup[selectedFloor][selectedIndex] = false
+                selectedGroup[selectedFloor][index] = true
+                
                 mapItemGroupSelectOptions[selectedIndex] = false
                 mapItemGroupSelectOptions[index] = true
                 selectedIndex = index
             }else{
                 selectedIndex = index
                 mapItemGroupSelectOptions[index] = true
+                selectedGroup[selectedFloor][selectedIndex] = true
             }
             self.selectedGroupItem = scheme.floors[selectedFloor].groups[index]
         }
@@ -165,6 +175,9 @@ class SchemeViewModel: ObservableObject{
                     self?.computeInitialScaleEffect()
                     if ((self?.mapItemGroupSelectOptions.count ?? 0 == 0)){
                         self?.mapItemGroupSelectOptions = Array(repeating: false, count: fetchedScheme.floors[self?.selectedFloor ?? 0].groups.count )
+                    }
+                    if let scheme = self?.scheme{
+                        self?.selectedGroup = Array(repeating: Array(repeating: false, count: scheme.floors[0].groups.count), count: scheme.floors.count)
                     }
                 }
             }

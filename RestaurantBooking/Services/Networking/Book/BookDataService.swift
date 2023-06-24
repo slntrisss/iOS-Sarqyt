@@ -23,7 +23,7 @@ class BookDataService{
     private init(){ }
     
     func fetchBookingRestaurant(for restaurantId: String){
-        let urlString = Constants.BASE_URL + "/\(restaurantId)" + Constants.BOOKING_RESTAURANT
+        let urlString = Constants.BASE_URL + Constants.BOOKING_RESTAURANT + "/\(restaurantId)"
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -32,10 +32,10 @@ class BookDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         bookingRestaurantSubscription = NetworkingManager.download(request: request)
-            .decode(type: BookingRestaurant.self, decoder: JSONDecoder.defaultDecoder)
+            .decode(type: BookingRestaurant.self, decoder: JSONDecoder.DaurbeksDatesFormatter)
             .sink(receiveCompletion: NetworkingManager.handleCompletion, receiveValue: { [weak self] fetchedBookingRestaurant in
                 self?.bookingRestaurant = fetchedBookingRestaurant
                 self?.bookingRestaurantSubscription?.cancel()
@@ -43,7 +43,7 @@ class BookDataService{
     }
     
     func fetchTableInfo(for restaurantId: String, date: Date, groupId: String){
-        let urlString = Constants.BASE_URL + "/\(restaurantId)" + Constants.TABLE_INFO
+        let urlString = Constants.BASE_URL + Constants.TABLE_INFO
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -56,13 +56,12 @@ class BookDataService{
         ]
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         //TODO: Uncomment for real data from SERVER
-//        request.httpMethod = "POST"
-        request.httpMethod = "GET"
+        request.httpMethod = "POST"
         do{
             let jsonData = try JSONSerialization.data(withJSONObject: requestBody)
-//            request.httpBody = jsonData
+            request.httpBody = jsonData
             
             tableInfoSubscription = NetworkingManager.download(request: request)
                 .decode(type: TableInfo.self, decoder: JSONDecoder())
@@ -76,7 +75,7 @@ class BookDataService{
     }
     
     func bookRestaurant(bookedRestaurant: BookedRestaurant, orderedFoods: [OrderedFood]){
-        let urlString = Constants.BASE_URL + "/\(bookedRestaurant.restaurantId)" + Constants.BOOK_BASE_URL
+        let urlString = Constants.BASE_URL + Constants.BOOK_BASE_URL + "/\(bookedRestaurant.restaurantId)"
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -85,7 +84,7 @@ class BookDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
 
         do{
             let encoder = JSONEncoder()

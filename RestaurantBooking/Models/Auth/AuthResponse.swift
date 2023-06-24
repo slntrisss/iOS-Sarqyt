@@ -9,7 +9,7 @@ import Foundation
 
 struct AuthResponse: Codable{
     let accessToken: String
-    let user: User
+    let authUser: User
 }
 
 struct User: Codable{

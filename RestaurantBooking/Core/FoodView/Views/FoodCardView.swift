@@ -25,6 +25,14 @@ struct FoodCardView: View {
             .shadow(radius: 5)
             .onTapGesture {foodCardVM.showDetail.toggle()}
             .sheet(isPresented: $foodCardVM.showDetail) {FoodDetailView(food: food, foodCardVM: foodCardVM)}
+            .onAppear{
+                foodCardVM.food = self.food
+                if bookVM.orderedFoods[food.id] != nil{
+                    foodCardVM.showQuantityLabel = true
+                }else{
+                    foodCardVM.showQuantityLabel = false
+                }
+            }
     }
 }
 

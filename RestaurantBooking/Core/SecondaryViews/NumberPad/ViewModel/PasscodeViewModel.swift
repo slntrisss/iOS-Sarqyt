@@ -172,6 +172,7 @@ extension PasscodeViewModel{
                         return
                     }
                 }
+                print("Valid passcode")
                 authSuccess = true
                 if type == .passcode{
                     authService.authenticateUsingPasscode()

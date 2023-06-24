@@ -68,7 +68,7 @@ extension RestaurantBannerView{
     private var addressView: some View{
         HStack{
             Image(systemName: "mappin.and.ellipse")
-            Text("\(restaurant.address.city), \(restaurant.address.location)")
+            Text("\(restaurant.address.city), \(restaurant.address.address)")
                 .lineLimit(2)
                 .minimumScaleFactor(0.5)
         }

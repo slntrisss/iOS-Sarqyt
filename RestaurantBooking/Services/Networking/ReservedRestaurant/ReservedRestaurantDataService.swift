@@ -10,9 +10,9 @@ import Combine
 
 class ReservedRestaurantDataService{
     
-    @Published var ongoingRestaurants: [Restaurant]? = nil
-    @Published var cancelledRestaurants: [Restaurant]? = nil
-    @Published var completedRestaurants: [Restaurant]? = nil
+    @Published var ongoingRestaurants: [ReservedRestaurant]? = nil
+    @Published var cancelledRestaurants: [ReservedRestaurant]? = nil
+    @Published var completedRestaurants: [ReservedRestaurant]? = nil
     @Published var cancellBookingSuccess = false
     
     @Published var reservationDetails: ReservedRestaurantDetail? = nil
@@ -33,7 +33,7 @@ class ReservedRestaurantDataService{
         }
         
         let parameters = [
-            URLQueryItem(name: "status", value: "\(status)"),
+            URLQueryItem(name: "status", value: "\(status.rawValue)"),
             URLQueryItem(name: "offset", value: "\(offset)"),
             URLQueryItem(name: "limit", value: "\(limit)")
         ]
@@ -44,10 +44,10 @@ class ReservedRestaurantDataService{
             var request = URLRequest(url: urlWithParameters)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "Authorization")
             
             restaurantSubscription = NetworkingManager.download(request: request)
-                .decode(type: [Restaurant].self, decoder: JSONDecoder())
+                .decode(type: [ReservedRestaurant].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: NetworkingManager.handleCompletion) { [weak self] fetchedRestaurants in
                     if fetchedRestaurants.count == 0{
                         self?.restaurantSubscription?.cancel()
@@ -59,9 +59,9 @@ class ReservedRestaurantDataService{
                             self?.ongoingRestaurants = fetchedRestaurants
                         }
                     case .completed:
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                             self?.completedRestaurants = fetchedRestaurants
-                        }
+//                        }
                     default:
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                             self?.cancelledRestaurants = fetchedRestaurants
@@ -76,8 +76,8 @@ class ReservedRestaurantDataService{
         
     }
     
-    func fetchReservedRestaurantDetail(for restaurantId: String){
-        let urlString = Constants.BASE_URL + Constants.RESERVED_RESTAURANTS_DETAIL + "/\(restaurantId)"
+    func fetchReservedRestaurantDetail(for restaurantId: String, orderItemId: String){
+        let urlString = Constants.BASE_URL + Constants.RESERVED_RESTAURANTS_DETAIL + "/\(orderItemId)"
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -85,7 +85,7 @@ class ReservedRestaurantDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         reservationDetailSubscription = NetworkingManager.download(request: request)
             .decode(type: ReservedRestaurantDetail.self, decoder: JSONDecoder.defaultDecoder)
@@ -96,8 +96,8 @@ class ReservedRestaurantDataService{
             }
     }
     
-    func cancelBookingRestaurant(restaurant: Restaurant){
-        let urlString = Constants.BASE_URL + Constants.CANCEL_RESERVED_RESTAURANT
+    func cancelBookingRestaurant(restaurant: ReservedRestaurant){
+        let urlString = Constants.BASE_URL + Constants.CANCEL_RESERVED_RESTAURANT + "/\(restaurant.orderItemId)"
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
             return
@@ -106,34 +106,23 @@ class ReservedRestaurantDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
-        let body = [
-            "id": "\(restaurant.id)",
-            "name": "\(restaurant.name)",
-            "bookingStatus" : "Canceled & Refunded"
-        ]
         
-        do{
-            let jsonData = try JSONSerialization.data(withJSONObject: body)
-            request.httpBody = jsonData
-            
-            cancelBookingSubscription = URLSession.shared.dataTaskPublisher(for: request)
-                .sink {[weak self] completion in
-                    switch completion{
-                    case .finished:
-                        print("POST, Cancel booking Success")
-                        self?.cancellBookingSuccess = true
-                    case .failure(let error):
-                        print("Error cancel booking: \(error.localizedDescription)")
-                    }
-                } receiveValue: { response in
-                    print(response)
+        cancelBookingSubscription = URLSession.shared.dataTaskPublisher(for: request)
+            .sink {[weak self] completion in
+                switch completion{
+                case .finished:
+                    print("POST, Cancel booking Success")
+                    self?.cancellBookingSuccess = true
+                case .failure(let error):
+                    print("Error cancel booking: \(error.localizedDescription)")
                 }
-                
-
-        }catch let error{
-            print("Error occured: \(error.localizedDescription)")
-        }
+            } receiveValue: { response in
+                print(response)
+            }
+        
+        
+        
     }
 }

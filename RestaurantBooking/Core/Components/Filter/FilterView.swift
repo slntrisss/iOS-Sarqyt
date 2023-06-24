@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FilterView: View {
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var filterVM: FilterViewModel
     
     @State private var seeAllCountries = false
@@ -61,6 +62,13 @@ struct FilterView: View {
                 }
             }
         }
+        .onChange(of: resetButtonTapped, perform: { newValue in
+            filterVM.reset()
+        })
+        .onChange(of: applyButtonTapped, perform: { newValue in
+            dismiss()
+            filterVM.fetchFilteredRestaurants()
+        })
         .onAppear{
             filterVM.getFilterData()
         }
@@ -128,7 +136,7 @@ extension FilterView{
             ScrollView(.horizontal, showsIndicators: false){
                 HStack{
                     if let filterData = filterVM.filterData{
-                        ForEach(filterData.accomodationTypes.indices , id: \.self) { index in
+                        ForEach(filterData.facilities.indices , id: \.self) { index in
                             FilterCheckBox(isOn: $filterVM.selectedFacilities[index], text: filterData.facilities[index])
                                 .offset(x: paddingAmount)
                                 .padding(.trailing, index == filterData.facilities.count - 1 ? paddingAmount : 0)

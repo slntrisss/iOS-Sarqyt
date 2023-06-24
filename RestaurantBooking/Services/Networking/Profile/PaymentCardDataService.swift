@@ -34,7 +34,7 @@ class PaymentCardDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         cardsSubscription = NetworkingManager.download(request: request)
             .decode(type: [PaymentCard].self, decoder: JSONDecoder())
@@ -54,7 +54,7 @@ class PaymentCardDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         do {
             let jsonData = try JSONEncoder().encode(card)
@@ -81,7 +81,7 @@ class PaymentCardDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         do {
             let jsonData = try JSONEncoder().encode(card)
@@ -99,7 +99,7 @@ class PaymentCardDataService{
     }
     
     func deletePaymentCard(card: PaymentCard){
-        let urlString = Constants.BASE_URL + Constants.PAYMENT_CARDS + "/\(card.id)/Delete"
+        let urlString = Constants.BASE_URL + Constants.PAYMENT_CARDS + "/\(card.id)/delete"
         let token = authService.getToken().trimmingCharacters(in: .whitespacesAndNewlines)
         guard let url = URL(string: urlString) else {
             print("BAD URL: \(urlString)")
@@ -108,7 +108,7 @@ class PaymentCardDataService{
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         
         do {
             let jsonData = try JSONEncoder().encode(card)

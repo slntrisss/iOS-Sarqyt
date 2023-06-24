@@ -45,10 +45,16 @@ struct DetailView: View {
         .onAppear{
             detailVM.animateRestaurantTitleScroll.toggle()
             detailVM.getRestaurantDetails(for: restaurant.id)
+            detailVM.restaurant = restaurant
         }
         .sheet(isPresented: $detailVM.showRateView, content: {
             RateRestaurantView(restaurant: restaurant, selectedStars: $detailVM.selectedStars, comment: $detailVM.comment, rate: $detailVM.rate, cancelRating: $detailVM.showRateView)
         })
+        .onChange(of: detailVM.rate) { newValue in
+            if detailVM.rate{
+                detailVM.rateRestaurant()
+            }
+        }
     }
 }
 
@@ -170,7 +176,7 @@ extension DetailView{
         HStack{
             Image(systemName: "mappin.and.ellipse")
                 .foregroundColor(Color.theme.green)
-            Text("\(restaurant.address.city), \(restaurant.address.location)")
+            Text("\(restaurant.address.city), \(restaurant.address.address)")
                 .font(.caption)
                 .foregroundColor(Color.theme.secondaryText)
         }
